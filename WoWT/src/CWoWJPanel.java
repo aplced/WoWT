@@ -24,15 +24,10 @@ public class CWoWJPanel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if(doneState.isSelected())
+		for(CWoWJPanel child : childWoWNodes)
 		{
-			setEnabled(true);
+			child.UpdateEnableWoWItemState();
 		}
-		else
-		{
-			setEnabled(false);
-		}
-		
 	}
 	
 	public CWoWJPanel(CSerWoWNode serNode)
@@ -57,11 +52,11 @@ public class CWoWJPanel extends JPanel implements ActionListener
 		description.setText(serNode.getDescription());
 		doneState.setSelected(serNode.getDoneState());
 		
-		parentWoWNodesIDs = serNode.getParentNodes();
-		childWoWNodesIDs = serNode.getChildNodes();
+		parentWoWNodesIDs = serNode.ListOfParentNodes();
+		childWoWNodesIDs = serNode.ListOfChildNodes();
 	}
 	
-	private CSerWoWNode CreateSerializable()
+	public CSerWoWNode CreateSerializable()
 	{
 		CSerWoWNode serializable = new CSerWoWNode();
 		serializable.setUniqueID(uniqueID);
@@ -69,21 +64,48 @@ public class CWoWJPanel extends JPanel implements ActionListener
 		serializable.setDescription(description.getText());
 		serializable.setDoneState(doneState.isSelected());
 		
-		ArrayList<String> parentWoWs = new ArrayList<String>();
 		for(CWoWJPanel parent : parentWoWNodes)
 		{
-			parentWoWs.add(parent.GetUniqueID());
+			serializable.ListOfParentNodes().add(parent.GetUniqueID());
 		}
-		serializable.setParentNodes(parentWoWs);
 
-		ArrayList<String> childWoWs = new ArrayList<String>();
 		for(CWoWJPanel child : childWoWNodes)
 		{
-			childWoWs.add(child.GetUniqueID());
+			serializable.ListOfChildNodes().add(child.GetUniqueID());
 		}
-		serializable.setChildNodes(childWoWs);
 		
 		return serializable;
+	}
+	
+	private void SetControlsEnabled(boolean enabled)
+	{
+		displayName.setEnabled(enabled);
+		description.setEnabled(enabled);
+		if(!enabled)
+			doneState.setSelected(false);
+		doneState .setEnabled(enabled);
+	}
+	
+	public void UpdateEnableWoWItemState()
+	{
+		boolean allParentsDone = true;
+		StringBuilder dependencies = new StringBuilder();
+		dependencies.append("Depends on following items:\n");
+		for(CWoWJPanel parent : parentWoWNodes)
+		{
+			if(!parent.IsWoWItemDone())
+			{
+				allParentsDone = false;
+				dependencies.append(parent.WoWItemName() + "\n");
+			}
+		}
+		
+		SetControlsEnabled(allParentsDone);
+		
+		for(CWoWJPanel child : childWoWNodes)
+		{
+			child.UpdateEnableWoWItemState();
+		}
 	}
 	
 	public void LinkNodes(ArrayList<CWoWJPanel> allNodesList)
@@ -92,16 +114,16 @@ public class CWoWJPanel extends JPanel implements ActionListener
 		{
 			for(String parentID : parentWoWNodesIDs)
 			{
-				if(node.GetUniqueID() == parentID)
+				if(parentID.compareTo(node.GetUniqueID()) == 0)
 				{
 					parentWoWNodes.add(node);
 					break;
 				}
 			}
 			
-			for(String parentID : childWoWNodesIDs)
+			for(String childID : childWoWNodesIDs)
 			{
-				if(node.GetUniqueID() == parentID)
+				if(childID.compareTo(node.GetUniqueID()) == 0)
 				{
 					childWoWNodes.add(node);
 					break;
@@ -118,5 +140,20 @@ public class CWoWJPanel extends JPanel implements ActionListener
 	public Boolean IsWoWItemDone()
 	{
 		return doneState.isSelected();
-	}	
+	}
+	
+	public String WoWItemName()
+	{
+		return displayName.getText();
+	}
+	
+	public ArrayList<CWoWJPanel> GetChildren()
+	{
+		return childWoWNodes;
+	}
+	
+	public ArrayList<CWoWJPanel> GetParents()
+	{
+		return parentWoWNodes;
+	}
 }

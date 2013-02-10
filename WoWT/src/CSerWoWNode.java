@@ -45,22 +45,14 @@ public class CSerWoWNode
 	{
 		this.doneState = doneState;
 	}
-	
-    public ArrayList<String> getChildNodes() 
+
+    public ArrayList<String> ListOfChildNodes() 
     {
         return childNodes;
     }
-    public void setChildNodes(ArrayList<String> childNodes) 
-    {
-        this.childNodes = childNodes;
-    }
-    
-    public ArrayList<String> getParentNodes() 
+
+    public ArrayList<String> ListOfParentNodes() 
     {
         return parentNodes;
-    }
-    public void setParentNodes(ArrayList<String> parentNodes) 
-    {
-        this.parentNodes = parentNodes;
     }
 }
