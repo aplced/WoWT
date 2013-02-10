@@ -1,4 +1,5 @@
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.FileInputStream;
@@ -37,6 +38,11 @@ public class MainWoWWindow extends JFrame
         for(CWoWJPanel wowItem : deserializedPanels)
         {
         	wowItem.LinkNodes(deserializedPanels);
+        }
+        
+        for(CWoWJPanel wowItem : deserializedPanels)
+        {
+        	wowItem.UpdateEnableWoWItemState();
         }
         
         return deserializedPanels;
@@ -190,7 +196,34 @@ public class MainWoWWindow extends JFrame
         {
             i.printStackTrace();
         }
-    }    
+    }
+    
+    private CWoWJPanel GetRoodNode(ArrayList<CWoWJPanel> allItems)
+    {
+    	for(CWoWJPanel wowItem : allItems)
+    	{
+    		if(wowItem.GetParents().size() == 0)
+    			return wowItem;
+    	}
+    	return null;
+    }
+    
+    private void CreateBFSWoWTiers(CWoWJPanel wowItem, int treeDepth, ArrayList<JPanel> tierPanels)
+    {
+    	
+    	if(tierPanels.size() <= treeDepth)
+    	{
+    		JPanel tierP = new JPanel();
+        	tierP.setLayout(new FlowLayout());
+        	tierPanels.add(tierP);
+    	}
+        
+    	for(CWoWJPanel child : wowItem.GetChildren())
+    	{
+    		tierPanels.get(treeDepth).add(child);
+    		CreateBFSWoWTiers(child, treeDepth + 1, tierPanels);
+    	}
+    }
     
     public MainWoWWindow()
     {
@@ -204,25 +237,30 @@ public class MainWoWWindow extends JFrame
         {
         } 
         
-        JPanel allPanes = new JPanel();
-        allPanes.setLayout(new FlowLayout());
+        JPanel mainPanel = new JPanel();
+        GridLayout gridL = new GridLayout();
+        mainPanel.setLayout(gridL);
         
         ArrayList<CWoWJPanel> allItems = LoadFromFile();
+        CWoWJPanel rootNode = GetRoodNode(allItems);
         
-        SaveToFile(allItems);
+        ArrayList<JPanel> tierPanels = new ArrayList<JPanel>();
+        JPanel rootTierP = new JPanel();
+        rootTierP.setLayout(new FlowLayout());
+    	tierPanels.add(rootTierP);
+    	rootTierP.add(rootNode);
         
-        for(CWoWJPanel wowItem : allItems)
+        CreateBFSWoWTiers(rootNode, 1, tierPanels);
+        
+        gridL.setRows(tierPanels.size());
+        for(JPanel tierP : tierPanels)
         {
-        	wowItem.UpdateEnableWoWItemState();
-        }        
-        
-        for(CWoWJPanel wowItem : allItems)
-        {
-        	allPanes.add(wowItem);
+        	mainPanel.add(tierP);
         }
-        
-        setContentPane(allPanes);
+        setContentPane(mainPanel);
         pack();
+        
+        //SaveToFile(allItems);        
     }
     
 }
