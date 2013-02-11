@@ -5,9 +5,10 @@
  prob_invest:
  create_pdf:sps_request
  req_proj_simgt:create_pdf
+ ftps_create:prob_invest
  high_lvl_lst_changes:prob_invest
  create_swchg:req_proj_simgt
- sched_start_meet:high_lvl_lst_changes
+ sched_start_meet:high_lvl_lst_changes, ftps_create
  req_BB_approv:create_swchg
  req_test_approv_req:create_swchg
  review_commitment:create_swchg

@@ -1,8 +1,10 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -12,7 +14,9 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 {
 	private String uniqueID;
 	private JLabel displayName = new JLabel("WoW item");
-	private JLabel description = new JLabel("WoW description");
+	//private JLabel description = new JLabel("WoW description");
+	private String description;
+	private JButton popDescription = new JButton("?");
 	private JCheckBox doneState = new JCheckBox("Done");
 	
 	private ArrayList<WoWItemJPanel> parentWoWNodes = new ArrayList<WoWItemJPanel>();
@@ -24,9 +28,16 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		for(WoWItemJPanel child : childWoWNodes)
+		if (e.getSource() == popDescription)
 		{
-			child.UpdateEnableWoWItemState();
+			JOptionPane.showMessageDialog(this, description);
+		}
+		else if(e.getSource() == doneState)
+		{
+			for(WoWItemJPanel child : childWoWNodes)
+			{
+				child.UpdateEnableWoWItemState();
+			}
 		}
 	}
 	
@@ -34,6 +45,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 	{
 		super();
 		
+		popDescription.addActionListener(this);
 		doneState.addActionListener(this);
 		
 		InitFromSerializable(serNode);
@@ -41,7 +53,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		setLayout(new BorderLayout());
 		
 		add(displayName, BorderLayout.NORTH);
-		add(description, BorderLayout.CENTER);
+		add(popDescription, BorderLayout.CENTER);
 		add(doneState, BorderLayout.EAST);
 	}
 	
@@ -49,7 +61,8 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 	{
 		uniqueID = serNode.getUniqueID();
 		displayName.setText(serNode.getDisplayName());
-		description.setText(serNode.getDescription());
+		//description.setText(serNode.getDescription());
+		description = serNode.getDescription();
 		doneState.setSelected(serNode.getDoneState());
 		
 		parentWoWNodesIDs = serNode.ListOfParentNodes();
@@ -61,7 +74,8 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		WoWSerialableNode serializable = new WoWSerialableNode();
 		serializable.setUniqueID(uniqueID);
 		serializable.setDisplayName(displayName.getText());
-		serializable.setDescription(description.getText());
+		//serializable.setDescription(description.getText());
+		serializable.setDescription(description);
 		serializable.setDoneState(doneState.isSelected());
 		
 		for(WoWItemJPanel parent : parentWoWNodes)
@@ -80,7 +94,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 	private void SetControlsEnabled(boolean enabled)
 	{
 		displayName.setEnabled(enabled);
-		description.setEnabled(enabled);
+		popDescription.setEnabled(enabled);
 		if(!enabled)
 			doneState.setSelected(false);
 		doneState .setEnabled(enabled);
