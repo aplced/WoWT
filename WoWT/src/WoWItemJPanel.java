@@ -25,6 +25,8 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 	private ArrayList<String> parentWoWNodesIDs = new ArrayList<String>();
 	private ArrayList<String> childWoWNodesIDs = new ArrayList<String>();
 	
+	public int TreeDepth = 0;
+	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{

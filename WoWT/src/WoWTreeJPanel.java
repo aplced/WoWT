@@ -178,7 +178,20 @@ public class WoWTreeJPanel extends JPanel
     	return rootNodes;
     }
     
-    private void CreateBFSWoWTiers(WoWItemJPanel wowItem, int treeDepth, ArrayList<JPanel> tierPanels)
+    private void CalcualteWoWItemsTreeDepth(WoWItemJPanel wowItem, int treeDepth)
+    {       
+    	for(WoWItemJPanel child : wowItem.GetChildren())
+    	{
+    		if(child.TreeDepth < treeDepth)
+    		{
+    			child.TreeDepth = treeDepth;
+    		}
+    		
+    		CalcualteWoWItemsTreeDepth(child, treeDepth + 1);
+    	}
+    }
+    
+    private void CreateWoWTiers(WoWItemJPanel wowItem, int treeDepth, ArrayList<JPanel> tierPanels)
     {
     	
     	if(tierPanels.size() <= treeDepth)
@@ -190,8 +203,11 @@ public class WoWTreeJPanel extends JPanel
         
     	for(WoWItemJPanel child : wowItem.GetChildren())
     	{
-    		tierPanels.get(treeDepth).add(child);
-    		CreateBFSWoWTiers(child, treeDepth + 1, tierPanels);
+    		if(child.TreeDepth == treeDepth)
+    		{
+    			tierPanels.get(treeDepth).add(child);
+    			CreateWoWTiers(child, treeDepth + 1, tierPanels);
+    		}
     	}
     }
 
@@ -216,7 +232,8 @@ public class WoWTreeJPanel extends JPanel
 	    
 	    ArrayList<JPanel> tierPanels = new ArrayList<JPanel>();
 	    
-	    CreateBFSWoWTiers(startableWork, 0, tierPanels);
+	    CalcualteWoWItemsTreeDepth(startableWork, 0);
+	    CreateWoWTiers(startableWork, 0, tierPanels);
 	    
 	    gridL.setRows(tierPanels.size());
 	    for(JPanel tierP : tierPanels)
