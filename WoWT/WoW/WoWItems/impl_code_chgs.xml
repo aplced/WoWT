@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialableNode"> 
+  <void property="description"> 
+   <string>Implement all code changes in the stream created by SIMGT (Desislava Stoyanova).</string> 
+  </void> 
+  <void property="displayName"> 
+   <string>Implement code changes</string> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>impl_code_chgs</string> 
+  </void> 
+ </object> 
+</java> 

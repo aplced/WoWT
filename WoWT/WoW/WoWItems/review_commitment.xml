@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialableNode"> 
+  <void property="description"> 
+   <string>Try to piggy-back if possible the estimated dates when code, TPS and TAR would be up for review in codecollaborator and ask for respective BB ownerCC owners commitment for review. </string> 
+  </void> 
+  <void property="displayName"> 
+   <string>Obtain commitment/send notifiaction for code/TPS/TAR reviews</string> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>review_commitment</string> 
+  </void> 
+ </object> 
+</java> 

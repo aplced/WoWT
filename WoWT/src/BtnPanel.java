@@ -7,15 +7,16 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
-public class CBtnPanel extends JPanel implements ActionListener
+@SuppressWarnings("serial")
+public class BtnPanel extends JPanel implements ActionListener
 {
 	JPanel mainPanel;
-	CWoWTreePanel treePanel;
+	WoWTreeJPanel treePanel;
 	JButton openFile;
 	JButton createWoWItem;
 	JFileChooser fc;
 	
-	public CBtnPanel(CWoWTreePanel refTreePanel, JPanel refMainPanel) 
+	public BtnPanel(WoWTreeJPanel refTreePanel, JPanel refMainPanel) 
 	{
 		setLayout(new FlowLayout());
 		
@@ -49,6 +50,8 @@ public class CBtnPanel extends JPanel implements ActionListener
 		}
 		else if (e.getSource() == createWoWItem) 
 		{
+			CreateWoWItemFrame createWoWItem = new CreateWoWItemFrame();
+			createWoWItem.setVisible(true);
 		}
 	}
 }

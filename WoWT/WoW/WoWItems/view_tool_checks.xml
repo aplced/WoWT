@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialableNode"> 
+  <void property="description"> 
+   <string>Run cccheck_deliver followed by cwbd on the stream&apos;s view and check them for errors. Fix the errors and check for false positive results.</string> 
+  </void> 
+  <void property="displayName"> 
+   <string>cccheck_deliver and cwbd to catch TICS and librefs issues</string> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>view_tool_checks</string> 
+  </void> 
+ </object> 
+</java> 

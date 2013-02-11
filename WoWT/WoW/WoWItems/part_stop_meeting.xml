@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialableNode"> 
+  <void property="description"> 
+   <string></string> 
+  </void> 
+  <void property="displayName"> 
+   <string>Participate in Stop Meeting</string> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>part_stop_meeting</string> 
+  </void> 
+ </object> 
+</java> 

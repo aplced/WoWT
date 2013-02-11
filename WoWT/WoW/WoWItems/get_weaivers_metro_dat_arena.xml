@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialableNode"> 
+  <void property="description"> 
+   <string>1. If MetroArt test fail follow page:    http://techwiki.asml.com/index.php/MetroArt_get_Support#I_have_a_NOK_metroart_run._What_should_I_do.3F2. If TestArena failes. Find the FCT of the coresponding FC. link:http://techwiki.asml.com/index.php/FCT  or find the CC owner and ask them for conformation.</string> 
+  </void> 
+  <void property="displayName"> 
+   <string>Get waivers</string> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>get_weaivers_metro_dat_arena</string> 
+  </void> 
+ </object> 
+</java> 

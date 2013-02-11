@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialableNode"> 
+  <void property="description"> 
+   <string>Even though automatic building block approval mail is sent, e-mail a description of changes, affected files and testing presumptions (use the excel sheet created for the start meeting) to the respective BB owners. </string> 
+  </void> 
+  <void property="displayName"> 
+   <string>Request BB approval</string> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>req_BB_approv</string> 
+  </void> 
+ </object> 
+</java> 

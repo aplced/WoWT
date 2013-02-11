@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialableNode"> 
+  <void property="description"> 
+   <string>Log in Clear Quest and create a new software change (File-&gt;New-&gt;Change). Fill in all relevant information. Add building blocks (BB) which components need to be changed for the delivery.</string> 
+  </void> 
+  <void property="displayName"> 
+   <string>Create software change</string> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>create_swchg</string> 
+  </void> 
+ </object> 
+</java> 

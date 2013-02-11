@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialableNode"> 
+  <void property="description"> 
+   <string>Once TPS review is finished, check in the update document in TCE. Under Referencing check in TDL excel sheet, created by inputing the review id in the TDL tool: http://netscanner-ied.asml.com/cgi-bin/cocoutil/cocotdl Set document state to UCC: ASM Documents-&gt;Change State</string> 
+  </void> 
+  <void property="displayName"> 
+   <string>Get TPS UCC in TCE</string> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>tps_ucc</string> 
+  </void> 
+ </object> 
+</java> 
