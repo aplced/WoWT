@@ -2,9 +2,12 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -48,7 +51,6 @@ public class WoWTreeJPanel extends JPanel
         return deserializedPanels;
     }
   
-
     private WoWSerialableNode LoadWoWItem(String uniqueId, ArrayList<WoWSerialableNode> allSerializedWoWItems)
     {
     	for(WoWSerialableNode item : allSerializedWoWItems)
@@ -99,23 +101,27 @@ public class WoWTreeJPanel extends JPanel
     
     private String LoadWoWTree(String fileName)
     {
-    	String wowTreeMap;
+    	StringBuilder wowTreeMap = new StringBuilder();
         try
         {
            FileInputStream fileIn = new FileInputStream(fileName);
-           XMLDecoder in = new XMLDecoder(fileIn);
-           wowTreeMap = (String) in.readObject();
+           BufferedReader br = new BufferedReader(new InputStreamReader(fileIn, Charset.forName("UTF-8")));
 
-           in.close();
+           String line;
+           while((line = br.readLine()) != null)
+           {
+        	   wowTreeMap.append(line + "\n");
+           }
+           
+           br.close();
            fileIn.close();
        }
        catch(IOException i)
        {
            i.printStackTrace();
-           wowTreeMap = "";
        }
         
-        return wowTreeMap;
+        return wowTreeMap.toString();
     }
     
     @SuppressWarnings("unused")
@@ -165,8 +171,6 @@ public class WoWTreeJPanel extends JPanel
         }
     }
     
-
-    
     private ArrayList<WoWItemJPanel> GetRoodNodes(ArrayList<WoWItemJPanel> allItems)
     {
     	ArrayList<WoWItemJPanel> rootNodes = new ArrayList<WoWItemJPanel>();
@@ -211,12 +215,10 @@ public class WoWTreeJPanel extends JPanel
     	}
     }
 
-	public void LoadPanelFromFile(String fileName)
-	{    
-		removeAll();
-	    ArrayList<WoWItemJPanel> allItems = LoadFromFile(fileName);
-	    ArrayList<WoWItemJPanel> rootNodes = GetRoodNodes(allItems);
-	    
+    private WoWItemJPanel AddWoWStartDummyNode(ArrayList<WoWItemJPanel> allItems)
+    {
+    	ArrayList<WoWItemJPanel> rootNodes = GetRoodNodes(allItems);
+    	
 	    WoWSerialableNode startableWorkSer = new WoWSerialableNode();
 	    startableWorkSer.setUniqueID("startable_work");
 	    startableWorkSer.setDisplayName("Stream delivery");
@@ -229,6 +231,16 @@ public class WoWTreeJPanel extends JPanel
 	    WoWItemJPanel startableWork = new WoWItemJPanel(startableWorkSer);
 	    startableWork.LinkNodes(allItems);
 	    startableWork.UpdateEnableWoWItemState();
+	    
+	    return startableWork;
+    }
+    
+	public void LoadPanelFromFile(String fileName)
+	{    
+		removeAll();
+	    ArrayList<WoWItemJPanel> allItems = LoadFromFile(fileName);
+	    
+	    WoWItemJPanel startableWork = AddWoWStartDummyNode(allItems);
 	    
 	    ArrayList<JPanel> tierPanels = new ArrayList<JPanel>();
 	    

@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_24" class="java.beans.XMLDecoder"> 
- <string>
  sps_request:
  prob_invest:
  create_pdf:sps_request
@@ -31,6 +28,3 @@
  sched_stop_meet:create_tar
  part_stop_meeting:part_start_meeting, sched_stop_meet
  stream_sign_off:tar_ucc, tps_ucc, part_stop_meeting
- 
-</string> 
-</java> 
