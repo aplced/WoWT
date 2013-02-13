@@ -8,8 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 
 @SuppressWarnings("serial")
@@ -21,10 +24,12 @@ public class CreateWoWItemFrame extends JFrame implements ActionListener
 	JLabel uniqueIdInfo;
 	JLabel displayNameInfo;
 	JLabel descriptionInfo;
+	JLabel taskEstimatedDurationInfo;
 	
 	JTextField uniqueIdInput;
 	JTextField displayNameInput;
 	JTextArea descriptionInput;
+	JSpinner taskEstimatedDurationInput;
 	
 	private JPanel CreateUniqueIDInputPanel()
 	{
@@ -60,7 +65,7 @@ public class CreateWoWItemFrame extends JFrame implements ActionListener
         descriptionPnl.setLayout(new FlowLayout());
 		
 		descriptionInfo = new JLabel("Description visible in the main view");
-		descriptionInput = new JTextArea(2,40);
+		descriptionInput = new JTextArea(5,60);
 		
 		descriptionPnl.add(descriptionInfo);
 		descriptionPnl.add(descriptionInput);
@@ -68,14 +73,30 @@ public class CreateWoWItemFrame extends JFrame implements ActionListener
 		return descriptionPnl;
 	}
 	
+	private JPanel CreateTaskDurationInputPanel()
+	{
+		JPanel durationPnl = new JPanel();
+		durationPnl.setLayout(new FlowLayout());
+        
+		taskEstimatedDurationInfo = new JLabel("Task duration in days");
+		taskEstimatedDurationInput = new JSpinner();
+		taskEstimatedDurationInput.setModel(new SpinnerNumberModel(0, 0, 10, 0.5));
+		
+		durationPnl.add(taskEstimatedDurationInfo);
+		durationPnl.add(taskEstimatedDurationInput);
+		
+		return durationPnl;
+	}
+	
 	private JPanel CreateInputPanelsGrid()
 	{
         JPanel inputPnl = new JPanel();
-        inputPnl.setLayout(new GridLayout(3,2));
+        inputPnl.setLayout(new GridLayout(4,2));
 		
 		inputPnl.add(CreateUniqueIDInputPanel());
 		inputPnl.add(CreateDisplayNameInputPanel());
 		inputPnl.add(CreateDescriptionInputPanel());
+		inputPnl.add(CreateTaskDurationInputPanel());
 		
 		return inputPnl;
 	}
@@ -157,6 +178,7 @@ public class CreateWoWItemFrame extends JFrame implements ActionListener
 			serNode.setUniqueID(uId);
 			serNode.setDisplayName(dispName);
 			serNode.setDescription(descriptionInput.getText());
+			serNode.setTaskDaysEstimate((Float)taskEstimatedDurationInput.getValue());
 			serNode.SaveWoWItemToFile("WoW/WoWItems/");
 						
 			setVisible(false);

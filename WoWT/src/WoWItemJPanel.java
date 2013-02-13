@@ -12,20 +12,35 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class WoWItemJPanel extends JPanel implements ActionListener
 {
-	private String uniqueID;
-	private JLabel displayName = new JLabel("WoW item");
-	//private JLabel description = new JLabel("WoW description");
-	private String description;
-	private JButton popDescription = new JButton("?");
-	private JCheckBox doneState = new JCheckBox("Done");
 	
-	private ArrayList<WoWItemJPanel> parentWoWNodes = new ArrayList<WoWItemJPanel>();
-	private ArrayList<WoWItemJPanel> childWoWNodes = new ArrayList<WoWItemJPanel>();
+	protected String uniqueID;
+	protected JLabel displayName = new JLabel("WoW item");
+	//protected JLabel description = new JLabel("WoW description");
+	protected String description;
+	protected JButton popDescription = new JButton("?");
+	protected JCheckBox doneState = new JCheckBox("Done");
+	protected float taskDaysEstimate;
 	
-	private ArrayList<String> parentWoWNodesIDs = new ArrayList<String>();
-	private ArrayList<String> childWoWNodesIDs = new ArrayList<String>();
+	protected ArrayList<WoWItemJPanel> parentWoWNodes = new ArrayList<WoWItemJPanel>();
+	protected ArrayList<WoWItemJPanel> childWoWNodes = new ArrayList<WoWItemJPanel>();
+	
+	protected ArrayList<String> parentWoWNodesIDs = new ArrayList<String>();
+	protected ArrayList<String> childWoWNodesIDs = new ArrayList<String>();
 	
 	public int TreeDepth = 0;
+	
+	protected void notifyChildrenOfStateChange(int daysSinceStart)
+	{
+		for(WoWItemJPanel child : childWoWNodes)
+		{
+			child.UpdateEnableWoWItemState(daysSinceStart);
+		}
+	}
+	
+	protected void performChangeStateAction()
+	{
+		notifyChildrenOfStateChange(0);
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) 
@@ -36,10 +51,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		}
 		else if(e.getSource() == doneState)
 		{
-			for(WoWItemJPanel child : childWoWNodes)
-			{
-				child.UpdateEnableWoWItemState();
-			}
+			performChangeStateAction();
 		}
 	}
 	
@@ -66,6 +78,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		//description.setText(serNode.getDescription());
 		description = serNode.getDescription();
 		doneState.setSelected(serNode.getDoneState());
+		taskDaysEstimate = serNode.getTaskDaysEstimate();
 		
 		parentWoWNodesIDs = serNode.ListOfParentNodes();
 		childWoWNodesIDs = serNode.ListOfChildNodes();
@@ -79,6 +92,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		//serializable.setDescription(description.getText());
 		serializable.setDescription(description);
 		serializable.setDoneState(doneState.isSelected());
+		serializable.setTaskDaysEstimate(taskDaysEstimate);
 		
 		for(WoWItemJPanel parent : parentWoWNodes)
 		{
@@ -102,7 +116,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		doneState .setEnabled(enabled);
 	}
 	
-	public void UpdateEnableWoWItemState()
+	public void UpdateEnableWoWItemState(int daysSinceStart)
 	{
 		boolean allParentsDone = true;
 		StringBuilder dependencies = new StringBuilder();
@@ -120,7 +134,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		
 		for(WoWItemJPanel child : childWoWNodes)
 		{
-			child.UpdateEnableWoWItemState();
+			child.UpdateEnableWoWItemState(daysSinceStart);
 		}
 	}
 	

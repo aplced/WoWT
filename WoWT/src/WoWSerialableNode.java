@@ -12,6 +12,7 @@ public class WoWSerialableNode
 	private String displayName;
 	private String description = "";
 	private Boolean doneState = false;
+	private float taskDaysEstimate = (float) 0;
 	private ArrayList<String> childNodes = new ArrayList<String>();
 	private ArrayList<String> parentNodes = new ArrayList<String>();
 	
@@ -51,6 +52,15 @@ public class WoWSerialableNode
 		this.doneState = doneState;
 	}
 
+	public float getTaskDaysEstimate()
+	{
+		return taskDaysEstimate;
+	}
+	public void setTaskDaysEstimate(float iTaskDaysEstimate)
+	{
+		taskDaysEstimate = iTaskDaysEstimate;
+	}
+	
     public ArrayList<String> ListOfChildNodes() 
     {
         return childNodes;
