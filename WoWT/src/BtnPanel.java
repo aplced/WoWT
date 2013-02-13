@@ -12,6 +12,8 @@ public class BtnPanel extends JPanel implements ActionListener
 {
 	JPanel mainPanel;
 	WoWTreeJPanel treePanel;
+	JButton saveSession;
+	JButton loadSession;
 	JButton openFile;
 	JButton createWoWItem;
 	JFileChooser fc;
@@ -25,6 +27,14 @@ public class BtnPanel extends JPanel implements ActionListener
 		
 		fc = new JFileChooser(System.getProperty("user.home"));
 		fc.addChoosableFileFilter(new XMLFileFilter());
+		
+		saveSession = new JButton("Save Session");
+		saveSession.addActionListener(this);
+		add(saveSession);
+		
+		loadSession = new JButton("Load Session");
+		loadSession.addActionListener(this);
+		add(loadSession);
 		
 		openFile = new JButton("Open WoW tree");
 		openFile.addActionListener(this);
@@ -53,5 +63,24 @@ public class BtnPanel extends JPanel implements ActionListener
 			CreateWoWItemFrame createWoWItem = new CreateWoWItemFrame();
 			createWoWItem.setVisible(true);
 		}
+		else if(e.getSource() == saveSession)
+		{
+			int returnVal = fc.showSaveDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				File file = fc.getSelectedFile();
+				treePanel.SaveSessionToFile(file.getAbsolutePath());
+			}
+		}
+		else if(e.getSource() == loadSession)
+		{
+			int returnVal = fc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				File file = fc.getSelectedFile();
+				treePanel.LoadSessionFromFile(file.getAbsolutePath());
+				mainPanel.revalidate();
+			}
+		} 
 	}
 }

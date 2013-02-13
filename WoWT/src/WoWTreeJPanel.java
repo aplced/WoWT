@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 public class WoWTreeJPanel extends JPanel 
 {
 	GridLayout gridL;
+	ArrayList<WoWItemJPanel> allItems;
 	
 	public WoWTreeJPanel()
 	{
@@ -24,11 +25,8 @@ public class WoWTreeJPanel extends JPanel
 	    setLayout(gridL);
 	}
 	
-    private ArrayList<WoWItemJPanel> LoadFromFile(String fileName)
-    {
-        ArrayList<WoWSerialableNode> allSerializedWoWItems = new ArrayList<WoWSerialableNode>();
-
-        String wowTreeMap = LoadWoWTree(fileName);
+	private ArrayList<WoWItemJPanel> ParseAndLinkTree(String wowTreeMap, ArrayList<WoWSerialableNode> allSerializedWoWItems)
+	{
         ParseWoWTree(wowTreeMap, allSerializedWoWItems);
         
         ArrayList<WoWItemJPanel> deserializedPanels = new ArrayList<WoWItemJPanel>();
@@ -49,6 +47,11 @@ public class WoWTreeJPanel extends JPanel
         }
         
         return deserializedPanels;
+	}
+	
+    private ArrayList<WoWItemJPanel> LoadFromFile(String fileName)
+    {
+        return ParseAndLinkTree(LoadWoWTree(fileName), new ArrayList<WoWSerialableNode>());
     }
   
     private WoWSerialableNode LoadWoWItem(String uniqueId, ArrayList<WoWSerialableNode> allSerializedWoWItems)
@@ -124,17 +127,6 @@ public class WoWTreeJPanel extends JPanel
         return wowTreeMap.toString();
     }
     
-    @SuppressWarnings("unused")
-	private void SaveToFile(ArrayList<WoWItemJPanel> wowItems)
-    {
-    	for(WoWItemJPanel item : wowItems)
-    	{
-    		item.CreateSerializable().SaveWoWItemToFile("WoW/WoWItems/");
-    	}
-    	
-    	SaveWoWTreeToFile(wowItems);
-    }
-    
     private void CollectWoWDependecyTree(WoWItemJPanel wowItem, StringBuilder dependency)
     {
     	for(WoWItemJPanel child : wowItem.GetChildren())
@@ -149,26 +141,6 @@ public class WoWTreeJPanel extends JPanel
     		dependency.append(parent.GetUniqueID() + ",");	
     	}
     	dependency.append("\n");
-    }
-    
-    private void SaveWoWTreeToFile(ArrayList<WoWItemJPanel> wowItems)
-    {
-    	StringBuilder dependecies = new StringBuilder();
-    	
-    	CollectWoWDependecyTree(wowItems.get(0), dependecies);
-    	
-        try
-        {
-            FileOutputStream fileOut = new FileOutputStream("WoW/WoWTree.xml");
-            XMLEncoder out = new XMLEncoder(fileOut);
-            out.writeObject(dependecies.toString());
-            out.close();
-            fileOut.close();
-        }
-        catch(IOException i)
-        {
-            i.printStackTrace();
-        }
     }
     
     private ArrayList<WoWItemJPanel> GetRoodNodes(ArrayList<WoWItemJPanel> allItems)
@@ -235,12 +207,12 @@ public class WoWTreeJPanel extends JPanel
 	    return startableWork;
     }
     
-	public void LoadPanelFromFile(String fileName)
-	{    
-		removeAll();
-	    ArrayList<WoWItemJPanel> allItems = LoadFromFile(fileName);
-	    
-	    WoWItemJPanel startableWork = AddWoWStartDummyNode(allItems);
+    private void SetUpTreeViewPanel(ArrayList<WoWItemJPanel> deserializedPanels)
+    {
+    	removeAll();
+    	allItems = deserializedPanels;
+    	
+        WoWItemJPanel startableWork = AddWoWStartDummyNode(allItems);
 	    
 	    ArrayList<JPanel> tierPanels = new ArrayList<JPanel>();
 	    
@@ -252,5 +224,60 @@ public class WoWTreeJPanel extends JPanel
 	    {
 	    	add(tierP);
 	    }
+    }
+    
+	public void LoadPanelFromFile(String fileName)
+	{    
+	    SetUpTreeViewPanel(LoadFromFile(fileName));
 	}
+	
+	public void LoadSessionFromFile(String fileName)
+	{   
+		WoWSessionSerializable sesSr;
+		removeAll();
+		
+        try
+        {
+           FileInputStream fileIn = new FileInputStream(fileName);
+           XMLDecoder in = new XMLDecoder(fileIn);
+           sesSr = (WoWSessionSerializable) in.readObject();
+           in.close();
+           fileIn.close();
+           
+           SetUpTreeViewPanel(ParseAndLinkTree(sesSr.getWoWTree(), sesSr.getNodes()));
+       }
+       catch(IOException i)
+       {
+           i.printStackTrace();
+       }
+	}	
+
+	public void SaveSessionToFile(String fileName)
+    {
+        StringBuilder dependecies = new StringBuilder();
+    	CollectWoWDependecyTree(allItems.get(0), dependecies);
+    	
+    	ArrayList<WoWSerialableNode> nodes = new ArrayList<WoWSerialableNode>();
+    	for(WoWItemJPanel item : allItems)
+    	{
+    		nodes.add(item.CreateSerializable());
+    	}
+    	
+    	WoWSessionSerializable sesSr = new WoWSessionSerializable();
+    	sesSr.setWoWTree(dependecies.toString());
+    	sesSr.setNodes(nodes);
+    	
+        try
+        {
+            FileOutputStream fileOut = new FileOutputStream(fileName + ".xml");
+            XMLEncoder out = new XMLEncoder(fileOut);
+            out.writeObject(sesSr);
+            out.close();
+            fileOut.close();
+         }
+         catch(IOException i)
+         {
+             i.printStackTrace();
+         }
+    }
 }
