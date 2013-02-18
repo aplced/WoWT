@@ -55,7 +55,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		}
 	}
 	
-	public WoWItemJPanel(WoWSerialableNode serNode)
+	public WoWItemJPanel(WoWSerializableNode serNode)
 	{
 		super();
 		
@@ -71,7 +71,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		add(doneState, BorderLayout.EAST);
 	}
 	
-	private void InitFromSerializable(WoWSerialableNode serNode)
+	private void InitFromSerializable(WoWSerializableNode serNode)
 	{
 		uniqueID = serNode.getUniqueID();
 		displayName.setText(serNode.getDisplayName());
@@ -84,9 +84,9 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		childWoWNodesIDs = serNode.ListOfChildNodes();
 	}
 	
-	public WoWSerialableNode CreateSerializable()
+	public WoWSerializableNode CreateSerializable()
 	{
-		WoWSerialableNode serializable = new WoWSerialableNode();
+		WoWSerializableNode serializable = new WoWSerializableNode();
 		serializable.setUniqueID(uniqueID);
 		serializable.setDisplayName(displayName.getText());
 		//serializable.setDescription(description.getText());
@@ -107,13 +107,13 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		return serializable;
 	}
 	
-	private void SetControlsEnabled(boolean enabled)
+	protected void SetControlsEnabled(boolean enabled)
 	{
 		displayName.setEnabled(enabled);
 		popDescription.setEnabled(enabled);
 		if(!enabled)
 			doneState.setSelected(false);
-		doneState .setEnabled(enabled);
+		doneState.setEnabled(enabled);
 	}
 	
 	public void UpdateEnableWoWItemState(int daysSinceStart)

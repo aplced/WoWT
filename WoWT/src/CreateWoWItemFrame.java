@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
 
@@ -174,7 +173,7 @@ public class CreateWoWItemFrame extends JFrame implements ActionListener
 				return;
 			}
 			
-			WoWSerialableNode serNode = new WoWSerialableNode();
+			WoWSerializableNode serNode = new WoWSerializableNode();
 			serNode.setUniqueID(uId);
 			serNode.setDisplayName(dispName);
 			serNode.setDescription(descriptionInput.getText());

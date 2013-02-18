@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialableNode"> 
+ <object class="WoWSerializableNode"> 
   <void property="description"> 
    <string>Send e-mail to ivan.uzunov@asml.com to schedule stream start meeting – both internal and external (affecting FC027).</string> 
   </void> 

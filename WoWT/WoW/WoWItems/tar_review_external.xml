@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialableNode"> 
+ <object class="WoWSerializableNode"> 
   <void property="description"> 
    <string>Create a code review in http://reviewtool-eu.asml.com:9020/  After all reviewers and info is entered, attach the TAR pdf.</string> 
   </void> 

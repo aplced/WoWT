@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class WoWSerialableNode 
+public class WoWSerializableNode 
 {
 	private String uniqueID;
 	private String displayName;
@@ -87,15 +87,15 @@ public class WoWSerialableNode
         }
     }
     
-    static public WoWSerialableNode LoadWoWItemFromFile(String directory, String uniqueId)
+    static public WoWSerializableNode LoadWoWItemFromFile(String directory, String uniqueId)
     {
-        WoWSerialableNode wowItem;
+        WoWSerializableNode wowItem;
 
         try
         {
            FileInputStream fileIn = new FileInputStream(directory + uniqueId + ".xml");
            XMLDecoder in = new XMLDecoder(fileIn);
-           wowItem = (WoWSerialableNode) in.readObject();
+           wowItem = (WoWSerializableNode) in.readObject();
 
            in.close();
            fileIn.close();

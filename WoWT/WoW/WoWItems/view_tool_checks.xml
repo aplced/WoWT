@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialableNode"> 
+ <object class="WoWSerializableNode"> 
   <void property="description"> 
    <string>Run cccheck_deliver followed by cwbd on the stream&apos;s view and check them for errors. Fix the errors and check for false positive results.</string> 
   </void> 

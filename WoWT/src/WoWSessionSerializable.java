@@ -4,7 +4,7 @@ import java.util.ArrayList;
     public class WoWSessionSerializable
     {
     	private String WoWTree = "";
-    	private ArrayList<WoWSerialableNode> Nodes = new ArrayList<WoWSerialableNode>();
+    	private ArrayList<WoWSerializableNode> Nodes = new ArrayList<WoWSerializableNode>();
     	
     	public String getWoWTree()
     	{
@@ -15,11 +15,11 @@ import java.util.ArrayList;
     		WoWTree = iWoWTree;
     	}
     	
-    	public ArrayList<WoWSerialableNode> getNodes()
+    	public ArrayList<WoWSerializableNode> getNodes()
     	{
     		return Nodes;
     	}
-    	public void setNodes(ArrayList<WoWSerialableNode> iNodes)
+    	public void setNodes(ArrayList<WoWSerializableNode> iNodes)
     	{
     		Nodes = iNodes;
     	}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialableNode"> 
+ <object class="WoWSerializableNode"> 
   <void property="description"> 
    <string>If false positive results are present on TICS or metroart tests send e-mail to dl-CSB@asml.com , dl-TICS-support@asml.com to get waivers for the errors to be included in the TAR. Include the violations and report files in the mail.</string> 
   </void> 

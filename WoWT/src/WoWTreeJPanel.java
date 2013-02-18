@@ -25,19 +25,26 @@ public class WoWTreeJPanel extends JPanel
 	    setLayout(gridL);
 	}
 	
-	private ArrayList<WoWItemJPanel> ParseAndLinkTree(String wowTreeMap, ArrayList<WoWSerialableNode> allSerializedWoWItems)
+	private ArrayList<WoWItemJPanel> ParseAndLinkTree(String wowTreeMap, ArrayList<WoWSerializableNode> allSerializedWoWItems)
 	{
         ParseWoWTree(wowTreeMap, allSerializedWoWItems);
         
         ArrayList<WoWItemJPanel> deserializedPanels = new ArrayList<WoWItemJPanel>();
         
-        WoWSerialableNode rootNeeded = AddWoWStreamStartSer(allSerializedWoWItems);
+        WoWSerializableNode rootNeeded = AddWoWStreamStartSer(allSerializedWoWItems);
         if(rootNeeded != null)
             allSerializedWoWItems.add(rootNeeded);
         
-        for(WoWSerialableNode wowSerialized : allSerializedWoWItems)
+        for(WoWSerializableNode wowSerialized : allSerializedWoWItems)
         {
-        	deserializedPanels.add(new WoWItemJPanel(wowSerialized));
+        	if(wowSerialized.getUniqueID().equals("startable_work"))
+        	{
+        		deserializedPanels.add(new WoWProcessStartJPanel(wowSerialized));
+        	}
+        	else
+        	{
+        		deserializedPanels.add(new WoWItemJPanel(wowSerialized));
+        	}
         }
          
         for(WoWItemJPanel wowItem : deserializedPanels)
@@ -47,7 +54,7 @@ public class WoWTreeJPanel extends JPanel
         
         for(WoWItemJPanel wowItem : deserializedPanels)
         {
-        	wowItem.UpdateEnableWoWItemState();
+        	wowItem.UpdateEnableWoWItemState(0);
         }
         
         return deserializedPanels;
@@ -55,23 +62,23 @@ public class WoWTreeJPanel extends JPanel
 	
     private ArrayList<WoWItemJPanel> LoadFromFile(String fileName)
     {
-        return ParseAndLinkTree(LoadWoWTree(fileName), new ArrayList<WoWSerialableNode>());
+        return ParseAndLinkTree(LoadWoWTree(fileName), new ArrayList<WoWSerializableNode>());
     }
   
-    private WoWSerialableNode LoadWoWItem(String uniqueId, ArrayList<WoWSerialableNode> allSerializedWoWItems)
+    private WoWSerializableNode LoadWoWItem(String uniqueId, ArrayList<WoWSerializableNode> allSerializedWoWItems)
     {
-    	for(WoWSerialableNode item : allSerializedWoWItems)
+    	for(WoWSerializableNode item : allSerializedWoWItems)
     	{
     		if(item.getUniqueID().compareTo(uniqueId) == 0)
     			return item;
     	}
     	
-    	WoWSerialableNode item = WoWSerialableNode.LoadWoWItemFromFile("WoW/WoWItems/", uniqueId);
+    	WoWSerializableNode item = WoWSerializableNode.LoadWoWItemFromFile("WoW/WoWItems/", uniqueId);
     	allSerializedWoWItems.add(item);
     	return item;
     }
     
-    private void ParseWoWTree(String wowTreeMap, ArrayList<WoWSerialableNode> allSerializedWoWItems)
+    private void ParseWoWTree(String wowTreeMap, ArrayList<WoWSerializableNode> allSerializedWoWItems)
     {
     	String[] allNodeIds = wowTreeMap.split("\n");
     	
@@ -84,18 +91,18 @@ public class WoWTreeJPanel extends JPanel
 	    		String nodeId = nodeAndParents[0].trim();
 	    		if(!nodeId.isEmpty())
 	    		{
-		    		WoWSerialableNode node = LoadWoWItem(nodeId, allSerializedWoWItems);
+		    		WoWSerializableNode node = LoadWoWItem(nodeId, allSerializedWoWItems);
 		    		
 		    		if(nodeAndParents.length > 1 && !nodeAndParents[1].isEmpty())
 		    		{
-			    		ArrayList<WoWSerialableNode> parentNodes = new ArrayList<WoWSerialableNode>();
+			    		ArrayList<WoWSerializableNode> parentNodes = new ArrayList<WoWSerializableNode>();
 			    		String[] parentNodeIds = nodeIds.split(":")[1].split(",");
 			    		for(String parentId : parentNodeIds)
 			    		{
 			    			parentNodes.add(LoadWoWItem(parentId.trim(), allSerializedWoWItems));
 			    		}
 			    		
-			    		for(WoWSerialableNode parent : parentNodes)
+			    		for(WoWSerializableNode parent : parentNodes)
 			    		{
 			    			node.ListOfParentNodes().add(parent.getUniqueID());
 			    			parent.ListOfChildNodes().add(node.getUniqueID());
@@ -147,10 +154,10 @@ public class WoWTreeJPanel extends JPanel
     	dependency.append("\n");
     }
     
-    private ArrayList<WoWSerialableNode> GetRoodNodes(ArrayList<WoWSerialableNode> allItems)
+    private ArrayList<WoWSerializableNode> GetRoodNodes(ArrayList<WoWSerializableNode> allItems)
     {
-    	ArrayList<WoWSerialableNode> rootNodes = new ArrayList<WoWSerialableNode>();
-    	for(WoWSerialableNode wowItem : allItems)
+    	ArrayList<WoWSerializableNode> rootNodes = new ArrayList<WoWSerializableNode>();
+    	for(WoWSerializableNode wowItem : allItems)
     	{
     		if(wowItem.ListOfParentNodes().size() == 0)
     			rootNodes.add(wowItem);
@@ -207,9 +214,9 @@ public class WoWTreeJPanel extends JPanel
     	}
     }
 
-    private WoWSerialableNode CreateStartableWorkSer()
+    private WoWSerializableNode CreateStartableWorkSer()
     {
-	    WoWSerialableNode startableWorkSer = new WoWSerialableNode();
+	    WoWSerializableNode startableWorkSer = new WoWSerializableNode();
 	    startableWorkSer.setUniqueID("startable_work");
 	    startableWorkSer.setDisplayName("Start stream delivery");
 	    startableWorkSer.setDoneState(false);
@@ -218,18 +225,18 @@ public class WoWTreeJPanel extends JPanel
 	    return startableWorkSer;
     }
     
-    private WoWSerialableNode AddWoWStreamStartSer(ArrayList<WoWSerialableNode> allItems)
+    private WoWSerializableNode AddWoWStreamStartSer(ArrayList<WoWSerializableNode> allItems)
     {
-    	WoWSerialableNode startableRoot = CreateStartableWorkSer();
-    	ArrayList<WoWSerialableNode> rootNodes = GetRoodNodes(allItems);
+    	WoWSerializableNode startableRoot = CreateStartableWorkSer();
+    	ArrayList<WoWSerializableNode> rootNodes = GetRoodNodes(allItems);
 
-	    for(WoWSerialableNode roots : rootNodes)
+	    for(WoWSerializableNode roots : rootNodes)
 	    {
 	    	if(roots.getUniqueID().equals(startableRoot.getUniqueID()))
 	    		return null;
 	    }
 	    
-	    for(WoWSerialableNode roots : rootNodes)
+	    for(WoWSerializableNode roots : rootNodes)
 	    {
 	    	startableRoot.ListOfChildNodes().add(roots.getUniqueID());
 	    	roots.ListOfParentNodes().add(startableRoot.getUniqueID());
@@ -289,7 +296,7 @@ public class WoWTreeJPanel extends JPanel
         StringBuilder dependecies = new StringBuilder();
     	CollectWoWDependecyTree(GetRootPanel(allItems), dependecies);
     	
-    	ArrayList<WoWSerialableNode> nodes = new ArrayList<WoWSerialableNode>();
+    	ArrayList<WoWSerializableNode> nodes = new ArrayList<WoWSerializableNode>();
     	for(WoWItemJPanel item : allItems)
     	{
     		nodes.add(item.CreateSerializable());
