@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerializableNode"> 
+ <object class="WoWSerialization.WoWSerializableNode"> 
   <void property="description"> 
    <string>Fill PDF form http://netscanner-ied.asml.com/cgi-bin/pdf/pdf.pl  Request/schedule CCB (meeting) once form Is complete.</string> 
   </void> 

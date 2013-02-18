@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerializableNode"> 
+ <object class="WoWSerialization.WoWSerializableNode"> 
   <void property="description"> 
    <string>Once TAR review is finished, check in the update document in TCE. Under Referencing check in TDL excel sheet, created by inputing the review id in the TDL tool: http://netscanner-ied.asml.com/cgi-bin/cocoutil/cocotdl Set document state to UCC: ASM Documents-&gt;Change State</string> 
   </void> 

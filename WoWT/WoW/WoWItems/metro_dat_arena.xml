@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerializableNode"> 
+ <object class="WoWSerialization.WoWSerializableNode"> 
   <void property="description"> 
    <string>1. Run Metro Art  using ccrun_metroart –e &lt;export&gt; -d2. TestArena: http://wsasd331:8080/TestArena/schedule/3. DAT + --&gt; ccschedule_dat</string> 
   </void> 

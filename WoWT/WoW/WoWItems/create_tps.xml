@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerializableNode"> 
+ <object class="WoWSerialization.WoWSerializableNode"> 
   <void property="description"> 
    <string>Log in to http://tce-eu.asml.com/tc/webclient/ and create a new document: ASML Documents-&gt;Create In Create new SEG Document dialog box fill in: Group Leader (depends on FC) Template Group: Software Development Template: TPS SW Document Desc.: at_NXT3_&lt;name of the stream&gt; Once the document is created, check it out (click on the document in TCE) and edit it. Go through internal TPS review, and check in the document. Once checked in set the document status to For Review: ASML Documents-&gt;Change Status</string> 
   </void> 

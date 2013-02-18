@@ -23,7 +23,7 @@
  tps_ucc:tps_review_external
  create_tar:tps_review_external,
  tar_review_internal:create_tar
- tar_review_external:tar_review_internal, get_weaivers_metro_dat_arena, get_waivers
+ tar_review_external:tar_review_internal, get_weaivers_metro_dat_arena, get_waivers, tps_ucc
  tar_ucc: tar_review_external
  sched_stop_meet:create_tar
  part_stop_meeting:part_start_meeting, sched_stop_meet
