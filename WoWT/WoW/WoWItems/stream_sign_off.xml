@@ -10,5 +10,8 @@
   <void property="uniqueID"> 
    <string>stream_sign_off</string> 
   </void> 
+  <void property="taskDaysEstimate"> 
+   <float>1</float> 
+  </void>   
  </object> 
 </java> 

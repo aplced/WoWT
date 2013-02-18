@@ -52,10 +52,12 @@ public class WoWTreeJPanel extends JPanel
         	wowItem.LinkNodes(deserializedPanels);
         }
         
-        for(WoWItemJPanel wowItem : deserializedPanels)
-        {
-        	wowItem.UpdateEnableWoWItemState(0);
-        }
+        WoWItemJPanel wowItem = GetRootPanel(deserializedPanels);
+        wowItem.UpdateEnableWoWItemState();
+        //for(WoWItemJPanel wowItem : deserializedPanels)
+        //{
+        //	wowItem.UpdateEnableWoWItemState(0.0);
+        //}
         
         return deserializedPanels;
 	}

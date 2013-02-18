@@ -6,13 +6,14 @@ import java.util.Calendar;
 
 @SuppressWarnings("serial")
 public class WoWProcessStartJPanel extends WoWItemJPanel 
-{
-
+{	
 	public WoWProcessStartJPanel(WoWSerializableNode serNode) 
 	{
 		super(serNode);
 		
 		updateStartWorkCheckbox();
+		
+		elapsedDaysSinceStart = calculateDaysSinceStart();
 	}
 
 	private void updateStartWorkCheckbox()
@@ -26,13 +27,12 @@ public class WoWProcessStartJPanel extends WoWItemJPanel
 	@Override
 	protected void performChangeStateAction()
 	{
-		int daysSinceStart = 0;
 		if(doneState.isSelected())
 		{
 			updateStartWorkCheckbox();
-			daysSinceStart = calculateDaysSinceStart();
+			elapsedDaysSinceStart = calculateDaysSinceStart();
 		}
-		notifyChildrenOfStateChange(daysSinceStart);
+		notifyChildrenOfStateChange(elapsedDaysSinceStart);
 	}
 	
 	@Override

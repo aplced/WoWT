@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -27,19 +28,22 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 	protected ArrayList<String> parentWoWNodesIDs = new ArrayList<String>();
 	protected ArrayList<String> childWoWNodesIDs = new ArrayList<String>();
 	
+	protected float elapsedDaysSinceStart = 0;
+	protected float estimatedStartDays = 0;
+	
 	public int TreeDepth = 0;
 	
-	protected void notifyChildrenOfStateChange(int daysSinceStart)
+	protected void notifyChildrenOfStateChange(float daysSinceStart)
 	{
 		for(WoWItemJPanel child : childWoWNodes)
 		{
-			child.UpdateEnableWoWItemState(daysSinceStart);
+			child.UpdateEnableWoWItemState(estimatedStartDays + taskDaysEstimate, daysSinceStart);
 		}
 	}
 	
 	protected void performChangeStateAction()
 	{
-		notifyChildrenOfStateChange(0);
+		notifyChildrenOfStateChange(elapsedDaysSinceStart);
 	}
 	
 	@Override
@@ -116,8 +120,31 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		doneState.setEnabled(enabled);
 	}
 	
-	public void UpdateEnableWoWItemState(int daysSinceStart)
+	protected void SetElapsedTimeWarning()
 	{
+		if(doneState.isSelected())
+		{
+			setBackground(Color.GREEN);
+		}
+		else if(estimatedStartDays + taskDaysEstimate < elapsedDaysSinceStart)
+		{
+			setBackground(Color.RED);
+		}
+		else if(estimatedStartDays < elapsedDaysSinceStart)
+		{
+			setBackground(Color.YELLOW);
+		}
+	}
+	
+	public void UpdateEnableWoWItemState()
+	{
+		UpdateEnableWoWItemState(estimatedStartDays, elapsedDaysSinceStart);
+	}	
+	
+	private void UpdateEnableWoWItemState(float startDayAcc, float daysSinceStart)
+	{
+		estimatedStartDays = startDayAcc;
+		elapsedDaysSinceStart = daysSinceStart;
 		boolean allParentsDone = true;
 		StringBuilder dependencies = new StringBuilder();
 		dependencies.append("Depends on following items:\n");
@@ -131,10 +158,11 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		}
 		
 		SetControlsEnabled(allParentsDone);
+		SetElapsedTimeWarning();
 		
 		for(WoWItemJPanel child : childWoWNodes)
 		{
-			child.UpdateEnableWoWItemState(daysSinceStart);
+			child.UpdateEnableWoWItemState(startDayAcc + taskDaysEstimate, daysSinceStart);
 		}
 	}
 	

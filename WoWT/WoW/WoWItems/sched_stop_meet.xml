@@ -10,5 +10,8 @@
   <void property="uniqueID"> 
    <string>sched_stop_meet</string> 
   </void> 
+  <void property="taskDaysEstimate"> 
+   <float>0.5</float> 
+  </void>   
  </object> 
 </java> 

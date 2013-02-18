@@ -10,5 +10,8 @@
   <void property="uniqueID"> 
    <string>view_tool_checks</string> 
   </void> 
+  <void property="taskDaysEstimate"> 
+   <float>1</float> 
+  </void>   
  </object> 
 </java> 

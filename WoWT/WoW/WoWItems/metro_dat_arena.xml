@@ -10,5 +10,8 @@
   <void property="uniqueID"> 
    <string>metro_dat_arena</string> 
   </void> 
+  <void property="taskDaysEstimate"> 
+   <float>2</float> 
+  </void>   
  </object> 
 </java> 

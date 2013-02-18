@@ -10,5 +10,8 @@
   <void property="uniqueID"> 
    <string>code_review_external</string> 
   </void> 
+  <void property="taskDaysEstimate"> 
+   <float>3</float> 
+  </void>   
  </object> 
 </java> 

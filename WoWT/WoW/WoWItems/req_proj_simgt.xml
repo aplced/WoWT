@@ -10,5 +10,8 @@
   <void property="uniqueID"> 
    <string>req_proj_simgt</string> 
   </void> 
+  <void property="taskDaysEstimate"> 
+   <float>1</float> 
+  </void>   
  </object> 
 </java> 
