@@ -7,11 +7,11 @@
   <void property="displayName"> 
    <string>Create TPS</string> 
   </void> 
+  <void property="taskDaysEstimate"> 
+   <float>1.0</float> 
+  </void> 
   <void property="uniqueID"> 
    <string>create_tps</string> 
   </void> 
-  <void property="taskDaysEstimate"> 
-   <float>1</float> 
-  </void>   
  </object> 
 </java> 
