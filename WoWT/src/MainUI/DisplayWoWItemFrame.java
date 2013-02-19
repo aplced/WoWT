@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 import WoWSerialization.WoWSerializableNode;
 
 @SuppressWarnings("serial")
-public class DisplayWoWItemFrame extends JFrame implements ActionListener
+public class DisplayWoWItemFrame extends JFrame implements ActionListener, WoWEditDoneAction
 {
 	JButton ok;
 	JButton edit;
@@ -182,11 +182,19 @@ public class DisplayWoWItemFrame extends JFrame implements ActionListener
 		else if (e.getSource() == edit) 
 		{
 			EditWoWItemFrame createWoWItem = new EditWoWItemFrame(serNode);
+			createWoWItem.addListener(this);
 			createWoWItem.setVisible(true);
-			serNode.SaveWoWItemToFile(WoWSerializableNode.WoWItemsFolder);
 			
-			mainPanel.removeAll();
-			mainPanel.add(CreateMainDisplayWoWPanel());
 		}				
+	}
+
+	@Override
+	public void EditDone(WoWSerializableNode serNode) 
+	{
+		this.serNode = serNode;
+		serNode.SaveWoWItemToFile(WoWSerializableNode.WoWItemsFolder);
+			
+		mainPanel.removeAll();
+		mainPanel.add(CreateMainDisplayWoWPanel());
 	}
 }

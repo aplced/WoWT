@@ -42,6 +42,7 @@ public class EditWoWItemFrame extends JFrame implements ActionListener
 	JSpinner taskEstimatedDurationInput;
 	
 	WoWSerializableNode serNode;
+	ArrayList<WoWEditDoneAction> listeners = new ArrayList<WoWEditDoneAction>();
 	
 	private JPanel CreateUniqueIDInputPanel()
 	{
@@ -249,20 +250,46 @@ public class EditWoWItemFrame extends JFrame implements ActionListener
 					invkLst.add(invkItm);
 			}
 			
+			Number taskDays = (Number)taskEstimatedDurationInput.getValue();
+			
 			serNode.setUniqueID(uId);
-			serNode.setTaskDaysEstimate((Float)taskEstimatedDurationInput.getValue());
+			serNode.setTaskDaysEstimate(taskDays.floatValue());
 			serNode.setDisplayName(dispName);
 			serNode.setDescription(descriptionInput.getText());
 			serNode.setUserNotes(userNotesInput.getText());
 			serNode.setInvokeables(invkLst);
 			
-			setVisible(false);
-			dispose();
+			NotifyEditDone();
+			ClearAndClose();
 		}
 		else if (e.getSource() == cancel) 
 		{
-			setVisible(false);
-			dispose();
+			ClearAndClose();
 		}		
+	}
+	
+	private void ClearAndClose()
+	{
+		listeners.clear();
+		setVisible(false);
+		dispose();
+	}
+
+    public void addListener(WoWEditDoneAction toAdd) 
+    {
+        listeners.add(toAdd);
+    }
+    
+    public void removeListener(WoWEditDoneAction toRem)
+    {
+    	listeners.remove(toRem);
+    }
+
+	private void NotifyEditDone() 
+	{
+       for (WoWEditDoneAction hl : listeners)
+       {
+            hl.EditDone(serNode);
+       }
 	}
 }

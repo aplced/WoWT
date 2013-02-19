@@ -13,7 +13,7 @@ import WoWSerialization.WoWSerializableNode;
 import WoWSerialization.XMLFileFilter;
 
 @SuppressWarnings("serial")
-public class BtnPanel extends JPanel implements ActionListener
+public class BtnPanel extends JPanel implements ActionListener, WoWEditDoneAction
 {
 	JPanel mainPanel;
 	WoWTreeJPanel treePanel;
@@ -70,8 +70,8 @@ public class BtnPanel extends JPanel implements ActionListener
 		{
 			WoWSerializableNode serNode = new WoWSerializableNode();
 			EditWoWItemFrame createWoWItem = new EditWoWItemFrame(serNode);
+			createWoWItem.addListener(this);
 			createWoWItem.setVisible(true);
-			serNode.SaveWoWItemToFile(WoWSerializableNode.WoWItemsFolder);
 		}
 		else if(e.getSource() == saveSession)
 		{
@@ -94,5 +94,11 @@ public class BtnPanel extends JPanel implements ActionListener
 				mainPanel.revalidate();
 			}
 		} 
+	}
+
+	@Override
+	public void EditDone(WoWSerializableNode serNode) 
+	{
+		serNode.SaveWoWItemToFile(WoWSerializableNode.WoWItemsFolder);
 	}
 }
