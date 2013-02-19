@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,7 +21,7 @@ import WoWSerialization.WoWSerializableNode;
 
 
 @SuppressWarnings("serial")
-public class EditWoWItemFrame extends JFrame implements ActionListener
+public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 {
 	JButton apply;
 	JButton cancel;
@@ -40,9 +39,6 @@ public class EditWoWItemFrame extends JFrame implements ActionListener
 	JTextArea userNotesInput;
 	JTextArea invkLstInput;
 	JSpinner taskEstimatedDurationInput;
-	
-	WoWSerializableNode serNode;
-	ArrayList<WoWEditDoneAction> listeners = new ArrayList<WoWEditDoneAction>();
 	
 	private JPanel CreateUniqueIDInputPanel()
 	{
@@ -273,23 +269,5 @@ public class EditWoWItemFrame extends JFrame implements ActionListener
 		listeners.clear();
 		setVisible(false);
 		dispose();
-	}
-
-    public void addListener(WoWEditDoneAction toAdd) 
-    {
-        listeners.add(toAdd);
-    }
-    
-    public void removeListener(WoWEditDoneAction toRem)
-    {
-    	listeners.remove(toRem);
-    }
-
-	private void NotifyEditDone() 
-	{
-       for (WoWEditDoneAction hl : listeners)
-       {
-            hl.EditDone(serNode);
-       }
 	}
 }

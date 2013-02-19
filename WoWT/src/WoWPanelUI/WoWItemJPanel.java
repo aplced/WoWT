@@ -5,10 +5,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import MainUI.DisplayWoWItemFrame;
+import MainUI.WoWEditDoneAction;
 import WoWSerialization.WoWSerializableNode;
 
 import java.awt.BorderLayout;
@@ -16,13 +16,14 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class WoWItemJPanel extends JPanel implements ActionListener
+public class WoWItemJPanel extends JPanel implements ActionListener, WoWEditDoneAction
 {
 	
 	protected String uniqueID;
 	protected JLabel displayName = new JLabel("WoW item");
 	//protected JLabel description = new JLabel("WoW description");
 	protected String description;
+	protected String userNotes;
 	protected JButton popDescription = new JButton("?");
 	protected JCheckBox doneState = new JCheckBox("Done");
 	protected float taskDaysEstimate;
@@ -60,6 +61,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		if (e.getSource() == popDescription)
 		{
 			DisplayWoWItemFrame dispInfo = new DisplayWoWItemFrame(CreateSerializable());
+			dispInfo.addListener(this);
 			dispInfo.setVisible(true);
 		}
 		else if(e.getSource() == doneState)
@@ -91,6 +93,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		uniqueID = serNode.getUniqueID();
 		displayName.setText(serNode.getDisplayName());
 		description = serNode.getDescription();
+		userNotes = serNode.getUserNotes();
 		doneState.setSelected(serNode.getDoneState());
 		taskDaysEstimate = serNode.getTaskDaysEstimate();
 		
@@ -104,6 +107,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 		serializable.setUniqueID(uniqueID);
 		serializable.setDisplayName(displayName.getText());
 		serializable.setDescription(description);
+		serializable.setUserNotes(userNotes);
 		serializable.setDoneState(doneState.isSelected());
 		serializable.setTaskDaysEstimate(taskDaysEstimate);
 		
@@ -226,5 +230,16 @@ public class WoWItemJPanel extends JPanel implements ActionListener
 	public ArrayList<WoWItemJPanel> GetParents()
 	{
 		return parentWoWNodes;
+	}
+
+	@Override
+	public void EditDone(WoWSerializableNode serNode) 
+	{
+		uniqueID = serNode.getUniqueID();
+		displayName.setText(serNode.getDisplayName());
+		description = serNode.getDescription();
+		userNotes = serNode.getUserNotes();
+		doneState.setSelected(serNode.getDoneState());
+		taskDaysEstimate = serNode.getTaskDaysEstimate();
 	}
 }

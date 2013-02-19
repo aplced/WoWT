@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,15 +15,13 @@ import javax.swing.JTextArea;
 import WoWSerialization.WoWSerializableNode;
 
 @SuppressWarnings("serial")
-public class DisplayWoWItemFrame extends JFrame implements ActionListener, WoWEditDoneAction
+public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListener, WoWEditDoneAction
 {
 	JButton ok;
 	JButton edit;
 	
 	JTextArea userNotesInput;
 	JPanel mainPanel = new JPanel();
-	
-	WoWSerializableNode serNode;
 	
 	private JPanel CreateUniqueIDDisplayPanel()
 	{
@@ -162,7 +159,7 @@ public class DisplayWoWItemFrame extends JFrame implements ActionListener, WoWEd
 	public DisplayWoWItemFrame(WoWSerializableNode iSerNode)
 	{
 		serNode = iSerNode;
-	    setTitle("Edit WoW item");
+	    setTitle("WoW item/Process step");
 	    setLocationRelativeTo(null);
 	    setContentPane(mainPanel);
 	    mainPanel.add(CreateMainDisplayWoWPanel());
@@ -176,6 +173,8 @@ public class DisplayWoWItemFrame extends JFrame implements ActionListener, WoWEd
 		{
 			serNode.setUserNotes(userNotesInput.getText());
 						
+			NotifyEditDone();
+			
 			setVisible(false);
 			dispose();
 		}
@@ -184,7 +183,6 @@ public class DisplayWoWItemFrame extends JFrame implements ActionListener, WoWEd
 			EditWoWItemFrame createWoWItem = new EditWoWItemFrame(serNode);
 			createWoWItem.addListener(this);
 			createWoWItem.setVisible(true);
-			
 		}				
 	}
 
