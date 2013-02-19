@@ -99,6 +99,8 @@ public class WoWItemJPanel extends JPanel implements ActionListener, WoWEditDone
 		
 		parentWoWNodesIDs = serNode.ListOfParentNodes();
 		childWoWNodesIDs = serNode.ListOfChildNodes();
+		
+		UpdateInfoDisplayBtn();
 	}
 	
 	public WoWSerializableNode CreateSerializable()
@@ -231,6 +233,20 @@ public class WoWItemJPanel extends JPanel implements ActionListener, WoWEditDone
 	{
 		return parentWoWNodes;
 	}
+	
+	private void UpdateInfoDisplayBtn()
+	{
+		if(userNotes.isEmpty())
+		{
+			popDescription.setBackground(defColor);
+			popDescription.setText("...");
+		}
+		else
+		{
+			popDescription.setBackground(Color.RED);
+			popDescription.setText("..!");
+		}
+	}
 
 	@Override
 	public void EditDone(WoWSerializableNode serNode) 
@@ -241,5 +257,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener, WoWEditDone
 		userNotes = serNode.getUserNotes();
 		doneState.setSelected(serNode.getDoneState());
 		taskDaysEstimate = serNode.getTaskDaysEstimate();
+		
+		UpdateInfoDisplayBtn();
 	}
 }

@@ -53,6 +53,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
         descriptionPnl.setLayout(new FlowLayout());
 		
         JTextArea descriptionInput = new JTextArea(5,60);
+        descriptionInput.setEditable(false);
 		descriptionInput.setLineWrap(true);
 		//descriptionInput.setEnabled(false);
 				
