@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,18 +22,12 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	JButton ok;
 	JButton edit;
 	
+	JLabel uniqueIdInfo;
+	JLabel taskEstimatedDurationInfo;
+	JLabel displayNameInfo;
+	JTextArea descriptionInput;
 	JTextArea userNotesInput;
 	JPanel mainPanel = new JPanel();
-		
-	private void AddUniqueID(JPanel dispPnl, int col, int row)
-	{       
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = col;
-        c.gridy = row;
-        JLabel uniqueIdInfo = new JLabel(serNode.getUniqueID());
-        
-        dispPnl.add(uniqueIdInfo, c);
-	}
 	
 	private void AddTaskDuration(JPanel dispPnl, int col, int row)
 	{
@@ -44,7 +37,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
         c.anchor = GridBagConstraints.LINE_START;
         c.insets = new Insets(4,4,4,4);  
         
-		JLabel taskEstimatedDurationInfo = new JLabel("Task duration " + serNode.getTaskDaysEstimate() + " days");
+		taskEstimatedDurationInfo = new JLabel();
 		dispPnl.add(taskEstimatedDurationInfo, c);
 	}
 	
@@ -56,11 +49,11 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
         c.anchor = GridBagConstraints.LINE_START;
         c.insets = new Insets(4,4,4,4);
         
-        JLabel displayNameInfo = new JLabel(serNode.getDisplayName());
+        displayNameInfo = new JLabel();
 		dispPnl.add(displayNameInfo, c);
 		
 		c.gridx = c.gridx + 1;
-		JLabel uniqueIdInfo = new JLabel("(" + serNode.getUniqueID() + ")");
+		uniqueIdInfo = new JLabel();
 		dispPnl.add(uniqueIdInfo, c);
 	}
 	
@@ -75,11 +68,9 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(4,4,4,4);
         
-        JTextArea descriptionInput = new JTextArea(5,60);
+        descriptionInput = new JTextArea(5,60);
         descriptionInput.setEditable(false);
 		descriptionInput.setLineWrap(true);
-				
-		descriptionInput.setText(serNode.getDescription());
 		
 		dispPnl.add(descriptionInput, c);
 	}
@@ -97,8 +88,6 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		
 		userNotesInput = new JTextArea(5,60);
 		userNotesInput.setLineWrap(true);
-		
-		userNotesInput.setText(serNode.getUserNotes());
 		
 		dispPnl.add(userNotesInput, c);
 	}
@@ -118,7 +107,16 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
         {
         	
         }
-	}	
+	}
+	
+	private void UpdateDisplayedInfo()
+	{
+		taskEstimatedDurationInfo.setText("Task duration " + serNode.getTaskDaysEstimate() + " days");
+		displayNameInfo.setText(serNode.getDisplayName());
+		uniqueIdInfo.setText("(" + serNode.getUniqueID() + ")");
+		descriptionInput.setText(serNode.getDescription());
+		userNotesInput.setText(serNode.getUserNotes());
+	}
 	
 	private JPanel CreateWoWDisplayPanel()
 	{
@@ -171,6 +169,8 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		
 		mainPanel.add(scrollPane, BorderLayout.CENTER);
 		
+		UpdateDisplayedInfo();
+		
 		return mainPanel;		
 	}
 	
@@ -210,7 +210,6 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		this.serNode = serNode;
 		serNode.SaveWoWItemToFile(WoWSerializableNode.WoWItemsFolder);
 			
-		mainPanel.removeAll();
-		mainPanel.add(CreateMainDisplayWoWPanel());
+		UpdateDisplayedInfo();
 	}
 }

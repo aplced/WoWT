@@ -297,6 +297,17 @@ public class WoWTreeJPanel extends JPanel
        }
 	}	
 
+	private static String getExtension(String fileName) 
+	{
+	    String ext = null;
+	    int i = fileName.lastIndexOf('.');
+
+	    if (i > 0 &&  i < fileName.length() - 1) {
+	        ext = fileName.substring(i+1).toLowerCase();
+	    }
+	    return ext;
+	}
+	
 	public void SaveSessionToFile(String fileName)
     {
         StringBuilder dependecies = new StringBuilder();
@@ -314,7 +325,11 @@ public class WoWTreeJPanel extends JPanel
     	
         try
         {
-            FileOutputStream fileOut = new FileOutputStream(fileName + ".xml");
+        	String completeName = fileName;
+        	if(getExtension(completeName).isEmpty())
+        		completeName += ".xml";
+        	
+            FileOutputStream fileOut = new FileOutputStream(completeName);
             XMLEncoder out = new XMLEncoder(fileOut);
             out.writeObject(sesSr);
             out.close();

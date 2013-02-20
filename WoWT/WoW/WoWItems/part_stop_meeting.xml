@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
  <object class="WoWSerialization.WoWSerializableNode"> 
-  <void property="description"> 
-   <string></string> 
-  </void> 
   <void property="displayName"> 
    <string>Participate in Stop Meeting</string> 
+  </void> 
+  <void property="doneState"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="taskDaysEstimate"> 
+   <float>0.5</float> 
   </void> 
   <void property="uniqueID"> 
    <string>part_stop_meeting</string> 
   </void> 
-  <void property="taskDaysEstimate"> 
-   <float>0.5</float> 
-  </void>   
  </object> 
 </java> 
