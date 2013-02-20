@@ -2,7 +2,10 @@ package MainUI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -40,95 +43,115 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 	JTextArea invkLstInput;
 	JSpinner taskEstimatedDurationInput;
 	
-	private JPanel CreateUniqueIDInputPanel()
+	private void AddUniqueIDInput(JPanel dispPnl, int col, int row)
 	{
-        JPanel uniqueIDPnl = new JPanel();
-        uniqueIDPnl.setLayout(new FlowLayout());
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(4,4,4,4);
         
 		uniqueIdInfo = new JLabel("The unique identifier of this WoW item - used in WoW tree definition");
+		dispPnl.add(uniqueIdInfo, c);
+		
+		c.gridx = c.gridx + 1;
 		uniqueIdInput = new JTextField(20);
-		
 		uniqueIdInput.setText(serNode.getUniqueID());
-		
-		uniqueIDPnl.add(uniqueIdInfo);
-		uniqueIDPnl.add(uniqueIdInput);
-		
-		return uniqueIDPnl;
+		dispPnl.add(uniqueIdInput, c);
 	}
 	
-	private JPanel CreateDisplayNameInputPanel()
+	private void AddDisplayNameInput(JPanel dispPnl, int col, int row)
 	{
-        JPanel displayNamePnl = new JPanel();
-        displayNamePnl.setLayout(new FlowLayout());
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(4,4,4,4);
 		
 		displayNameInfo = new JLabel("Display name of the WoW item - visible in the main view");
+		dispPnl.add(displayNameInfo, c);
+		
+		c.gridx = c.gridx + 1;
 		displayNameInput = new JTextField(20);
-		
 		displayNameInput.setText(serNode.getDisplayName());
-		
-		displayNamePnl.add(displayNameInfo);
-		displayNamePnl.add(displayNameInput);
-		
-		return displayNamePnl;
+		dispPnl.add(displayNameInput, c);
 	}
 	
-	private JPanel CreateDescriptionInputPanel()
+	private void AddDescriptionInput(JPanel dispPnl, int col, int row)
 	{
-        JPanel descriptionPnl = new JPanel();
-        descriptionPnl.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(4,4,4,4);
 		
 		descriptionInfo = new JLabel("Description visible in the main view");
+		dispPnl.add(descriptionInfo, c);
+		
+		c.gridx = c.gridx + 1;
 		descriptionInput = new JTextArea(5,60);
 		descriptionInput.setLineWrap(true);
-		
 		descriptionInput.setText(serNode.getDescription());
-		
-		descriptionPnl.add(descriptionInfo);
-		descriptionPnl.add(descriptionInput);
-		
-		return descriptionPnl;
+		dispPnl.add(descriptionInput, c);
 	}
 	
-	private JPanel CreateTaskDurationInputPanel()
+	private void AddTaskDurationInput(JPanel dispPnl, int col, int row)
 	{
-		JPanel durationPnl = new JPanel();
-		durationPnl.setLayout(new FlowLayout());
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(4,4,4,4);
         
 		taskEstimatedDurationInfo = new JLabel("Task duration in days");
+		dispPnl.add(taskEstimatedDurationInfo, c);
+		
+		c.gridx = c.gridx + 1;
 		taskEstimatedDurationInput = new JSpinner();
 		taskEstimatedDurationInput.setModel(new SpinnerNumberModel(0, 0, 10, 0.5));
-		
 		taskEstimatedDurationInput.setValue(serNode.getTaskDaysEstimate());
-		
-		durationPnl.add(taskEstimatedDurationInfo);
-		durationPnl.add(taskEstimatedDurationInput);
-		
-		return durationPnl;
+		dispPnl.add(taskEstimatedDurationInput, c);
 	}
 	
-	private JPanel CreateUserNotesInputPanel()
+	private void AddUserNotesInput(JPanel dispPnl, int col, int row)
 	{
-        JPanel userNotesPnl = new JPanel();
-        userNotesPnl.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(4,4,4,4);
 		
 		userNotesInfo = new JLabel("User notes for this process step");
+		dispPnl.add(userNotesInfo, c);
+		
+		c.gridx = c.gridx + 1;
 		userNotesInput = new JTextArea(5,60);
 		userNotesInput.setLineWrap(true);
-		
 		userNotesInput.setText(serNode.getUserNotes());
-		
-		userNotesPnl.add(userNotesInfo);
-		userNotesPnl.add(userNotesInput);
-		
-		return userNotesPnl;
+		dispPnl.add(userNotesInput, c);
 	}
 	
-	private JPanel CreateInvokeListInputPanel()
+	private void AddInvokeListInput(JPanel dispPnl, int col, int row)
 	{
-        JPanel invokeLstPnl = new JPanel();
-        invokeLstPnl.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(4,4,4,4);
 		
         invkLstInfo = new JLabel("Input invoke list separated by new lines");
+        dispPnl.add(invkLstInfo, c);
+        
+        c.gridx = c.gridx + 1;
         invkLstInput = new JTextArea(5,60);
         invkLstInput.setLineWrap(true);
         
@@ -136,24 +159,22 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
         {
         	invkLstInput.setText(invokeable + "\n");
         }
-		
-		invokeLstPnl.add(invkLstInfo);
-		invokeLstPnl.add(invkLstInput);
-		
-		return invokeLstPnl;
+        
+        dispPnl.add(invkLstInput, c);
 	}
 	
 	private JPanel CreateInputPanelsGrid()
 	{
+		int row = 0;
         JPanel inputPnl = new JPanel();
-        inputPnl.setLayout(new GridLayout(0,1));
+        inputPnl.setLayout(new GridBagLayout());
 		
-		inputPnl.add(CreateUniqueIDInputPanel());
-		inputPnl.add(CreateTaskDurationInputPanel());
-		inputPnl.add(CreateDisplayNameInputPanel());
-		inputPnl.add(CreateDescriptionInputPanel());
-		inputPnl.add(CreateUserNotesInputPanel());
-		inputPnl.add(CreateInvokeListInputPanel());
+        AddUniqueIDInput(inputPnl, 0, row++);
+        AddDisplayNameInput(inputPnl, 0, row++);
+        AddTaskDurationInput(inputPnl, 0, row++);
+        AddDescriptionInput(inputPnl, 0, row++);
+        AddUserNotesInput(inputPnl, 0, row++);
+        AddInvokeListInput(inputPnl, 0, row++);
 		
 		return inputPnl;
 	}

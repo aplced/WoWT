@@ -39,7 +39,7 @@ public class MainWoWWindow extends JFrame implements MainWoWFrame
         mainPanel.setLayout(new BorderLayout());
         
         WoWTreeJPanel treePanel = new WoWTreeJPanel();
-        treePanel.LoadPanelFromFile("WoW/WoWTree.xml");
+        treePanel.LoadPanelFromFile("WoW/WoWTree.txt");
         BtnPanel btnsPanel = new BtnPanel(treePanel, mainPanel, this);
         
         mainPanel.add(btnsPanel, BorderLayout.PAGE_START);

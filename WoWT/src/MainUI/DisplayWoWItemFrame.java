@@ -3,7 +3,10 @@ package MainUI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,99 +25,113 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	
 	JTextArea userNotesInput;
 	JPanel mainPanel = new JPanel();
-	
-	private JPanel CreateUniqueIDDisplayPanel()
-	{
-        JPanel uniqueIDPnl = new JPanel();
-        uniqueIDPnl.setLayout(new FlowLayout());
-        
+		
+	private void AddUniqueID(JPanel dispPnl, int col, int row)
+	{       
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
         JLabel uniqueIdInfo = new JLabel(serNode.getUniqueID());
-			
-		uniqueIDPnl.add(uniqueIdInfo);
-		
-		return uniqueIDPnl;
+        
+        dispPnl.add(uniqueIdInfo, c);
 	}
 	
-	private JPanel CreateDisplayNameDisplayPanel()
+	private void AddTaskDuration(JPanel dispPnl, int col, int row)
 	{
-        JPanel displayNamePnl = new JPanel();
-        displayNamePnl.setLayout(new FlowLayout());
-		
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(4,4,4,4);  
+        
+		JLabel taskEstimatedDurationInfo = new JLabel("Task duration " + serNode.getTaskDaysEstimate() + " days");
+		dispPnl.add(taskEstimatedDurationInfo, c);
+	}
+	
+	private void AddDisplayName(JPanel dispPnl, int col, int row)
+	{
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(4,4,4,4);
+        
         JLabel displayNameInfo = new JLabel(serNode.getDisplayName());
+		dispPnl.add(displayNameInfo, c);
 		
-		displayNamePnl.add(displayNameInfo);
-		
-		return displayNamePnl;
+		c.gridx = c.gridx + 1;
+		JLabel uniqueIdInfo = new JLabel("(" + serNode.getUniqueID() + ")");
+		dispPnl.add(uniqueIdInfo, c);
 	}
 	
-	private JPanel CreateDescriptionDisplayPanel()
+	private void AddDescription(JPanel dispPnl, int col, int row)
 	{
-        JPanel descriptionPnl = new JPanel();
-        descriptionPnl.setLayout(new FlowLayout());
-		
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(4,4,4,4);
+        
         JTextArea descriptionInput = new JTextArea(5,60);
         descriptionInput.setEditable(false);
 		descriptionInput.setLineWrap(true);
-		//descriptionInput.setEnabled(false);
 				
 		descriptionInput.setText(serNode.getDescription());
 		
-		descriptionPnl.add(descriptionInput);
-		
-		return descriptionPnl;
+		dispPnl.add(descriptionInput, c);
 	}
 	
-	private JPanel CreateTaskDurationDisplayPanel()
+	private void AddUserNotes(JPanel dispPnl, int col, int row)
 	{
-		JPanel durationPnl = new JPanel();
-		durationPnl.setLayout(new FlowLayout());
-        
-		JLabel taskEstimatedDurationInfo = new JLabel("Task duration " + serNode.getTaskDaysEstimate() + " days");
-			
-		durationPnl.add(taskEstimatedDurationInfo);
-		
-		return durationPnl;
-	}
-	
-	private JPanel CreateUserNotesInputPanel()
-	{
-        JPanel userNotesPnl = new JPanel();
-        userNotesPnl.setLayout(new FlowLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(4,4,4,4);
 		
 		userNotesInput = new JTextArea(5,60);
 		userNotesInput.setLineWrap(true);
 		
 		userNotesInput.setText(serNode.getUserNotes());
 		
-		userNotesPnl.add(userNotesInput);
-		
-		return userNotesPnl;
+		dispPnl.add(userNotesInput, c);
 	}
 	
-	private JPanel CreateInvokeableBtnPanel()
+	private void AddInvokeablesButtons(JPanel dispPnl, int col, int row)
 	{
-        JPanel invokeLstPnl = new JPanel();
-        invokeLstPnl.setLayout(new FlowLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(4,4,4,4);
 		
         for(String invokeable : serNode.getInvokeables())
         {
         	
         }
-		
-		return invokeLstPnl;
-	}
+	}	
 	
 	private JPanel CreateWoWDisplayPanel()
 	{
+		int row = 0;
         JPanel dispPnl = new JPanel();
-        dispPnl.setLayout(new GridLayout(0,1));
+        dispPnl.setLayout(new GridBagLayout());
 		
-		dispPnl.add(CreateUniqueIDDisplayPanel());
-		dispPnl.add(CreateTaskDurationDisplayPanel());
-		dispPnl.add(CreateDisplayNameDisplayPanel());
-		dispPnl.add(CreateDescriptionDisplayPanel());
-		dispPnl.add(CreateUserNotesInputPanel());
-		dispPnl.add(CreateInvokeableBtnPanel());
+        //AddUniqueID(dispPnl, 0, row++);
+        AddDisplayName(dispPnl, 0, row++);
+        AddTaskDuration(dispPnl, 0, row++);
+        AddDescription(dispPnl, 0, row++);
+        AddUserNotes(dispPnl, 0, row++);
+        AddInvokeablesButtons(dispPnl, 0, row++);
 		
 		return dispPnl;
 	}
