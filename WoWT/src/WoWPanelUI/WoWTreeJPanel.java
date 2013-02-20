@@ -326,7 +326,7 @@ public class WoWTreeJPanel extends JPanel
         try
         {
         	String completeName = fileName;
-        	if(getExtension(completeName).isEmpty())
+        	if(getExtension(completeName) == null)
         		completeName += ".xml";
         	
             FileOutputStream fileOut = new FileOutputStream(completeName);
