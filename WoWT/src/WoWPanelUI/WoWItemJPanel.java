@@ -7,8 +7,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import MainUI.DisplayWoWItemFrame;
-import MainUI.WoWEditDoneAction;
+import WoWItemDialogs.DisplayWoWItemFrame;
+import WoWItemDialogs.IWoWItemEditDoneAction;
 import WoWSerialization.WoWSerializableNode;
 
 import java.awt.BorderLayout;
@@ -16,7 +16,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class WoWItemJPanel extends JPanel implements ActionListener, WoWEditDoneAction
+public class WoWItemJPanel extends JPanel implements ActionListener, IWoWItemEditDoneAction
 {
 	
 	protected String uniqueID;
@@ -61,7 +61,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener, WoWEditDone
 		if (e.getSource() == popDescription)
 		{
 			DisplayWoWItemFrame dispInfo = new DisplayWoWItemFrame(CreateSerializable());
-			dispInfo.addListener(this);
+			dispInfo.addWoWItemEditListener(this);
 			dispInfo.setVisible(true);
 		}
 		else if(e.getSource() == doneState)

@@ -1,6 +1,6 @@
 package MainUI;
 
-public interface MainWoWFrame 
+public interface IMainWoWFrame 
 {
 	public void SetTitle(String title);
 }

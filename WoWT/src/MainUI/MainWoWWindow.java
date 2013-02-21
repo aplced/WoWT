@@ -7,11 +7,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
+import WoWPanelUI.WoWSessionJPanel;
 import WoWPanelUI.WoWTreeJPanel;
 
 
 @SuppressWarnings("serial")
-public class MainWoWWindow extends JFrame implements MainWoWFrame
+public class MainWoWWindow extends JFrame implements IMainWoWFrame
 {
     public static void main(String[] args)
     {
@@ -49,6 +50,8 @@ public class MainWoWWindow extends JFrame implements MainWoWFrame
     	scrollPane.setPreferredSize(new Dimension( treePanel.getPreferredSize().width + 125, treePanel.getPreferredSize().height + 125));        
         
         mainPanel.add(scrollPane, BorderLayout.CENTER);
+        
+        mainPanel.add(new WoWSessionJPanel(), BorderLayout.PAGE_END);
         
         setContentPane(mainPanel);
         pack();

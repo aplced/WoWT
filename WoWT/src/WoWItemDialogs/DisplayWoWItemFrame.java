@@ -1,4 +1,4 @@
-package MainUI;
+package WoWItemDialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,17 +13,21 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerNumberModel;
+
 import WoWSerialization.WoWSerializableNode;
 
 @SuppressWarnings("serial")
-public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListener, WoWEditDoneAction
+public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListener, IWoWItemEditDoneAction
 {
 	JButton ok;
 	JButton edit;
 	
 	JLabel uniqueIdInfo;
 	JLabel taskEstimatedDurationInfo;
+	JSpinner taskEstimatedDurationInput;
 	JLabel displayNameInfo;
 	JTextArea descriptionInput;
 	JTextArea userNotesInput;
@@ -31,15 +35,21 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	
 	private void AddTaskDuration(JPanel dispPnl, int col, int row)
 	{
-        GridBagConstraints c = new GridBagConstraints();
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = col;
         c.gridy = row;
         c.anchor = GridBagConstraints.LINE_START;
-        c.insets = new Insets(4,4,4,4);  
+        c.insets = new Insets(4,4,4,4);
         
-		taskEstimatedDurationInfo = new JLabel();
+		taskEstimatedDurationInfo = new JLabel("Task duration in days");
 		dispPnl.add(taskEstimatedDurationInfo, c);
-	}
+		
+		c.gridx = c.gridx + 1;
+		taskEstimatedDurationInput = new JSpinner();
+		taskEstimatedDurationInput.setModel(new SpinnerNumberModel(0, 0, 10, 0.5));
+		taskEstimatedDurationInput.setValue(serNode.getTaskDaysEstimate());
+		dispPnl.add(taskEstimatedDurationInput, c);
+	}	
 	
 	private void AddDisplayName(JPanel dispPnl, int col, int row)
 	{
@@ -111,7 +121,9 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	
 	private void UpdateDisplayedInfo()
 	{
-		taskEstimatedDurationInfo.setText("Task duration " + serNode.getTaskDaysEstimate() + " days");
+		taskEstimatedDurationInfo.setText("Task duration:");
+		taskEstimatedDurationInput.setValue(serNode.getTaskDaysEstimate());
+		
 		displayNameInfo.setText(serNode.getDisplayName());
 		uniqueIdInfo.setText("(" + serNode.getUniqueID() + ")");
 		descriptionInput.setText(serNode.getDescription());
@@ -124,7 +136,6 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
         JPanel dispPnl = new JPanel();
         dispPnl.setLayout(new GridBagLayout());
 		
-        //AddUniqueID(dispPnl, 0, row++);
         AddDisplayName(dispPnl, 0, row++);
         AddTaskDuration(dispPnl, 0, row++);
         AddDescription(dispPnl, 0, row++);
@@ -142,7 +153,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
         ok = new JButton("Ok");
         ok.addActionListener(this);
 		
-        edit = new JButton("Edit");
+        edit = new JButton("Edit template");
         edit.addActionListener(this);
 	    
 		controlPnl.add(ok);
@@ -190,8 +201,11 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		if (e.getSource() == ok)
 		{
 			serNode.setUserNotes(userNotesInput.getText());
+			
+			Number taskDays = (Number)taskEstimatedDurationInput.getValue();
+			serNode.setTaskDaysEstimate(taskDays.floatValue());
 						
-			NotifyEditDone();
+			NotifyWoWItemEditDone();
 			
 			setVisible(false);
 			dispose();
@@ -199,7 +213,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		else if (e.getSource() == edit) 
 		{
 			EditWoWItemFrame createWoWItem = new EditWoWItemFrame(serNode);
-			createWoWItem.addListener(this);
+			createWoWItem.addWoWItemEditListener(this);
 			createWoWItem.setVisible(true);
 		}				
 	}

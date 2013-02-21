@@ -1,4 +1,4 @@
-package MainUI;
+package WoWItemDialogs;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -183,7 +183,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
         JPanel controlPnl = new JPanel();
         controlPnl.setLayout(new FlowLayout());
         
-		apply = new JButton("Apply");
+		apply = new JButton("Overwrite template");
 		apply.addActionListener(this);
 		
 		cancel = new JButton("Cancel");
@@ -212,7 +212,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 		return mainPanel;
 	}
 	
-	EditWoWItemFrame(WoWSerializableNode iSerNode)
+	public EditWoWItemFrame(WoWSerializableNode iSerNode)
 	{
 		serNode = iSerNode;
 	    setTitle("Edit WoW item");
@@ -275,7 +275,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 			serNode.setUserNotes(userNotesInput.getText());
 			serNode.setInvokeables(invkLst);
 			
-			NotifyEditDone();
+			NotifyWoWItemEditDone();
 			ClearAndClose();
 		}
 		else if (e.getSource() == cancel) 
@@ -286,7 +286,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 	
 	private void ClearAndClose()
 	{
-		listeners.clear();
+		ClearListeners();
 		setVisible(false);
 		dispose();
 	}

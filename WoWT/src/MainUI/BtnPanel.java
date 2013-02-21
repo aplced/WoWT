@@ -8,23 +8,26 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
+import WoWItemDialogs.EditWoWItemFrame;
+import WoWItemDialogs.IWoWItemEditDoneAction;
 import WoWPanelUI.WoWTreeJPanel;
 import WoWSerialization.WoWSerializableNode;
 import WoWSerialization.XMLFileFilter;
 
 @SuppressWarnings("serial")
-public class BtnPanel extends JPanel implements ActionListener, WoWEditDoneAction
+public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDoneAction
 {
 	JPanel mainPanel;
 	WoWTreeJPanel treePanel;
-	MainWoWFrame mainFrame;
+	IMainWoWFrame mainFrame;
 	JButton saveSession;
 	JButton loadSession;
 	JButton openFile;
 	JButton createWoWItem;
-	JFileChooser fc;
+	JFileChooser fcSession;
+	JFileChooser fcWoWTree;;
 	
-	public BtnPanel(WoWTreeJPanel refTreePanel, JPanel refMainPanel, MainWoWFrame refMainFrame) 
+	public BtnPanel(WoWTreeJPanel refTreePanel, JPanel refMainPanel, IMainWoWFrame refMainFrame) 
 	{
 		setLayout(new FlowLayout());
 		
@@ -32,8 +35,10 @@ public class BtnPanel extends JPanel implements ActionListener, WoWEditDoneActio
 		treePanel = refTreePanel;
 		mainFrame = refMainFrame;
 		
-		fc = new JFileChooser(System.getProperty("user.home"));
-		fc.addChoosableFileFilter(new XMLFileFilter());
+		fcSession = new JFileChooser(System.getProperty("user.home"));
+		fcSession.addChoosableFileFilter(new XMLFileFilter());
+		
+		fcWoWTree = new JFileChooser(System.getProperty("user.home"));
 		
 		saveSession = new JButton("Save Session");
 		saveSession.addActionListener(this);
@@ -57,10 +62,10 @@ public class BtnPanel extends JPanel implements ActionListener, WoWEditDoneActio
 	{
 		if (e.getSource() == openFile)
 		{
-			int returnVal = fc.showOpenDialog(this);
+			int returnVal = fcWoWTree.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
-				File file = fc.getSelectedFile();
+				File file = fcWoWTree.getSelectedFile();
 				treePanel.LoadPanelFromFile(file.getAbsolutePath());
 				mainFrame.SetTitle(file.getAbsolutePath());
 				mainPanel.revalidate();
@@ -70,25 +75,25 @@ public class BtnPanel extends JPanel implements ActionListener, WoWEditDoneActio
 		{
 			WoWSerializableNode serNode = new WoWSerializableNode();
 			EditWoWItemFrame createWoWItem = new EditWoWItemFrame(serNode);
-			createWoWItem.addListener(this);
+			createWoWItem.addWoWItemEditListener(this);
 			createWoWItem.setVisible(true);
 		}
 		else if(e.getSource() == saveSession)
 		{
-			int returnVal = fc.showSaveDialog(this);
+			int returnVal = fcSession.showSaveDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
-				File file = fc.getSelectedFile();
+				File file = fcSession.getSelectedFile();
 				treePanel.SaveSessionToFile(file.getAbsolutePath());
 				mainFrame.SetTitle(file.getAbsolutePath());
 			}
 		}
 		else if(e.getSource() == loadSession)
 		{
-			int returnVal = fc.showOpenDialog(this);
+			int returnVal = fcSession.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
-				File file = fc.getSelectedFile();
+				File file = fcSession.getSelectedFile();
 				treePanel.LoadSessionFromFile(file.getAbsolutePath());
 				mainFrame.SetTitle(file.getAbsolutePath());
 				mainPanel.revalidate();

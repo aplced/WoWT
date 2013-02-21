@@ -30,4 +30,49 @@ import java.util.ArrayList;
     	{
     		Nodes = iNodes;
     	}
+    	
+    	public String getDeveloperName()
+    	{
+    		return devName;
+    	}
+    	public void setDeveloperName(String name)
+    	{
+    		devName = name;
+    	}
+    	
+    	public String getUserName()
+    	{
+    		return devUserName;
+    	}
+    	public void setUserName(String usrName)
+    	{
+    		devUserName = usrName;
+    	}    	
+    	
+    	public String getComponents()
+    	{
+    		return components;
+    	}
+    	public void setComponents(String comp)
+    	{
+    		components = comp;
+    	} 
+    	
+    	public String getBuildingBlocks()
+    	{
+    		return buildingBlocks;
+    	}
+    	public void setBuildingBlocks(String bblocks)
+    	{
+    		buildingBlocks = bblocks;
+    	}
+    	
+    	public String getFuncClusters()
+    	{
+    		return funcClusters;
+    	}
+    	public void setFuncClusters(String fclusters)
+    	{
+    		funcClusters = fclusters;
+    	} 
     }
