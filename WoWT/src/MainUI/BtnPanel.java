@@ -12,6 +12,7 @@ import WoWItemDialogs.EditWoWItemFrame;
 import WoWItemDialogs.IWoWItemEditDoneAction;
 import WoWPanelUI.WoWTreeJPanel;
 import WoWSerialization.WoWSerializableNode;
+import WoWSerialization.WoWSessionSerializable;
 import WoWSerialization.XMLFileFilter;
 
 @SuppressWarnings("serial")
@@ -66,7 +67,9 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				File file = fcWoWTree.getSelectedFile();
-				treePanel.LoadPanelFromFile(file.getAbsolutePath());
+				WoWSessionSerializable session = new WoWSessionSerializable();
+				session.CreateFromWoWTree(file.getAbsolutePath());
+				treePanel.LoadSession(session);
 				mainFrame.SetTitle(file.getAbsolutePath());
 				mainPanel.revalidate();
 			}
@@ -104,6 +107,6 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 	@Override
 	public void EditDone(WoWSerializableNode serNode) 
 	{
-		serNode.SaveWoWItemToFile(WoWSerializableNode.WoWItemsFolder);
+		serNode.SaveToFile(WoWSerializableNode.WoWItemsFolder);
 	}
 }

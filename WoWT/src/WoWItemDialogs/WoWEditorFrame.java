@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import WoWSerialization.WoWSerializableNode;
-import WoWSerialization.WoWSessionSerializable;
+import WoWSerialization.WoWSessionInfoSerializable;
 
 @SuppressWarnings("serial")
 public abstract class WoWEditorFrame extends JFrame
 {
 	protected WoWSerializableNode serNode;
-	protected WoWSessionSerializable serSession;
+	protected WoWSessionInfoSerializable serSession;
 	
 	protected ArrayList<IWoWItemEditDoneAction> wowItemListeners = new ArrayList<IWoWItemEditDoneAction>();
 	protected ArrayList<IWoWSessionEditDoneAction> wowSessionListeners = new ArrayList<IWoWSessionEditDoneAction>();

@@ -1,14 +1,6 @@
 package WoWPanelUI;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -29,15 +21,9 @@ public class WoWTreeJPanel extends JPanel
 	    setLayout(gridL);
 	}
 	
-	private ArrayList<WoWItemJPanel> ParseAndLinkTree(String wowTreeMap, ArrayList<WoWSerializableNode> allSerializedWoWItems)
-	{
-        ParseWoWTree(wowTreeMap, allSerializedWoWItems);
-        
+	private ArrayList<WoWItemJPanel> CreateJPanelTree(String wowTreeMap, ArrayList<WoWSerializableNode> allSerializedWoWItems)
+	{    
         ArrayList<WoWItemJPanel> deserializedPanels = new ArrayList<WoWItemJPanel>();
-        
-        WoWSerializableNode rootNeeded = AddWoWStreamStartSer(allSerializedWoWItems);
-        if(rootNeeded != null)
-            allSerializedWoWItems.add(rootNeeded);
         
         for(WoWSerializableNode wowSerialized : allSerializedWoWItems)
         {
@@ -58,91 +44,9 @@ public class WoWTreeJPanel extends JPanel
         
         WoWItemJPanel wowItem = GetRootPanel(deserializedPanels);
         wowItem.UpdateEnableWoWItemState();
-        //for(WoWItemJPanel wowItem : deserializedPanels)
-        //{
-        //	wowItem.UpdateEnableWoWItemState(0.0);
-        //}
         
         return deserializedPanels;
-	}
-	
-    private ArrayList<WoWItemJPanel> LoadFromFile(String fileName)
-    {
-        return ParseAndLinkTree(LoadWoWTree(fileName), new ArrayList<WoWSerializableNode>());
-    }
-  
-    private WoWSerializableNode LoadWoWItem(String uniqueId, ArrayList<WoWSerializableNode> allSerializedWoWItems)
-    {
-    	for(WoWSerializableNode item : allSerializedWoWItems)
-    	{
-    		if(item.getUniqueID().compareTo(uniqueId) == 0)
-    			return item;
-    	}
-    	
-    	WoWSerializableNode item = WoWSerializableNode.LoadWoWItemFromFile(WoWSerializableNode.WoWItemsFolder, uniqueId);
-    	allSerializedWoWItems.add(item);
-    	return item;
-    }
-    
-    private void ParseWoWTree(String wowTreeMap, ArrayList<WoWSerializableNode> allSerializedWoWItems)
-    {
-    	String[] allNodeIds = wowTreeMap.split("\n");
-    	
-    	for(String nodeIds : allNodeIds)
-    	{
-    		String[] nodeAndParents = nodeIds.split(":");
-    		
-    		if(nodeAndParents.length > 0 && !nodeAndParents[0].isEmpty())
-    		{
-	    		String nodeId = nodeAndParents[0].trim();
-	    		if(!nodeId.isEmpty())
-	    		{
-		    		WoWSerializableNode node = LoadWoWItem(nodeId, allSerializedWoWItems);
-		    		
-		    		if(nodeAndParents.length > 1 && !nodeAndParents[1].isEmpty())
-		    		{
-			    		ArrayList<WoWSerializableNode> parentNodes = new ArrayList<WoWSerializableNode>();
-			    		String[] parentNodeIds = nodeIds.split(":")[1].split(",");
-			    		for(String parentId : parentNodeIds)
-			    		{
-			    			parentNodes.add(LoadWoWItem(parentId.trim(), allSerializedWoWItems));
-			    		}
-			    		
-			    		for(WoWSerializableNode parent : parentNodes)
-			    		{
-			    			node.ListOfParentNodes().add(parent.getUniqueID());
-			    			parent.ListOfChildNodes().add(node.getUniqueID());
-			    		}
-		    		}
-	    		}
-    		}
-    	}
-    }    
-    
-    private String LoadWoWTree(String fileName)
-    {
-    	StringBuilder wowTreeMap = new StringBuilder();
-        try
-        {
-           FileInputStream fileIn = new FileInputStream(fileName);
-           BufferedReader br = new BufferedReader(new InputStreamReader(fileIn, Charset.forName("UTF-8")));
-
-           String line;
-           while((line = br.readLine()) != null)
-           {
-        	   wowTreeMap.append(line + "\n");
-           }
-           
-           br.close();
-           fileIn.close();
-       }
-       catch(IOException i)
-       {
-           i.printStackTrace();
-       }
-        
-        return wowTreeMap.toString();
-    }
+	}    
     
     private void CollectWoWDependecyTree(WoWItemJPanel wowItem, StringBuilder dependency)
     {
@@ -158,17 +62,6 @@ public class WoWTreeJPanel extends JPanel
     		dependency.append(parent.GetUniqueID() + ",");	
     	}
     	dependency.append("\n");
-    }
-    
-    private ArrayList<WoWSerializableNode> GetRoodNodes(ArrayList<WoWSerializableNode> allItems)
-    {
-    	ArrayList<WoWSerializableNode> rootNodes = new ArrayList<WoWSerializableNode>();
-    	for(WoWSerializableNode wowItem : allItems)
-    	{
-    		if(wowItem.ListOfParentNodes().size() == 0)
-    			rootNodes.add(wowItem);
-    	}
-    	return rootNodes;
     }
     
     private WoWItemJPanel GetRootPanel(ArrayList<WoWItemJPanel> allItems)
@@ -219,37 +112,6 @@ public class WoWTreeJPanel extends JPanel
     		}
     	}
     }
-
-    private WoWSerializableNode CreateStartableWorkSer()
-    {
-	    WoWSerializableNode startableWorkSer = new WoWSerializableNode();
-	    startableWorkSer.setUniqueID(WoWSerializableNode.StartableWorkId);
-	    startableWorkSer.setDisplayName("Start stream delivery");
-	    startableWorkSer.setDoneState(false);
-	    startableWorkSer.setDescription("Stream delivery proccess");
-	    
-	    return startableWorkSer;
-    }
-    
-    private WoWSerializableNode AddWoWStreamStartSer(ArrayList<WoWSerializableNode> allItems)
-    {
-    	WoWSerializableNode startableRoot = CreateStartableWorkSer();
-    	ArrayList<WoWSerializableNode> rootNodes = GetRoodNodes(allItems);
-
-	    for(WoWSerializableNode roots : rootNodes)
-	    {
-	    	if(roots.getUniqueID().equals(startableRoot.getUniqueID()))
-	    		return null;
-	    }
-	    
-	    for(WoWSerializableNode roots : rootNodes)
-	    {
-	    	startableRoot.ListOfChildNodes().add(roots.getUniqueID());
-	    	roots.ListOfParentNodes().add(startableRoot.getUniqueID());
-	    }
-	    
-	    return startableRoot;
-    }
     
     private void SetUpTreeViewPanel(ArrayList<WoWItemJPanel> deserializedPanels)
     {
@@ -270,43 +132,21 @@ public class WoWTreeJPanel extends JPanel
 	    	add(tierP);
 	    }
     }
-    
-	public void LoadPanelFromFile(String fileName)
-	{    
-	    SetUpTreeViewPanel(LoadFromFile(fileName));
-	}
 	
+    public void LoadSession(WoWSessionSerializable sesSr)
+    {
+		if(sesSr != null)
+		{
+			removeAll();
+			SetUpTreeViewPanel(CreateJPanelTree(sesSr.getWoWTree(), sesSr.getNodes()));
+		}
+    }
+    
 	public void LoadSessionFromFile(String fileName)
 	{   
-		WoWSessionSerializable sesSr;
-		removeAll();
-		
-        try
-        {
-           FileInputStream fileIn = new FileInputStream(fileName);
-           XMLDecoder in = new XMLDecoder(fileIn);
-           sesSr = (WoWSessionSerializable) in.readObject();
-           in.close();
-           fileIn.close();
-           
-           SetUpTreeViewPanel(ParseAndLinkTree(sesSr.getWoWTree(), sesSr.getNodes()));
-       }
-       catch(IOException i)
-       {
-           i.printStackTrace();
-       }
+		WoWSessionSerializable sesSr = WoWSessionSerializable.LoadSessionFromFile(fileName);
+		LoadSession(sesSr);
 	}	
-
-	private static String getExtension(String fileName) 
-	{
-	    String ext = null;
-	    int i = fileName.lastIndexOf('.');
-
-	    if (i > 0 &&  i < fileName.length() - 1) {
-	        ext = fileName.substring(i+1).toLowerCase();
-	    }
-	    return ext;
-	}
 	
 	public void SaveSessionToFile(String fileName)
     {
@@ -322,22 +162,6 @@ public class WoWTreeJPanel extends JPanel
     	WoWSessionSerializable sesSr = new WoWSessionSerializable();
     	sesSr.setWoWTree(dependecies.toString());
     	sesSr.setNodes(nodes);
-    	
-        try
-        {
-        	String completeName = fileName;
-        	if(getExtension(completeName) == null)
-        		completeName += ".xml";
-        	
-            FileOutputStream fileOut = new FileOutputStream(completeName);
-            XMLEncoder out = new XMLEncoder(fileOut);
-            out.writeObject(sesSr);
-            out.close();
-            fileOut.close();
-         }
-         catch(IOException i)
-         {
-             i.printStackTrace();
-         }
+    	sesSr.SaveSessionToFile(fileName);
     }
 }

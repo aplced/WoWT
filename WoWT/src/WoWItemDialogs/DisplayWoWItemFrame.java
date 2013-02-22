@@ -222,7 +222,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	public void EditDone(WoWSerializableNode serNode) 
 	{
 		this.serNode = serNode;
-		serNode.SaveWoWItemToFile(WoWSerializableNode.WoWItemsFolder);
+		serNode.SaveToFile(WoWSerializableNode.WoWItemsFolder);
 			
 		UpdateDisplayedInfo();
 	}

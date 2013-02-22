@@ -95,7 +95,7 @@ public class WoWSerializableNode
         return parentNodes;
     }
     
-    public void SaveWoWItemToFile(String directory)
+    public void SaveToFile(String directory)
     {
         try
         {
@@ -111,7 +111,7 @@ public class WoWSerializableNode
         }
     }
     
-    static public WoWSerializableNode LoadWoWItemFromFile(String directory, String uniqueId)
+    static public WoWSerializableNode LoadFromFile(String directory, String uniqueId)
     {
         WoWSerializableNode wowItem;
 

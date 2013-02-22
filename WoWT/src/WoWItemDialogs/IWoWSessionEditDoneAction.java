@@ -1,9 +1,9 @@
 package WoWItemDialogs;
 
-import WoWSerialization.WoWSessionSerializable;
+import WoWSerialization.WoWSessionInfoSerializable;
 
 public interface IWoWSessionEditDoneAction 
 {
-	public void EditDone(WoWSessionSerializable serSession);
+	public void EditDone(WoWSessionInfoSerializable serSession);
 
 }

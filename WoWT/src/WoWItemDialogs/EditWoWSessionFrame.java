@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import WoWSerialization.WoWSessionSerializable;
+import WoWSerialization.WoWSessionInfoSerializable;
 
 
 @SuppressWarnings("serial")
@@ -26,12 +26,14 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 	
 	JLabel devName;
 	JLabel devUserName;
+	JLabel streamName;
 	JLabel components;
 	JLabel buildingBlocks;
 	JLabel funcClusters;
 	
 	JTextField devNameInput;
 	JTextField devUserNameInput;
+	JTextField streamNameInput;
 	JTextArea componentsInput;
 	JTextArea buildingBlocksInput;
 	JTextArea funcClustersInput;
@@ -68,6 +70,23 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 		devUserNameInput = new JTextField(20);
 		devUserNameInput.setText(serSession.getUserName());
 		dispPnl.add(devUserNameInput, c);
+	}
+	
+	private void AddStreamNameInput(JPanel dispPnl, int col, int row)
+	{
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(4,4,4,4);
+		
+        streamName = new JLabel("Stream name:");
+		dispPnl.add(streamName, c);
+		
+		c.gridx = c.gridx + 1;
+		streamNameInput = new JTextField(20);
+		streamNameInput.setText(serSession.getStreamName());
+		dispPnl.add(streamNameInput, c);
 	}
 	
 	private void AddComponentsInput(JPanel dispPnl, int col, int row)
@@ -141,6 +160,7 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 		
         AddDevNameInput(inputPnl, 0, row++);
         AddDevUserNameInput(inputPnl, 0, row++);
+        AddStreamNameInput(inputPnl, 0, row++);
         AddComponentsInput(inputPnl, 0, row++);
         AddBuildingBlocksInput(inputPnl, 0, row++);
         AddInvokeListInput(inputPnl, 0, row++);
@@ -182,7 +202,7 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 		return mainPanel;
 	}
 	
-	public EditWoWSessionFrame(WoWSessionSerializable iSerSession)
+	public EditWoWSessionFrame(WoWSessionInfoSerializable iSerSession)
 	{
 		serSession = iSerSession;
 	    setTitle("Stream delivery session");
