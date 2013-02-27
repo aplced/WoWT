@@ -17,6 +17,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 
+import WoWSerialization.WoWFileHelper;
 import WoWSerialization.WoWSerializableNode;
 
 @SuppressWarnings("serial")
@@ -222,7 +223,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	public void EditDone(WoWSerializableNode serNode) 
 	{
 		this.serNode = serNode;
-		serNode.SaveToFile(WoWSerializableNode.WoWItemsFolder);
+		serNode.SaveToFile(WoWFileHelper.WoWItemsFolder);
 			
 		UpdateDisplayedInfo();
 	}

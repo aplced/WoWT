@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class WoWSerializableNode 
+public class WoWSerializableNode extends ObjectChangedEventDispatcher
 {
 	private String uniqueID;
 	private String displayName;
@@ -20,7 +20,6 @@ public class WoWSerializableNode
 	private ArrayList<String> invokeables = new ArrayList<String>();
 	
 	public static String StartableWorkId = "startable_work";
-	public static String WoWItemsFolder = "WoW/WoWItems/";
 	
 	public String getUniqueID()
 	{

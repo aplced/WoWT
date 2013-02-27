@@ -9,6 +9,8 @@ import javax.swing.UIManager;
 
 import WoWPanelUI.WoWSessionJPanel;
 import WoWPanelUI.WoWTreeJPanel;
+import WoWSerialization.WoWFileHelper;
+import WoWSerialization.WoWSessionInfoSerializable;
 import WoWSerialization.WoWSessionSerializable;
 
 
@@ -41,7 +43,12 @@ public class MainWoWWindow extends JFrame implements IMainWoWFrame
         mainPanel.setLayout(new BorderLayout());
         
         WoWSessionSerializable session = new WoWSessionSerializable();
-        session.CreateFromWoWTree("WoW/WoWTree.txt");
+        WoWSessionInfoSerializable sessionInfo = WoWSessionInfoSerializable.LoadFromFile(WoWFileHelper.WoWDefaultSessionInfo);
+        if(sessionInfo != null)
+        {
+        	session.setSessionInfo(sessionInfo);
+        }
+        session.CreateFromWoWTree(WoWFileHelper.WoWDefaultTree);
         
         WoWTreeJPanel treePanel = new WoWTreeJPanel();
         treePanel.LoadSession(session);
@@ -56,7 +63,7 @@ public class MainWoWWindow extends JFrame implements IMainWoWFrame
         
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         
-        mainPanel.add(new WoWSessionJPanel(session.getSessionInfo()), BorderLayout.PAGE_END);
+        mainPanel.add(new WoWSessionJPanel(session), BorderLayout.PAGE_END);
         
         setContentPane(mainPanel);
         pack();

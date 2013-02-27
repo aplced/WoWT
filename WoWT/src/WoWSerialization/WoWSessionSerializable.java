@@ -9,12 +9,12 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-public class WoWSessionSerializable
+public class WoWSessionSerializable extends ObjectChangedEventDispatcher
 {
 	private String WoWTree = "";
 	private ArrayList<WoWSerializableNode> Nodes = new ArrayList<WoWSerializableNode>();
 	private WoWSessionInfoSerializable sessionInfo = new WoWSessionInfoSerializable();
-	
+		
 	public String getWoWTree()
 	{
 		return WoWTree;
@@ -154,7 +154,7 @@ public class WoWSessionSerializable
     			return item;
     	}
 
-    	WoWSerializableNode item = WoWSerializableNode.LoadFromFile(WoWSerializableNode.WoWItemsFolder, uniqueId);
+    	WoWSerializableNode item = WoWSerializableNode.LoadFromFile(WoWFileHelper.WoWItemsFolder, uniqueId);
     	allSerializedWoWItems.add(item);
     	return item;
     }    
@@ -195,7 +195,7 @@ public class WoWSessionSerializable
         try
         {
         	String completeName = fileName;
-        	if(FileHelper.getExtension(completeName) == null)
+        	if(WoWFileHelper.getExtension(completeName) == null)
         		completeName += ".xml";
         	
             FileOutputStream fileOut = new FileOutputStream(completeName);

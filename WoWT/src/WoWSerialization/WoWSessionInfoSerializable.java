@@ -6,14 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class WoWSessionInfoSerializable 
+public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 {
-	private String devName;
-	private String devUserName;
-	private String streamName;
-	private String components;
-	private String buildingBlocks;
-	private String funcClusters;
+	private String devName = "Ivan Ivanov";
+	private String devUserName = "user.name";
+	private String streamName = "my_stream";
+	private String components = "";
+	private String buildingBlocks = "";
+	private String funcClusters = "";
 	
 	public String getDeveloperName()
 	{
@@ -72,7 +72,7 @@ public class WoWSessionInfoSerializable
     public void SaveToFile(String fileName)
     {
     	String completeName = fileName;
-    	if(FileHelper.getExtension(completeName) == null)
+    	if(WoWFileHelper.getExtension(completeName) == null)
     		completeName += ".xml";
     	
         try

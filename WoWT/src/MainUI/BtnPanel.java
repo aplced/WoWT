@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import WoWItemDialogs.EditWoWItemFrame;
 import WoWItemDialogs.IWoWItemEditDoneAction;
 import WoWPanelUI.WoWTreeJPanel;
+import WoWSerialization.WoWFileHelper;
 import WoWSerialization.WoWSerializableNode;
 import WoWSerialization.WoWSessionSerializable;
 import WoWSerialization.XMLFileFilter;
@@ -107,6 +108,6 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 	@Override
 	public void EditDone(WoWSerializableNode serNode) 
 	{
-		serNode.SaveToFile(WoWSerializableNode.WoWItemsFolder);
+		serNode.SaveToFile(WoWFileHelper.WoWItemsFolder);
 	}
 }

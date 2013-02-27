@@ -23,6 +23,7 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 {
 	JButton apply;
 	JButton cancel;
+	JButton setDefault;
 	
 	JLabel devName;
 	JLabel devUserName;
@@ -173,14 +174,18 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
         JPanel controlPnl = new JPanel();
         controlPnl.setLayout(new FlowLayout());
         
-		apply = new JButton("Save");
+		apply = new JButton("Apply");
 		apply.addActionListener(this);
 		
 		cancel = new JButton("Cancel");
 		cancel.addActionListener(this);
+		
+		setDefault = new JButton("Save as default");
+		setDefault.addActionListener(this);
 	    
 		controlPnl.add(apply);
 		controlPnl.add(cancel);
+		controlPnl.add(setDefault);
 		
 		return controlPnl;
 	}
@@ -216,14 +221,19 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 	{
 		if (e.getSource() == apply)
 		{
-			
-			NotifyWoWSessionEditDone();
+			serSession.FireObjectChangedEvent();
 			ClearAndClose();
 		}
 		else if (e.getSource() == cancel) 
 		{
 			ClearAndClose();
-		}		
+		}
+		else if (e.getSource() == setDefault)
+		{
+			serSession.FireObjectChangedEvent();
+			NotifyWoWSessionEditDone();
+			ClearAndClose();
+		}
 	}
 	
 	private void ClearAndClose()

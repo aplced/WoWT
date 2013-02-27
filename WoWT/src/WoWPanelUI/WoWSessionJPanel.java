@@ -1,18 +1,20 @@
 package WoWPanelUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import WoWItemDialogs.EditWoWSessionFrame;
 import WoWItemDialogs.IWoWSessionEditDoneAction;
+import WoWSerialization.IWoWDataChangedAction;
+import WoWSerialization.WoWFileHelper;
 import WoWSerialization.WoWSessionInfoSerializable;
+import WoWSerialization.WoWSessionSerializable;
 
 
 @SuppressWarnings("serial")
-public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSessionEditDoneAction
+public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSessionEditDoneAction, IWoWDataChangedAction
 {
 	JLabel devNameUsr;
 	JLabel streamName;
@@ -20,9 +22,9 @@ public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSess
 	
 	JButton editSessionInfo;
 	
-	WoWSessionInfoSerializable sessionRef;
+	WoWSessionSerializable sessionRef;
 	
-	public WoWSessionJPanel(WoWSessionInfoSerializable iSession)
+	public WoWSessionJPanel(WoWSessionSerializable iSession)
 	{
 		sessionRef = iSession;
 		
@@ -38,7 +40,7 @@ public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSess
 		add(affectedCCBBFC);
 		add(editSessionInfo);
 		
-		UpdateDisplayInfo(sessionRef);
+		UpdateDisplayInfo(sessionRef.getSessionInfo());
 	}
 
 	@Override
@@ -46,7 +48,7 @@ public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSess
 	{
 		if (e.getSource() == editSessionInfo) 
 		{
-			EditWoWSessionFrame editWoWSession = new EditWoWSessionFrame(sessionRef);
+			EditWoWSessionFrame editWoWSession = new EditWoWSessionFrame(sessionRef.getSessionInfo());
 			editWoWSession.addWoWSessionEditListener(this);
 			editWoWSession.setVisible(true);
 		}
@@ -63,7 +65,13 @@ public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSess
 	@Override
 	public void EditDone(WoWSessionInfoSerializable serSession) 
 	{
-		UpdateDisplayInfo(sessionRef);
+		serSession.SaveToFile(WoWFileHelper.WoWDefaultSessionInfo);
+	}
+
+	@Override
+	public void DataChanged() 
+	{
+		UpdateDisplayInfo(sessionRef.getSessionInfo());
 	}
 	
 }
