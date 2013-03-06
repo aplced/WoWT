@@ -20,8 +20,9 @@
  create_tps:impl_code_chgs, req_test_approv_req
  tps_review_internal:create_tps
  tps_review_external:tps_review_internal, review_commitment
+ code_testing:tps_review_external
  tps_ucc:tps_review_external
- create_tar:tps_review_external,
+ create_tar:tps_review_external,code_testing
  tar_review_internal:create_tar
  tar_review_external:tar_review_internal, get_weaivers_metro_dat_arena, get_waivers, tps_ucc
  tar_ucc: tar_review_external

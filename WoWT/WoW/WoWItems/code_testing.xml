@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="WoWSerialization.WoWSerializableNode"> 
+  <void property="description"> 
+   <string>Perform all tests described in TPS</string> 
+  </void> 
+  <void property="displayName"> 
+   <string>Testing</string> 
+  </void> 
+  <void property="taskDaysEstimate"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="uniqueID"> 
+   <string>code_testing</string> 
+  </void> 
+ </object> 
+</java> 

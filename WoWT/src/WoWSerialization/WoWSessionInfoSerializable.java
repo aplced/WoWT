@@ -11,6 +11,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	private String devName = "Ivan Ivanov";
 	private String devUserName = "user.name";
 	private String streamName = "my_stream";
+	private Integer taskId = 0;
 	private String components = "";
 	private String buildingBlocks = "";
 	private String funcClusters = "";
@@ -40,6 +41,15 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setStreamName(String strName)
 	{
 		streamName = strName;
+	}
+	
+	public Integer getTaskId()
+	{
+		return taskId;
+	}
+	public void setTaskId(Integer inTaskId)
+	{
+		taskId = inTaskId;
 	}
 	
 	public String getComponents()

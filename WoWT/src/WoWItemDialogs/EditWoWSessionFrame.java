@@ -28,6 +28,7 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 	JLabel devName;
 	JLabel devUserName;
 	JLabel streamName;
+	JLabel taskId;
 	JLabel components;
 	JLabel buildingBlocks;
 	JLabel funcClusters;
@@ -35,6 +36,7 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 	JTextField devNameInput;
 	JTextField devUserNameInput;
 	JTextField streamNameInput;
+	JTextField taskIdInput;
 	JTextArea componentsInput;
 	JTextArea buildingBlocksInput;
 	JTextArea funcClustersInput;
@@ -88,6 +90,23 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 		streamNameInput = new JTextField(20);
 		streamNameInput.setText(serSession.getStreamName());
 		dispPnl.add(streamNameInput, c);
+	}
+	
+	private void AddTaskIdInput(JPanel dispPnl, int col, int row)
+	{
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(4,4,4,4);
+		
+        taskId = new JLabel("Task Id:");
+		dispPnl.add(taskId, c);
+		
+		c.gridx = c.gridx + 1;
+		taskIdInput = new JTextField(20);
+		taskIdInput.setText(serSession.getTaskId().toString());
+		dispPnl.add(taskIdInput, c);
 	}
 	
 	private void AddComponentsInput(JPanel dispPnl, int col, int row)
@@ -162,6 +181,7 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
         AddDevNameInput(inputPnl, 0, row++);
         AddDevUserNameInput(inputPnl, 0, row++);
         AddStreamNameInput(inputPnl, 0, row++);
+        AddTaskIdInput(inputPnl, 0, row++);
         AddComponentsInput(inputPnl, 0, row++);
         AddBuildingBlocksInput(inputPnl, 0, row++);
         AddInvokeListInput(inputPnl, 0, row++);
@@ -207,6 +227,17 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 		return mainPanel;
 	}
 	
+	private void CollectUserInput()
+	{
+		serSession.setDeveloperName(devNameInput.getText());
+		serSession.setUserName(devUserNameInput.getText());		
+		serSession.setStreamName(streamNameInput.getText());
+		serSession.setTaskId(Integer.parseInt(taskIdInput.getText()));
+		serSession.setComponents(componentsInput.getText());
+		serSession.setBuildingBlocks(buildingBlocksInput.getText());
+		serSession.setFuncClusters(funcClustersInput.getText());
+	}
+	
 	public EditWoWSessionFrame(WoWSessionInfoSerializable iSerSession)
 	{
 		serSession = iSerSession;
@@ -221,6 +252,7 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 	{
 		if (e.getSource() == apply)
 		{
+			CollectUserInput();
 			serSession.FireObjectChangedEvent();
 			ClearAndClose();
 		}
@@ -230,6 +262,7 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 		}
 		else if (e.getSource() == setDefault)
 		{
+			CollectUserInput();
 			serSession.FireObjectChangedEvent();
 			NotifyWoWSessionEditDone();
 			ClearAndClose();
