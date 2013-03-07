@@ -120,4 +120,15 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
         
         return wowSessionInfo;
     } 
+    
+    public void CopyFrom(WoWSessionInfoSerializable cloneObj)
+    {
+    	devName = cloneObj.devName;
+    	devUserName = cloneObj.devUserName;
+    	streamName = cloneObj.streamName;
+    	taskId = cloneObj.taskId;
+    	components = cloneObj.components;
+    	buildingBlocks = cloneObj.buildingBlocks;
+    	funcClusters = cloneObj.funcClusters;
+    }
 }

@@ -14,6 +14,7 @@ public class WoWTreeJPanel extends JPanel
 {
 	GridLayout gridL;
 	ArrayList<WoWItemJPanel> allItems;
+	WoWSessionSerializable curSesSr;
 	
 	public WoWTreeJPanel()
 	{
@@ -137,6 +138,14 @@ public class WoWTreeJPanel extends JPanel
     {
 		if(sesSr != null)
 		{
+			if(curSesSr != null)
+			{
+				curSesSr.CopyFrom(sesSr);
+			}
+			else
+			{
+				curSesSr = sesSr;
+			}
 			removeAll();
 			SetUpTreeViewPanel(CreateJPanelTree(sesSr.getWoWTree(), sesSr.getNodes()));
 		}
@@ -159,9 +168,8 @@ public class WoWTreeJPanel extends JPanel
     		nodes.add(item.CreateSerializable());
     	}
     	
-    	WoWSessionSerializable sesSr = new WoWSessionSerializable();
-    	sesSr.setWoWTree(dependecies.toString());
-    	sesSr.setNodes(nodes);
-    	sesSr.SaveSessionToFile(fileName);
+    	curSesSr.setWoWTree(dependecies.toString());
+    	curSesSr.setNodes(nodes);
+    	curSesSr.SaveSessionToFile(fileName);
     }
 }

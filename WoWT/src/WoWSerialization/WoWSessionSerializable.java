@@ -209,4 +209,18 @@ public class WoWSessionSerializable extends ObjectChangedEventDispatcher
              i.printStackTrace();
          }
     }    	
+
+	public void CopyFrom(WoWSessionSerializable cloneObj)
+	{
+		WoWTree = cloneObj.WoWTree;
+		
+		Nodes = new ArrayList<WoWSerializableNode>();
+		for(WoWSerializableNode cloneNode : cloneObj.Nodes)
+		{
+			WoWSerializableNode tmp = new WoWSerializableNode();
+			tmp.CopyFrom(cloneNode);
+			Nodes.add(tmp);
+		}
+		sessionInfo.CopyFrom(cloneObj.sessionInfo);
+	}
 }

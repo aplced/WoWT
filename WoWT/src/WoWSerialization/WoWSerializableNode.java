@@ -131,4 +131,32 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
         
         return wowItem;
     } 
+    
+    public void CopyFrom(WoWSerializableNode cloneObj)
+    {
+    	uniqueID = cloneObj.uniqueID;
+    	displayName = cloneObj.displayName;
+    	description = cloneObj.description;
+    	userNotes = cloneObj.userNotes;
+    	doneState = cloneObj.doneState;
+    	taskDaysEstimate = cloneObj.taskDaysEstimate;
+    	
+    	childNodes = new ArrayList<String>();
+    	for(String cloneChild: cloneObj.childNodes)
+    	{
+    		childNodes.add(cloneChild);
+    	}
+    	
+    	parentNodes = new ArrayList<String>();
+    	for(String cloneParent : cloneObj.parentNodes)
+    	{
+    		parentNodes.add(cloneParent);
+    	}
+    	
+    	invokeables = new ArrayList<String>();
+    	for(String cloneInvokeables : cloneObj.invokeables)
+    	{
+    		invokeables.add(cloneInvokeables);
+    	}
+    }
 }
