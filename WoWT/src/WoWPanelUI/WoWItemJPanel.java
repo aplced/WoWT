@@ -129,7 +129,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener, IWoWItemEdi
 	protected void SetControlsEnabled(boolean enabled)
 	{
 		displayName.setEnabled(enabled);
-		popDescription.setEnabled(enabled);
+		//popDescription.setEnabled(enabled);
 		if(!enabled)
 			doneState.setSelected(false);
 		doneState.setEnabled(enabled);
