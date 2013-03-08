@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-public class WoWSessionSerializable extends ObjectChangedEventDispatcher
+public class WoWSessionSerializable extends ObjectChangedEventDispatcher implements IWoWDataChangedAction
 {
 	private String WoWTree = "";
 	private ArrayList<WoWSerializableNode> Nodes = new ArrayList<WoWSerializableNode>();
@@ -30,7 +30,17 @@ public class WoWSessionSerializable extends ObjectChangedEventDispatcher
 	}
 	public void setNodes(ArrayList<WoWSerializableNode> iNodes)
 	{
+		for(WoWSerializableNode node : Nodes)
+		{
+			node.removeObjectChangedEventEditListener(this);
+		}
+		
 		Nodes = iNodes;
+		
+		for(WoWSerializableNode node : Nodes)
+		{
+			node.addObjectChangedEventListener(this);
+		}
 	}
 	
 	public WoWSessionInfoSerializable getSessionInfo()
@@ -39,7 +49,11 @@ public class WoWSessionSerializable extends ObjectChangedEventDispatcher
 	}
 	public void setSessionInfo(WoWSessionInfoSerializable iSessionInfo)
 	{
+		sessionInfo.removeObjectChangedEventEditListener(this);
+		
 		sessionInfo = iSessionInfo;
+		
+		sessionInfo.addObjectChangedEventListener(this);
 	}
 	
     public void CreateFromWoWTree(String fileName)
@@ -66,7 +80,9 @@ public class WoWSessionSerializable extends ObjectChangedEventDispatcher
         
         WoWTree = wowTreeMap.toString();
         
-        ParseAndCreateTree(WoWTree, Nodes);
+        ArrayList<WoWSerializableNode> serNodes = new ArrayList<WoWSerializableNode>();
+        ParseAndCreateTree(WoWTree, serNodes);
+        setNodes(serNodes);
     }
     
     private static void ParseWoWTree(String wowTreeMap, ArrayList<WoWSerializableNode> allSerializedWoWItems)
@@ -180,7 +196,9 @@ public class WoWSessionSerializable extends ObjectChangedEventDispatcher
            in.close();
            fileIn.close();
            
-           WoWSessionSerializable.ParseAndCreateTree(sesSr.WoWTree, sesSr.Nodes);
+           ArrayList<WoWSerializableNode> serNodes = new ArrayList<WoWSerializableNode>();
+           WoWSessionSerializable.ParseAndCreateTree(sesSr.WoWTree, serNodes);
+           sesSr.setNodes(serNodes);
        }
        catch(IOException i)
        {
@@ -222,5 +240,11 @@ public class WoWSessionSerializable extends ObjectChangedEventDispatcher
 			Nodes.add(tmp);
 		}
 		sessionInfo.CopyFrom(cloneObj.sessionInfo);
+	}
+	
+	@Override
+	public void DataChanged() 
+	{
+		FireObjectChangedEvent();
 	}
 }

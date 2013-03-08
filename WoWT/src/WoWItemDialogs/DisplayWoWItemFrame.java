@@ -27,11 +27,14 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	JButton edit;
 	
 	JLabel uniqueIdInfo;
+	
 	JLabel taskEstimatedDurationInfo;
 	JSpinner taskEstimatedDurationInput;
 	JLabel displayNameInfo;
+	
 	JTextArea descriptionInput;
 	JTextArea userNotesInput;
+	
 	JPanel mainPanel = new JPanel();
 	
 	private void AddTaskDuration(JPanel dispPnl, int col, int row)

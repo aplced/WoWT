@@ -2,22 +2,15 @@ package WoWItemDialogs;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
 
 import WoWSerialization.WoWSerializableNode;
 
@@ -28,152 +21,38 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 	JButton apply;
 	JButton cancel;
 	
-	JLabel uniqueIdInfo;
-	JLabel displayNameInfo;
-	JLabel descriptionInfo;
-	JLabel userNotesInfo;
-	JLabel invkLstInfo;
-	JLabel taskEstimatedDurationInfo;
-	
-	JTextField uniqueIdInput;
-	JTextField displayNameInput;
-	JTextArea descriptionInput;
-	JTextArea userNotesInput;
-	JTextArea invkLstInput;
-	JSpinner taskEstimatedDurationInput;
-	
-	private void AddUniqueIDInput(JPanel dispPnl, int col, int row)
-	{
-		GridBagConstraints c = new GridBagConstraints();
-        c.gridx = col;
-        c.gridy = row;
-        c.anchor = GridBagConstraints.LINE_START;
-        c.insets = new Insets(4,4,4,4);
-        
-		uniqueIdInfo = new JLabel("The unique identifier of this WoW item - used in WoW tree definition");
-		dispPnl.add(uniqueIdInfo, c);
-		
-		c.gridx = c.gridx + 1;
-		uniqueIdInput = new JTextField(20);
-		uniqueIdInput.setText(serNode.getUniqueID());
-		dispPnl.add(uniqueIdInput, c);
-	}
-	
-	private void AddDisplayNameInput(JPanel dispPnl, int col, int row)
-	{
-		GridBagConstraints c = new GridBagConstraints();
-        c.gridx = col;
-        c.gridy = row;
-        c.anchor = GridBagConstraints.LINE_START;
-        c.insets = new Insets(4,4,4,4);
-		
-		displayNameInfo = new JLabel("Display name of the WoW item - visible in the main view");
-		dispPnl.add(displayNameInfo, c);
-		
-		c.gridx = c.gridx + 1;
-		displayNameInput = new JTextField(20);
-		displayNameInput.setText(serNode.getDisplayName());
-		dispPnl.add(displayNameInput, c);
-	}
-	
-	private void AddDescriptionInput(JPanel dispPnl, int col, int row)
-	{
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = col;
-        c.gridy = row;
-        c.gridwidth = 2;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(4,4,4,4);
-		
-		descriptionInfo = new JLabel("Description visible in the main view");
-		dispPnl.add(descriptionInfo, c);
-		
-		c.gridx = c.gridx + 1;
-		descriptionInput = new JTextArea(5,60);
-		descriptionInput.setLineWrap(true);
-		descriptionInput.setText(serNode.getDescription());
-		dispPnl.add(descriptionInput, c);
-	}
-	
-	private void AddTaskDurationInput(JPanel dispPnl, int col, int row)
-	{
-		GridBagConstraints c = new GridBagConstraints();
-        c.gridx = col;
-        c.gridy = row;
-        c.anchor = GridBagConstraints.LINE_START;
-        c.insets = new Insets(4,4,4,4);
-        
-		taskEstimatedDurationInfo = new JLabel("Task duration in days");
-		dispPnl.add(taskEstimatedDurationInfo, c);
-		
-		c.gridx = c.gridx + 1;
-		taskEstimatedDurationInput = new JSpinner();
-		taskEstimatedDurationInput.setModel(new SpinnerNumberModel(0, 0, 10, 0.5));
-		taskEstimatedDurationInput.setValue(serNode.getTaskDaysEstimate());
-		dispPnl.add(taskEstimatedDurationInput, c);
-	}
-	
-	private void AddUserNotesInput(JPanel dispPnl, int col, int row)
-	{
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = col;
-        c.gridy = row;
-        c.gridwidth = 2;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(4,4,4,4);
-		
-		userNotesInfo = new JLabel("User notes for this process step");
-		dispPnl.add(userNotesInfo, c);
-		
-		c.gridx = c.gridx + 1;
-		userNotesInput = new JTextArea(5,60);
-		userNotesInput.setLineWrap(true);
-		userNotesInput.setText(serNode.getUserNotes());
-		dispPnl.add(userNotesInput, c);
-	}
-	
-	private void AddInvokeListInput(JPanel dispPnl, int col, int row)
-	{
-		GridBagConstraints c = new GridBagConstraints();
-        c.gridx = col;
-        c.gridy = row;
-        c.gridwidth = 2;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(4,4,4,4);
-		
-        invkLstInfo = new JLabel("Input invoke list separated by new lines");
-        dispPnl.add(invkLstInfo, c);
-        
-        c.gridx = c.gridx + 1;
-        invkLstInput = new JTextArea(5,60);
-        invkLstInput.setLineWrap(true);
-        
-        for(String invokeable : serNode.getInvokeables())
-        {
-        	invkLstInput.setText(invokeable + "\n");
-        }
-        
-        dispPnl.add(invkLstInput, c);
-	}
+	WoWValueInput uniqueId;
+	WoWValueInput displayName;
+	WoWValueInput taskEstimatedDuration;
+	WoWValueInput description;
+	WoWValueInput userNotes;
+	WoWValueInput invkLst;
 	
 	private JPanel CreateInputPanelsGrid()
 	{
 		int row = 0;
         JPanel inputPnl = new JPanel();
         inputPnl.setLayout(new GridBagLayout());
-		
-        AddUniqueIDInput(inputPnl, 0, row++);
-        AddDisplayNameInput(inputPnl, 0, row++);
-        AddTaskDurationInput(inputPnl, 0, row++);
-        AddDescriptionInput(inputPnl, 0, row++);
-        AddUserNotesInput(inputPnl, 0, row++);
-        AddInvokeListInput(inputPnl, 0, row++);
+        
+        uniqueId = WoWValueInput.WoWTextFieldInput("The unique identifier of this WoW item - used in WoW tree definition", serNode.getUniqueID());
+        displayName = WoWValueInput.WoWTextFieldInput("Display name of the WoW item - visible in the main view", serNode.getDisplayName());
+        taskEstimatedDuration = WoWValueInput.WoWSpinnerInput("Task duration in days", serNode.getTaskDaysEstimate().toString());
+        description = WoWValueInput.WoWTextAreaInput("Description visible in the main view", serNode.getDescription());
+        userNotes = WoWValueInput.WoWTextAreaInput("User notes for this process step", serNode.getUserNotes());
+        
+        StringBuilder invokeList = new StringBuilder();
+        for(String invokeable : serNode.getInvokeables())
+        {
+        	invokeList.append(invokeable + "\n");
+        }
+        invkLst = WoWValueInput.WoWTextAreaInput("Input invoke list separated by new lines", invokeList.toString());
+        
+        uniqueId.AddInputToPanel(inputPnl, 0, row++);
+        displayName.AddInputToPanel(inputPnl, 0, row++);
+        taskEstimatedDuration.AddInputToPanel(inputPnl, 0, row++);
+        description.AddInputToPanel(inputPnl, 0, row++);
+        userNotes.AddInputToPanel(inputPnl, 0, row++);
+        invkLst.AddInputToPanel(inputPnl, 0, row++);
 		
 		return inputPnl;
 	}
@@ -226,8 +105,8 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 	{
 		if (e.getSource() == apply)
 		{
-			String uId = uniqueIdInput.getText();
-			String dispName = displayNameInput.getText();
+			String uId = uniqueId.GetInputValue();
+			String dispName = displayName.GetInputValue();
 			
 			if(!uId.isEmpty())
 			{
@@ -258,7 +137,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 				return;
 			}
 			
-			String invkListItems = invkLstInput.getText();
+			String invkListItems = invkLst.GetInputValue();
 			ArrayList<String> invkLst = new ArrayList<String>();
 			for(String invkItm : invkListItems.split("\n"))
 			{
@@ -266,13 +145,11 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 					invkLst.add(invkItm);
 			}
 			
-			Number taskDays = (Number)taskEstimatedDurationInput.getValue();
-			
 			serNode.setUniqueID(uId);
-			serNode.setTaskDaysEstimate(taskDays.floatValue());
+			serNode.setTaskDaysEstimate(Float.parseFloat(taskEstimatedDuration.GetInputValue()));
 			serNode.setDisplayName(dispName);
-			serNode.setDescription(descriptionInput.getText());
-			serNode.setUserNotes(userNotesInput.getText());
+			serNode.setDescription(description.GetInputValue());
+			serNode.setUserNotes(userNotes.GetInputValue());
 			serNode.setInvokeables(invkLst);
 			
 			NotifyWoWItemEditDone();

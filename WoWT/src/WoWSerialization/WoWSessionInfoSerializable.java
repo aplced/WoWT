@@ -12,6 +12,9 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	private String devUserName = "user.name";
 	private String streamName = "my_stream";
 	private Integer taskId = 0;
+	private String taskName = "";
+	private String scrumMaster = "";
+	private String scrumMaintainer = "";
 	private String components = "";
 	private String buildingBlocks = "";
 	private String funcClusters = "";
@@ -50,6 +53,33 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setTaskId(Integer inTaskId)
 	{
 		taskId = inTaskId;
+	}
+	
+	public String getTaskName()
+	{
+		return taskName;
+	}
+	public void setTaskName(String iTaskName)
+	{
+		taskName = iTaskName;
+	}
+
+	public String getScrumMaster()
+	{
+		return scrumMaster;
+	}
+	public void setScrumMaster(String iScrumMaster)
+	{
+		scrumMaster = iScrumMaster;
+	}
+
+	public String getScrumMaintainer()
+	{
+		return scrumMaintainer;
+	}
+	public void setScrumMaintainer(String iScrumMaintainer)
+	{
+		scrumMaintainer = iScrumMaintainer;
 	}
 	
 	public String getComponents()
@@ -127,6 +157,9 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
     	devUserName = cloneObj.devUserName;
     	streamName = cloneObj.streamName;
     	taskId = cloneObj.taskId;
+    	taskName = cloneObj.taskName;
+    	scrumMaster = cloneObj.scrumMaster;
+    	scrumMaintainer = cloneObj.scrumMaintainer;
     	components = cloneObj.components;
     	buildingBlocks = cloneObj.buildingBlocks;
     	funcClusters = cloneObj.funcClusters;

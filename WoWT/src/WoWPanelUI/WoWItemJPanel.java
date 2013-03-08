@@ -18,6 +18,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class WoWItemJPanel extends JPanel implements ActionListener, IWoWItemEditDoneAction
 {
+	WoWSerializableNode serNode;
 	
 	protected String uniqueID;
 	protected JLabel displayName = new JLabel("WoW item");
@@ -70,14 +71,15 @@ public class WoWItemJPanel extends JPanel implements ActionListener, IWoWItemEdi
 		}
 	}
 	
-	public WoWItemJPanel(WoWSerializableNode serNode)
+	public WoWItemJPanel(WoWSerializableNode iSerNode)
 	{
 		super();
 		
 		popDescription.addActionListener(this);
 		doneState.addActionListener(this);
 		
-		InitFromSerializable(serNode);
+		serNode = iSerNode;
+		InitFromSerializable();
 		
 		setLayout(new BorderLayout());
 		
@@ -88,7 +90,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener, IWoWItemEdi
 		defColor = getBackground();
 	}
 	
-	private void InitFromSerializable(WoWSerializableNode serNode)
+	private void InitFromSerializable()
 	{
 		uniqueID = serNode.getUniqueID();
 		displayName.setText(serNode.getDisplayName());
@@ -133,6 +135,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener, IWoWItemEdi
 		if(!enabled)
 			doneState.setSelected(false);
 		doneState.setEnabled(enabled);
+		serNode.setDoneState(enabled);
 	}
 	
 	protected void SetElapsedTimeWarning()
@@ -249,15 +252,10 @@ public class WoWItemJPanel extends JPanel implements ActionListener, IWoWItemEdi
 	}
 
 	@Override
-	public void EditDone(WoWSerializableNode serNode) 
+	public void EditDone(WoWSerializableNode iSerNode) 
 	{
-		uniqueID = serNode.getUniqueID();
-		displayName.setText(serNode.getDisplayName());
-		description = serNode.getDescription();
-		userNotes = serNode.getUserNotes();
-		doneState.setSelected(serNode.getDoneState());
-		taskDaysEstimate = serNode.getTaskDaysEstimate();
-		
-		UpdateInfoDisplayBtn();
+		serNode.CopyFrom(iSerNode);
+		serNode.FireObjectChangedEvent();
+		InitFromSerializable();
 	}
 }

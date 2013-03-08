@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import WoWSerialization.IWoWDataChangedAction;
+import WoWSerialization.WoWFileHelper;
 import WoWSerialization.WoWSerializableNode;
 import WoWSerialization.WoWSessionSerializable;
 
 
 @SuppressWarnings("serial")
-public class WoWTreeJPanel extends JPanel 
+public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction
 {
 	GridLayout gridL;
 	ArrayList<WoWItemJPanel> allItems;
@@ -145,6 +147,7 @@ public class WoWTreeJPanel extends JPanel
 			else
 			{
 				curSesSr = sesSr;
+				curSesSr.addObjectChangedEventListener(this);
 			}
 			removeAll();
 			SetUpTreeViewPanel(CreateJPanelTree(sesSr.getWoWTree(), sesSr.getNodes()));
@@ -159,17 +162,26 @@ public class WoWTreeJPanel extends JPanel
 	
 	public void SaveSessionToFile(String fileName)
     {
-        StringBuilder dependecies = new StringBuilder();
-    	CollectWoWDependecyTree(GetRootPanel(allItems), dependecies);
-    	
-    	ArrayList<WoWSerializableNode> nodes = new ArrayList<WoWSerializableNode>();
-    	for(WoWItemJPanel item : allItems)
-    	{
-    		nodes.add(item.CreateSerializable());
-    	}
-    	
-    	curSesSr.setWoWTree(dependecies.toString());
-    	curSesSr.setNodes(nodes);
-    	curSesSr.SaveSessionToFile(fileName);
+		if(allItems != null)
+		{
+	        StringBuilder dependecies = new StringBuilder();
+	    	CollectWoWDependecyTree(GetRootPanel(allItems), dependecies);
+	    	
+	    	ArrayList<WoWSerializableNode> nodes = new ArrayList<WoWSerializableNode>();
+	    	for(WoWItemJPanel item : allItems)
+	    	{
+	    		nodes.add(item.CreateSerializable());
+	    	}
+	    	
+	    	curSesSr.setWoWTree(dependecies.toString());
+	    	curSesSr.setNodes(nodes);
+	    	curSesSr.SaveSessionToFile(fileName);
+		}
     }
+
+	@Override
+	public void DataChanged()
+	{
+		SaveSessionToFile(WoWFileHelper.WoWTempSessionFile);
+	}
 }

@@ -64,7 +64,7 @@ public class MainWoWWindow extends JFrame implements IMainWoWFrame
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         
         mainPanel.add(new WoWSessionJPanel(session), BorderLayout.PAGE_END);
-        
+               
         setContentPane(mainPanel);
         pack();
     }

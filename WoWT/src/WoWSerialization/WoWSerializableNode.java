@@ -28,6 +28,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	public void setUniqueID(String uniqueID)
 	{
 		this.uniqueID = uniqueID;
+		FireObjectChangedEvent();
 	}
 	
 	public String getDisplayName()
@@ -37,6 +38,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	public void setDisplayName(String displayName)
 	{
 		this.displayName = displayName;
+		FireObjectChangedEvent();
 	}
 	
 	public String getDescription()
@@ -46,6 +48,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	public void setDescription(String description)
 	{
 		this.description = description;
+		FireObjectChangedEvent();
 	}
 	
 	public Boolean getDoneState()
@@ -55,15 +58,17 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	public void setDoneState(Boolean doneState)
 	{
 		this.doneState = doneState;
+		FireObjectChangedEvent();
 	}
 
-	public float getTaskDaysEstimate()
+	public Float getTaskDaysEstimate()
 	{
 		return taskDaysEstimate;
 	}
 	public void setTaskDaysEstimate(float iTaskDaysEstimate)
 	{
 		taskDaysEstimate = iTaskDaysEstimate;
+		FireObjectChangedEvent();
 	}
 	
     public String getUserNotes()
@@ -73,6 +78,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
     public void setUserNotes(String notes)
     {
     	userNotes = notes;
+    	FireObjectChangedEvent();
     }
     
     public ArrayList<String> getInvokeables()
@@ -82,6 +88,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
     public void setInvokeables(ArrayList<String> lstInvk)
     {
     	invokeables = lstInvk;
+    	FireObjectChangedEvent();
     }
 	
     public ArrayList<String> ListOfChildNodes() 
