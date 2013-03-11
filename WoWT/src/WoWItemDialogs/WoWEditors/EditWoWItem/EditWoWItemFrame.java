@@ -26,6 +26,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 	WoWValueInput uniqueId;
 	WoWValueInput displayName;
 	WoWValueInput taskEstimatedDuration;
+	WoWValueInput partOfBreakdown;
 	WoWValueInput description;
 	WoWValueInput userNotes;
 	WoWValueInput invkLst;
@@ -39,6 +40,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
         uniqueId = WoWValueInput.WoWTextFieldInput("The unique identifier of this WoW item - used in WoW tree definition", serNode.getUniqueID());
         displayName = WoWValueInput.WoWTextFieldInput("Display name of the WoW item - visible in the main view", serNode.getDisplayName());
         taskEstimatedDuration = WoWValueInput.WoWSpinnerInput("Task duration in days", serNode.getTaskDaysEstimate().toString());
+        partOfBreakdown = WoWValueInput.WoWCheckboxInput("Part of work breakdown", serNode.getPartOfBreakdown().toString());
         description = WoWValueInput.WoWTextAreaInput("Description visible in the main view", serNode.getDescription());
         userNotes = WoWValueInput.WoWTextAreaInput("User notes for this process step", serNode.getUserNotes());
         
@@ -52,6 +54,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
         uniqueId.AddInputToPanel(inputPnl, 0, row++);
         displayName.AddInputToPanel(inputPnl, 0, row++);
         taskEstimatedDuration.AddInputToPanel(inputPnl, 0, row++);
+        partOfBreakdown.AddInputToPanel(inputPnl, 0, row++);
         description.AddInputToPanel(inputPnl, 0, row++);
         userNotes.AddInputToPanel(inputPnl, 0, row++);
         invkLst.AddInputToPanel(inputPnl, 0, row++);
@@ -149,6 +152,7 @@ public class EditWoWItemFrame extends WoWEditorFrame implements ActionListener
 			
 			serNode.setUniqueID(uId);
 			serNode.setTaskDaysEstimate(Float.parseFloat(taskEstimatedDuration.GetInputValue()));
+			serNode.setPartOfBreakdown(Boolean.parseBoolean(partOfBreakdown.GetInputValue()));
 			serNode.setDisplayName(dispName);
 			serNode.setDescription(description.GetInputValue());
 			serNode.setUserNotes(userNotes.GetInputValue());

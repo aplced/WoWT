@@ -6,9 +6,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import WoWItemDialogs.WoWValueInput.Implementation.WoWCheckboxInputValue;
+import WoWItemDialogs.WoWValueInput.Implementation.WoWEditableCheckboxInputValue;
 import WoWItemDialogs.WoWValueInput.Implementation.WoWSpinnerInputValue;
 import WoWItemDialogs.WoWValueInput.Implementation.WoWTextAreaInputValue;
 import WoWItemDialogs.WoWValueInput.Implementation.WoWTextFieldInputValue;
+import WoWPanelUI.WoWItemJPanels.WoWItemJPanel;
 
 public class WoWValueInput
 {
@@ -39,6 +42,23 @@ public class WoWValueInput
 		
 		return new WoWValueInput(inputName, inpValue, WoWSpinnerInputValue.GetGridConstraints());
 	}
+
+	public static WoWValueInput WoWEditableCheckboxInput(WoWItemJPanel wowSer)
+	{
+		IWoWValueInput inpValue = new WoWEditableCheckboxInputValue(wowSer);
+		
+		return new WoWValueInput("", inpValue, WoWEditableCheckboxInputValue.GetGridConstraints());
+	}
+	
+	public static WoWValueInput WoWCheckboxInput(String inputName, String defaultValue)
+	{
+		IWoWValueInput inpValue = new WoWCheckboxInputValue();
+		inpValue.SetInputValue(defaultValue);
+		
+		return new WoWValueInput(inputName, inpValue, WoWCheckboxInputValue.GetGridConstraints());
+	}
+	
+	
 	
 	private WoWValueInput(String inputName, IWoWValueInput inputComp, GridBagConstraints c)
 	{

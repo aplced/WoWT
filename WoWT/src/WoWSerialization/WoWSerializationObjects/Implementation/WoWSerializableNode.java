@@ -16,6 +16,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	private String description = "";
 	private String userNotes = "";
 	private Boolean doneState = false;
+	private Boolean partOfBreakdown = false;
 	private float taskDaysEstimate = 0;
 	private ArrayList<String> childNodes = new ArrayList<String>();
 	private ArrayList<String> parentNodes = new ArrayList<String>();
@@ -63,6 +64,16 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 		FireObjectChangedEvent();
 	}
 
+	public Boolean getPartOfBreakdown()
+	{
+		return this.partOfBreakdown;
+	}
+	public void setPartOfBreakdown(Boolean partOfBreakdown)
+	{
+		this.partOfBreakdown = doneState;
+		FireObjectChangedEvent();
+	}
+	
 	public Float getTaskDaysEstimate()
 	{
 		return taskDaysEstimate;

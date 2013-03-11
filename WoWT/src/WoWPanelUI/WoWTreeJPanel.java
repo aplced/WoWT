@@ -19,6 +19,7 @@ public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction
 	GridLayout gridL;
 	ArrayList<WoWItemJPanel> allItems;
 	WoWSessionSerializable curSesSr;
+	WoWItemJPanel startableWork;
 	
 	public WoWTreeJPanel()
 	{
@@ -125,7 +126,7 @@ public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction
     	
 	    ArrayList<JPanel> tierPanels = new ArrayList<JPanel>();
 	    
-	    WoWItemJPanel startableWork = GetRootPanel(deserializedPanels);
+	    startableWork = GetRootPanel(deserializedPanels);
 	    GetOrCreateTierPanel(0, tierPanels).add(startableWork);
 	    
 	    CalcualteWoWItemsTreeDepth(startableWork, 1);
@@ -185,5 +186,10 @@ public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction
 	public void DataChanged()
 	{
 		SaveSessionToFile(WoWFileHelper.WoWTempSessionFile);
+	}
+	
+	public WoWItemJPanel GetRootPanel()
+	{
+		return startableWork;
 	}
 }

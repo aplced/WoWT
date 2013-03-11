@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
+import WoWItemDialogs.WoWEditors.EditWoWBreakdown.EditWoWBreakdownFrame;
 import WoWItemDialogs.WoWEditors.EditWoWItem.EditWoWItemFrame;
 import WoWItemDialogs.WoWEditors.EditWoWItem.IWoWItemEditDoneAction;
 import WoWPanelUI.WoWTreeJPanel;
@@ -26,6 +27,7 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 	JButton loadSession;
 	JButton openFile;
 	JButton createWoWItem;
+	JButton prepareWoWBreakdown;
 	JFileChooser fcSession;
 	JFileChooser fcWoWTree;;
 	
@@ -57,6 +59,10 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 		createWoWItem = new JButton("New WoW item");
 		createWoWItem.addActionListener(this);
 		add(createWoWItem);
+		
+		prepareWoWBreakdown = new JButton("Work breakdown");
+		prepareWoWBreakdown.addActionListener(this);
+		add(prepareWoWBreakdown);
 	}
 
 	@Override
@@ -102,7 +108,12 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 				mainFrame.SetTitle(file.getAbsolutePath());
 				mainPanel.revalidate();
 			}
-		} 
+		}
+		else if(e.getSource() == prepareWoWBreakdown)
+		{
+			EditWoWBreakdownFrame editBreakDown = new EditWoWBreakdownFrame(treePanel.GetRootPanel());
+			editBreakDown.setVisible(true);
+		}
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,12 +34,25 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	
 	JLabel taskEstimatedDurationInfo;
 	JSpinner taskEstimatedDurationInput;
+	JCheckBox partOfBreakdown;
 	JLabel displayNameInfo;
 	
 	JTextArea descriptionInput;
 	JTextArea userNotesInput;
 	
 	JPanel mainPanel = new JPanel();
+	
+	private void AddPartOfBreakdwon(JPanel dispPnl, int col, int row)
+	{
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = col;
+        c.gridy = row;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(4,4,4,4);
+        
+		partOfBreakdown = new JCheckBox("Part of work breakdown");
+		dispPnl.add(partOfBreakdown, c);
+	}
 	
 	private void AddTaskDuration(JPanel dispPnl, int col, int row)
 	{
@@ -48,7 +62,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
         c.anchor = GridBagConstraints.LINE_START;
         c.insets = new Insets(4,4,4,4);
         
-		taskEstimatedDurationInfo = new JLabel("Task duration in days");
+		taskEstimatedDurationInfo = new JLabel("Task duration:");
 		dispPnl.add(taskEstimatedDurationInfo, c);
 		
 		c.gridx = c.gridx + 1;
@@ -128,9 +142,8 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 	
 	private void UpdateDisplayedInfo()
 	{
-		taskEstimatedDurationInfo.setText("Task duration:");
+		partOfBreakdown.setSelected(serNode.getPartOfBreakdown());
 		taskEstimatedDurationInput.setValue(serNode.getTaskDaysEstimate());
-		
 		displayNameInfo.setText(serNode.getDisplayName());
 		uniqueIdInfo.setText("(" + serNode.getUniqueID() + ")");
 		descriptionInput.setText(serNode.getDescription());
@@ -145,6 +158,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		
         AddDisplayName(dispPnl, 0, row++);
         AddTaskDuration(dispPnl, 0, row++);
+        AddPartOfBreakdwon(dispPnl, 0, row++);
         AddDescription(dispPnl, 0, row++);
         AddUserNotes(dispPnl, 0, row++);
         AddInvokeablesButtons(dispPnl, 0, row++);
@@ -211,6 +225,8 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 			
 			Number taskDays = (Number)taskEstimatedDurationInput.getValue();
 			serNode.setTaskDaysEstimate(taskDays.floatValue());
+			
+			serNode.setPartOfBreakdown(partOfBreakdown.isSelected());
 						
 			NotifyWoWItemEditDone();
 			

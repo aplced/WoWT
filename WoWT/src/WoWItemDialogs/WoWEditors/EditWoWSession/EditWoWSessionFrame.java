@@ -18,9 +18,8 @@ import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSer
 @SuppressWarnings("serial")
 public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListener
 {
-	JButton apply;
+	JButton sendMail;
 	JButton cancel;
-	JButton setDefault;
 	
 	WoWValueInput devName;
 	WoWValueInput devUserName;
@@ -66,18 +65,14 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
         JPanel controlPnl = new JPanel();
         controlPnl.setLayout(new FlowLayout());
         
-		apply = new JButton("Apply");
-		apply.addActionListener(this);
+		sendMail = new JButton("e-mail");
+		sendMail.addActionListener(this);
 		
 		cancel = new JButton("Cancel");
 		cancel.addActionListener(this);
-		
-		setDefault = new JButton("Save as default");
-		setDefault.addActionListener(this);
 	    
-		controlPnl.add(apply);
+		controlPnl.add(sendMail);
 		controlPnl.add(cancel);
-		controlPnl.add(setDefault);
 		
 		return controlPnl;
 	}
@@ -124,21 +119,13 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == apply)
+		if (e.getSource() == sendMail)
 		{
 			CollectUserInput();
-			serSession.FireObjectChangedEvent();
 			ClearAndClose();
 		}
 		else if (e.getSource() == cancel) 
 		{
-			ClearAndClose();
-		}
-		else if (e.getSource() == setDefault)
-		{
-			CollectUserInput();
-			serSession.FireObjectChangedEvent();
-			NotifyWoWSessionEditDone();
 			ClearAndClose();
 		}
 	}
