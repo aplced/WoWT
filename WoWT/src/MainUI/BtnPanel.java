@@ -111,7 +111,7 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 		}
 		else if(e.getSource() == prepareWoWBreakdown)
 		{
-			EditWoWBreakdownFrame editBreakDown = new EditWoWBreakdownFrame(treePanel.GetRootPanel());
+			EditWoWBreakdownFrame editBreakDown = new EditWoWBreakdownFrame(treePanel.GetRootPanel(), treePanel.GetLoadedSession().getSessionInfo());
 			editBreakDown.setVisible(true);
 		}
 	}

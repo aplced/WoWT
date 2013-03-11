@@ -228,10 +228,10 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 			
 			serNode.setPartOfBreakdown(partOfBreakdown.isSelected());
 						
-			NotifyWoWItemEditDone();
-			
 			setVisible(false);
 			dispose();
+			
+			NotifyWoWItemEditDone();
 		}
 		else if (e.getSource() == edit) 
 		{

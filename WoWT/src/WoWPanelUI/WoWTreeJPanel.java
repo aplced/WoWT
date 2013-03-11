@@ -192,4 +192,9 @@ public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction
 	{
 		return startableWork;
 	}
+	
+	public WoWSessionSerializable GetLoadedSession()
+	{
+		return curSesSr;
+	}
 }

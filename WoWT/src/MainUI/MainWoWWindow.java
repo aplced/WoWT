@@ -59,7 +59,7 @@ public class MainWoWWindow extends JFrame implements IMainWoWFrame
         
     	JScrollPane scrollPane = new JScrollPane(treePanel);
     	treePanel.setAutoscrolls(true);
-    	scrollPane.setPreferredSize(new Dimension( treePanel.getPreferredSize().width + 125, treePanel.getPreferredSize().height + 125));        
+    	scrollPane.setPreferredSize(new Dimension(treePanel.getPreferredSize().width + 125, treePanel.getPreferredSize().height + 125));        
         
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         

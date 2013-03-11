@@ -7,11 +7,8 @@
   <void property="displayName"> 
    <string>SPS request</string> 
   </void> 
-  <void property="doneState"> 
+  <void property="partOfBreakdown"> 
    <boolean>true</boolean> 
-  </void> 
-  <void property="taskDaysEstimate"> 
-   <float>0.5</float> 
   </void> 
   <void property="uniqueID"> 
    <string>sps_request</string> 

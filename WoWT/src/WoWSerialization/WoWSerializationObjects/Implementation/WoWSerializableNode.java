@@ -70,7 +70,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	}
 	public void setPartOfBreakdown(Boolean partOfBreakdown)
 	{
-		this.partOfBreakdown = doneState;
+		this.partOfBreakdown = partOfBreakdown;
 		FireObjectChangedEvent();
 	}
 	

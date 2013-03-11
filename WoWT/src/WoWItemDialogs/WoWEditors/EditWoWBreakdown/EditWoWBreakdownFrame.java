@@ -15,6 +15,7 @@ import WoWItemDialogs.WoWEditors.WoWEditorFrame;
 import WoWItemDialogs.WoWValueInput.WoWValueInput;
 import WoWPanelUI.WoWItemJPanels.WoWItemJPanel;
 import WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSerializable;
 
 
 @SuppressWarnings("serial")
@@ -23,18 +24,19 @@ public class EditWoWBreakdownFrame extends WoWEditorFrame implements ActionListe
 	JButton email;
 	JButton cancel;
 	
+	WoWSessionInfoSerializable sessionInfo;
+	
 	ArrayList<WoWValueInput> breakdown = new ArrayList<WoWValueInput>();
 	
-    private void CreateWoWBreakdownItems(WoWItemJPanel wowItem)
-    {
-    	if(wowItem.GetUniqueID() != WoWSerializableNode.StartableWorkId)
-    	{
-    		breakdown.add(WoWValueInput.WoWEditableCheckboxInput(wowItem));
-    	}
-    	
+    private void CreateWoWBreakdownItems(WoWItemJPanel wowItem, int treeDepth)
+    {   	
     	for(WoWItemJPanel child : wowItem.GetChildren())
     	{
-    		CreateWoWBreakdownItems(child);
+    		if(child.TreeDepth == treeDepth)
+    		{
+    			breakdown.add(WoWValueInput.WoWEditableCheckboxInput(child));
+    			CreateWoWBreakdownItems(child, treeDepth + 1);
+    		}
     	}
     }
 	
@@ -86,13 +88,33 @@ public class EditWoWBreakdownFrame extends WoWEditorFrame implements ActionListe
 		return mainPanel;
 	}
 	
-	public EditWoWBreakdownFrame(WoWItemJPanel wowItem)
+	public EditWoWBreakdownFrame(WoWItemJPanel wowItem, WoWSessionInfoSerializable iSessionInfo)
 	{
+		sessionInfo = iSessionInfo;
+		
 	    setTitle("Work breakdown");
 	    setLocationRelativeTo(null);
-	    CreateWoWBreakdownItems(wowItem);
+	    CreateWoWBreakdownItems(wowItem, 1);
 	    setContentPane(CreateMainNewWoWItemPanel());
 	    pack();
+	}
+	
+	private String PrepareEmainBody()
+	{
+		StringBuilder body = new StringBuilder();
+		
+		body.append(sessionInfo.getTaskName() + "--" + sessionInfo.getTaskId() + "\n");
+		
+		for(WoWValueInput item : breakdown)
+        {
+			String itemVal = item.GetInputValue(); 
+			if(itemVal != null)
+			{
+				body.append("\t--" + itemVal + "\n");
+			}
+        }
+		
+		return body.toString();
 	}
 
 	@Override
@@ -100,6 +122,7 @@ public class EditWoWBreakdownFrame extends WoWEditorFrame implements ActionListe
 	{
 		if (e.getSource() == email)
 		{
+			String email = PrepareEmainBody();
 			ClearAndClose();
 		}
 		else if (e.getSource() == cancel) 
