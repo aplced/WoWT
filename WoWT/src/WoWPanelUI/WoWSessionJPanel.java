@@ -5,12 +5,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import WoWItemDialogs.EditWoWSessionFrame;
-import WoWItemDialogs.IWoWSessionEditDoneAction;
-import WoWSerialization.IWoWDataChangedAction;
+import WoWItemDialogs.WoWEditors.EditWoWSession.EditWoWSessionFrame;
+import WoWItemDialogs.WoWEditors.EditWoWSession.IWoWSessionEditDoneAction;
 import WoWSerialization.WoWFileHelper;
-import WoWSerialization.WoWSessionInfoSerializable;
-import WoWSerialization.WoWSessionSerializable;
+import WoWSerialization.WoWSerializationObjects.IWoWDataChangedAction;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSerializable;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSerializable;
 
 
 @SuppressWarnings("serial")

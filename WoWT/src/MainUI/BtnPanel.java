@@ -8,13 +8,13 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
-import WoWItemDialogs.EditWoWItemFrame;
-import WoWItemDialogs.IWoWItemEditDoneAction;
+import WoWItemDialogs.WoWEditors.EditWoWItem.EditWoWItemFrame;
+import WoWItemDialogs.WoWEditors.EditWoWItem.IWoWItemEditDoneAction;
 import WoWPanelUI.WoWTreeJPanel;
 import WoWSerialization.WoWFileHelper;
-import WoWSerialization.WoWSerializableNode;
-import WoWSerialization.WoWSessionSerializable;
 import WoWSerialization.XMLFileFilter;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSerializable;
 
 @SuppressWarnings("serial")
 public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDoneAction

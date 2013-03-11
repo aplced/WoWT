@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialization.WoWSessionInfoSerializable"> 
+ <object class="WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSerializable"> 
   <void property="developerName"> 
    <string>Atanas Andreev</string> 
   </void> 

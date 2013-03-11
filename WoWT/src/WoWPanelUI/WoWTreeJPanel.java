@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import WoWSerialization.IWoWDataChangedAction;
+import WoWPanelUI.WoWItemJPanels.WoWItemJPanel;
+import WoWPanelUI.WoWItemJPanels.WoWProcessStartJPanel;
 import WoWSerialization.WoWFileHelper;
-import WoWSerialization.WoWSerializableNode;
-import WoWSerialization.WoWSessionSerializable;
+import WoWSerialization.WoWSerializationObjects.IWoWDataChangedAction;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSerializable;
 
 
 @SuppressWarnings("serial")

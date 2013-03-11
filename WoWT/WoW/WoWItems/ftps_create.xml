@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialization.WoWSerializableNode"> 
+ <object class="WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode"> 
   <void property="description"> 
    <string>FTPS used in Start meeting</string> 
   </void> 

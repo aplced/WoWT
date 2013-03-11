@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialization.WoWSerializableNode"> 
+ <object class="WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode"> 
   <void property="description"> 
    <string>Create a code review in http://reviewtool-eu.asml.com:9020/  After all reviewers and info is entered, attach the TPS pdf</string> 
   </void> 

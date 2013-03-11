@@ -10,8 +10,8 @@ import javax.swing.UIManager;
 import WoWPanelUI.WoWSessionJPanel;
 import WoWPanelUI.WoWTreeJPanel;
 import WoWSerialization.WoWFileHelper;
-import WoWSerialization.WoWSessionInfoSerializable;
-import WoWSerialization.WoWSessionSerializable;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSerializable;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSerializable;
 
 
 @SuppressWarnings("serial")

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialization.WoWSerializableNode"> 
+ <object class="WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode"> 
   <void property="description"> 
    <string>Go to the streams integration request page: http://netscanner-ied.asml.com/cgi-bin/cocoutil/cocotdl Make sure that all fields are marked OK. Upload the UCC TPS and TAR. Sign off the integration page and prompt the Group Lead to sign it.</string> 
   </void> 

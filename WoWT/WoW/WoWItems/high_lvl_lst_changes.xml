@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_37" class="java.beans.XMLDecoder"> 
- <object class="WoWSerialization.WoWSerializableNode"> 
+ <object class="WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode"> 
   <void property="description"> 
    <string>Create an email with , descriptions, affected files, possible testing and present autotesters. You need to get all information from the componet owners or FCT regarding how to test. </string> 
   </void> 

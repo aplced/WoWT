@@ -17,8 +17,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 
+import WoWItemDialogs.WoWEditors.WoWEditorFrame;
+import WoWItemDialogs.WoWEditors.EditWoWItem.EditWoWItemFrame;
+import WoWItemDialogs.WoWEditors.EditWoWItem.IWoWItemEditDoneAction;
 import WoWSerialization.WoWFileHelper;
-import WoWSerialization.WoWSerializableNode;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode;
 
 @SuppressWarnings("serial")
 public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListener, IWoWItemEditDoneAction
