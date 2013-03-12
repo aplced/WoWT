@@ -5,25 +5,36 @@ import java.util.concurrent.Semaphore;
 
 public class ObjectChangedEventDispatcher
 {	
-	Semaphore lock = new Semaphore(1);
+	Semaphore listenersLock = new Semaphore(1);
+	Semaphore toBeRemovedLock = new Semaphore(1);
 	
 	protected ArrayList<IWoWDataChangedAction> wowItemListeners = new ArrayList<IWoWDataChangedAction>();
 	private ArrayList<IWoWDataChangedAction> removedListeners = new ArrayList<IWoWDataChangedAction>();
 	
 	protected void ClearListeners()
 	{
-		try 
-    	{
-			lock.acquire();
-		}
-    	catch (InterruptedException e) 
-    	{
-			e.printStackTrace();
-		}
+		if(listenersLock.tryAcquire())
+		{
 		
-		wowItemListeners.clear();
+			wowItemListeners.clear();
 		
-		lock.release();
+			listenersLock.release();
+		}
+		else
+		{
+			try 
+			{
+				toBeRemovedLock.acquire();
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+
+			removedListeners.addAll(wowItemListeners);
+			
+			toBeRemovedLock.release();
+		}
 	}
 	
     public void addObjectChangedEventListener(IWoWDataChangedAction toAdd) 
@@ -32,7 +43,7 @@ public class ObjectChangedEventDispatcher
     	{
 	    	try 
 	    	{
-				lock.acquire();
+				listenersLock.acquire();
 			}
 	    	catch (InterruptedException e) 
 	    	{
@@ -43,7 +54,7 @@ public class ObjectChangedEventDispatcher
 	        
 	        RemoveQueuedListeners();
 	        
-	        lock.release();
+	        listenersLock.release();
     	}
     }
     
@@ -51,11 +62,11 @@ public class ObjectChangedEventDispatcher
     {
     	if(wowItemListeners.contains(toRem))
     	{
-    		if(lock.tryAcquire())
+    		if(listenersLock.tryAcquire())
     		{
     			wowItemListeners.remove(toRem);
     	
-    			lock.release();
+    			listenersLock.release();
     		}
     		else
     		{
@@ -68,7 +79,7 @@ public class ObjectChangedEventDispatcher
 	{
     	try 
     	{
-			lock.acquire();
+			listenersLock.acquire();
 		}
     	catch (InterruptedException e) 
     	{
@@ -82,16 +93,27 @@ public class ObjectChangedEventDispatcher
     	
     	RemoveQueuedListeners();
     	
-    	lock.release();
+    	listenersLock.release();
 	} 
     
     private void RemoveQueuedListeners()
     {
+    	try 
+		{
+			toBeRemovedLock.acquire();
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
+    	
     	while(!removedListeners.isEmpty())
     	{
     		IWoWDataChangedAction toRem = removedListeners.get(0);
     		removedListeners.remove(0);
-    		wowItemListeners.remove(removedListeners);
+    		wowItemListeners.remove(toRem);
     	}
+    	
+    	toBeRemovedLock.release();
     }
 }
