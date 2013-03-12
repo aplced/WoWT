@@ -7,11 +7,14 @@
   <void property="displayName"> 
    <string>Create FTPS</string> 
   </void> 
+  <void property="partOfBreakdown"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="taskDaysEstimate"> 
+   <float>1.0</float> 
+  </void> 
   <void property="uniqueID"> 
    <string>ftps_create</string> 
   </void> 
-  <void property="taskDaysEstimate"> 
-   <float>1</float> 
-  </void>   
  </object> 
 </java> 

@@ -7,6 +7,9 @@
   <void property="displayName"> 
    <string>Testing</string> 
   </void> 
+  <void property="partOfBreakdown"> 
+   <boolean>true</boolean> 
+  </void> 
   <void property="taskDaysEstimate"> 
    <float>2.0</float> 
   </void> 

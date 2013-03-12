@@ -7,11 +7,14 @@
   <void property="displayName"> 
    <string>Create software change</string> 
   </void> 
-  <void property="uniqueID"> 
-   <string>create_swchg</string> 
+  <void property="partOfBreakdown"> 
+   <boolean>true</boolean> 
   </void> 
   <void property="taskDaysEstimate"> 
    <float>0.5</float> 
-  </void>   
+  </void> 
+  <void property="uniqueID"> 
+   <string>create_swchg</string> 
+  </void> 
  </object> 
 </java> 
