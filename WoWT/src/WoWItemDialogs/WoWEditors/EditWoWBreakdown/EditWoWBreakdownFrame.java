@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import WoWItemDialogs.WoWEditors.WoWEditorFrame;
 import WoWItemDialogs.WoWValueInput.WoWValueInput;
 import WoWPanelUI.WoWItemJPanels.WoWItemJPanel;
-import WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode;
 import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSerializable;
 
 

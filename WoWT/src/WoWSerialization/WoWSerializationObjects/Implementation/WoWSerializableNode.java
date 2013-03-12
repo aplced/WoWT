@@ -17,7 +17,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	private String userNotes = "";
 	private Boolean doneState = false;
 	private Boolean partOfBreakdown = false;
-	private Float taskDaysEstimate = 0;
+	private Float taskDaysEstimate = 0F;
 	private ArrayList<String> childNodes = new ArrayList<String>();
 	private ArrayList<String> parentNodes = new ArrayList<String>();
 	private ArrayList<String> invokeables = new ArrayList<String>();
