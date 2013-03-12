@@ -103,6 +103,11 @@ public class WoWEditableCheckboxInputValue extends JPanel implements IWoWValueIn
 		
 		PopulateFromWoWSer(nodePanel.CreateSerializable());
 	}
+	
+	public Float GetItemDuration()
+	{
+		return nodePanel.CreateSerializable().getTaskDaysEstimate();
+	}
 
 	@Override
 	public String GetInputValue() 

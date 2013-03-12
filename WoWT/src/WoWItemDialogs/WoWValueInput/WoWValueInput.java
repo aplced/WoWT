@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import WoWItemDialogs.WoWValueInput.Implementation.WoWCheckboxInputValue;
 import WoWItemDialogs.WoWValueInput.Implementation.WoWEditableCheckboxInputValue;
+import WoWItemDialogs.WoWValueInput.Implementation.WoWPasswordFieldInputValue;
 import WoWItemDialogs.WoWValueInput.Implementation.WoWSpinnerInputValue;
 import WoWItemDialogs.WoWValueInput.Implementation.WoWTextAreaInputValue;
 import WoWItemDialogs.WoWValueInput.Implementation.WoWTextFieldInputValue;
@@ -58,7 +59,12 @@ public class WoWValueInput
 		return new WoWValueInput(inputName, inpValue, WoWCheckboxInputValue.GetGridConstraints());
 	}
 	
-	
+	public static WoWValueInput WoWPasswordFieldInput(String inputName)
+	{
+		IWoWValueInput inpValue = new WoWPasswordFieldInputValue(20);
+		
+		return new WoWValueInput(inputName, inpValue, WoWPasswordFieldInputValue.GetGridConstraints());
+	}
 	
 	private WoWValueInput(String inputName, IWoWValueInput inputComp, GridBagConstraints c)
 	{

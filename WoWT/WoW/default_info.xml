@@ -4,8 +4,17 @@
   <void property="developerName"> 
    <string>Atanas Andreev</string> 
   </void> 
+  <void property="scrumMasters"> 
+   <string>atanas.andreev@strypes.eu</string> 
+  </void> 
   <void property="streamName"> 
    <string>aandreev_at_NXT3_</string> 
+  </void> 
+  <void property="taskId"> 
+   <int>1234</int> 
+  </void> 
+  <void property="taskName"> 
+   <string>Example task</string> 
   </void> 
   <void property="userName"> 
    <string>aandreev</string> 

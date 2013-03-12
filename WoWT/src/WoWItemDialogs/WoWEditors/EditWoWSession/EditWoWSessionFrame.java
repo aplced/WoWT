@@ -12,13 +12,15 @@ import javax.swing.JScrollPane;
 
 import WoWItemDialogs.WoWEditors.WoWEditorFrame;
 import WoWItemDialogs.WoWValueInput.WoWValueInput;
+import WoWSerialization.WoWFileHelper;
 import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSerializable;
 
 
 @SuppressWarnings("serial")
 public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListener
 {
-	JButton sendMail;
+	JButton apply;
+	JButton setDefault;
 	JButton cancel;
 	
 	WoWValueInput devName;
@@ -65,13 +67,17 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
         JPanel controlPnl = new JPanel();
         controlPnl.setLayout(new FlowLayout());
         
-		sendMail = new JButton("e-mail");
-		sendMail.addActionListener(this);
+		apply = new JButton("Apply");
+		apply.addActionListener(this);
+		
+		setDefault = new JButton("Set default");
+		setDefault.addActionListener(this);
 		
 		cancel = new JButton("Cancel");
 		cancel.addActionListener(this);
 	    
-		controlPnl.add(sendMail);
+		controlPnl.add(apply);
+		controlPnl.add(setDefault);
 		controlPnl.add(cancel);
 		
 		return controlPnl;
@@ -119,9 +125,15 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == sendMail)
+		if (e.getSource() == apply)
 		{
 			CollectUserInput();
+			ClearAndClose();
+		}
+		else if(e.getSource() == setDefault)
+		{
+			CollectUserInput();
+			serSession.SaveToFile(WoWFileHelper.WoWDefaultSessionInfo);
 			ClearAndClose();
 		}
 		else if (e.getSource() == cancel) 

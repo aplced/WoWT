@@ -6,19 +6,32 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Properties;
 
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import WoWItemDialogs.UserPrompt;
 import WoWItemDialogs.WoWEditors.WoWEditorFrame;
+import WoWItemDialogs.WoWEditors.EditWoWItem.IWoWItemEditDoneAction;
 import WoWItemDialogs.WoWValueInput.WoWValueInput;
 import WoWPanelUI.WoWItemJPanels.WoWItemJPanel;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode;
 import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSerializable;
 
 
 @SuppressWarnings("serial")
-public class EditWoWBreakdownFrame extends WoWEditorFrame implements ActionListener
+public class EditWoWBreakdownFrame extends WoWEditorFrame implements ActionListener, IWoWItemEditDoneAction
 {
 	JButton email;
 	JButton cancel;
@@ -98,8 +111,9 @@ public class EditWoWBreakdownFrame extends WoWEditorFrame implements ActionListe
 	    pack();
 	}
 	
-	private String PrepareEmainBody()
+	private String PrepareEmailBody()
 	{
+		Float totalDuration = 0F;
 		StringBuilder body = new StringBuilder();
 		
 		body.append(sessionInfo.getTaskName() + "--" + sessionInfo.getTaskId() + "\n");
@@ -115,14 +129,106 @@ public class EditWoWBreakdownFrame extends WoWEditorFrame implements ActionListe
 		
 		return body.toString();
 	}
+	
+	UserPrompt emailAuth;
+	
+    private class WoWMailailAuth extends Authenticator
+    {
+  	  String userName;
+  	  String password;
+  	  
+  	  public WoWMailailAuth(String userName, String password)
+  	  {
+  		  super();
+  		  
+  		  this.userName = userName;
+  		  this.password = password;
+  	  }
+  	  
+  	  protected PasswordAuthentication getPasswordAuthentication()
+  	  {
+  		  return new PasswordAuthentication(userName, password);
+  	  }
+    };
+	
+	private void GetEMailUserAndPass(String user)
+	{
+		String userName = sessionInfo.getDeveloperName().toLowerCase().replace(" ", ".") + "@strypes.eu";
+	      
+		emailAuth = new UserPrompt("E-mail authentication");
+		emailAuth.addWoWItemEditListener(this);
+		emailAuth.AddPromptTextField("User name", userName);
+		emailAuth.AddPromptPasswordField("Password", "");
+		
+		emailAuth.DisplayPrompt();
+	}
+	
+	@Override
+	public void EditDone(WoWSerializableNode serNode)
+	{
+		String userName = emailAuth.GetPrompt(0);
+		String password = emailAuth.GetPrompt(1);
+		
+		SendWorkBreakdownMail(PrepareEmailBody(), userName, password);
+	}
+	
+	private void SendWorkBreakdownMail(String messageBody, String userName, String password)
+	{
+	      String[] to = sessionInfo.getScrumMasters().split("\n");
+	      
+	      final String from = sessionInfo.getDeveloperName().toLowerCase().replace(" ", ".") + "@strypes.eu";
+	      
+	      Properties properties = System.getProperties();
+
+	      properties.setProperty("mail.smtp.starttls.enable", "true");
+	      properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+	      properties.setProperty("mail.smtp.port", "587");
+	      properties.setProperty("mail.smtp.auth", "true");
+	      
+	      WoWMailailAuth auth = new WoWMailailAuth(userName, password);
+	      
+	      Session session = Session.getInstance(properties, auth);
+
+	      try
+	      {
+	         MimeMessage message = new MimeMessage(session);
+
+	         message.setFrom(new InternetAddress(from));
+
+	         if(to.length == 1)
+	         {
+	        	 message.addRecipient(Message.RecipientType.TO, new InternetAddress(to[0]));
+	         }
+	         else
+	         {
+	        	 Address[] addresses = new Address[to.length];
+	        	 for(int i = 0; i < to.length; i++)
+	        	 {
+	        		 addresses[i] = new InternetAddress(to[i]);
+	        	 }
+	        	 message.addRecipients(Message.RecipientType.TO,  addresses);
+	         }
+
+	         message.setSubject("Workbreakdown " + sessionInfo.getTaskName() + " - " + sessionInfo.getTaskId());
+
+	         message.setText(messageBody);
+
+	         Transport.send(message);
+	      }
+	      catch (MessagingException mex)
+	      {
+	         mex.printStackTrace();
+	      }
+	      
+	      ClearAndClose();
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		if (e.getSource() == email)
 		{
-			String email = PrepareEmainBody();
-			ClearAndClose();
+			GetEMailUserAndPass(sessionInfo.getDeveloperName().toLowerCase().replace(" ", ".") + "@strypes.eu");
 		}
 		else if (e.getSource() == cancel) 
 		{
