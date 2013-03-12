@@ -17,7 +17,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	private String userNotes = "";
 	private Boolean doneState = false;
 	private Boolean partOfBreakdown = false;
-	private float taskDaysEstimate = 0;
+	private Float taskDaysEstimate = 0;
 	private ArrayList<String> childNodes = new ArrayList<String>();
 	private ArrayList<String> parentNodes = new ArrayList<String>();
 	private ArrayList<String> invokeables = new ArrayList<String>();
@@ -78,7 +78,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
 	{
 		return taskDaysEstimate;
 	}
-	public void setTaskDaysEstimate(float iTaskDaysEstimate)
+	public void setTaskDaysEstimate(Float iTaskDaysEstimate)
 	{
 		taskDaysEstimate = iTaskDaysEstimate;
 		FireObjectChangedEvent();
@@ -160,6 +160,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
     	userNotes = cloneObj.userNotes;
     	doneState = cloneObj.doneState;
     	taskDaysEstimate = cloneObj.taskDaysEstimate;
+    	partOfBreakdown = cloneObj.partOfBreakdown;
     	
     	childNodes = new ArrayList<String>();
     	for(String cloneChild: cloneObj.childNodes)

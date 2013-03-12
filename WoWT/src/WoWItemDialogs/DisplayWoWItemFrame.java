@@ -68,7 +68,6 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		c.gridx = c.gridx + 1;
 		taskEstimatedDurationInput = new JSpinner();
 		taskEstimatedDurationInput.setModel(new SpinnerNumberModel(0, 0, 10, 0.5));
-		taskEstimatedDurationInput.setValue(serNode.getTaskDaysEstimate());
 		dispPnl.add(taskEstimatedDurationInput, c);
 	}	
 	
@@ -222,10 +221,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		if (e.getSource() == ok)
 		{
 			serNode.setUserNotes(userNotesInput.getText());
-			
-			Number taskDays = (Number)taskEstimatedDurationInput.getValue();
-			serNode.setTaskDaysEstimate(taskDays.floatValue());
-			
+			serNode.setTaskDaysEstimate((Float)taskEstimatedDurationInput.getValue());
 			serNode.setPartOfBreakdown(partOfBreakdown.isSelected());
 						
 			setVisible(false);

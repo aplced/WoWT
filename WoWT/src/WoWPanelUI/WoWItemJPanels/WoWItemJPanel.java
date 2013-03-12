@@ -114,6 +114,7 @@ public class WoWItemJPanel extends JPanel implements ActionListener, IWoWItemEdi
 		serializable.setUserNotes(userNotes);
 		serializable.setDoneState(doneState.isSelected());
 		serializable.setTaskDaysEstimate(taskDaysEstimate);
+		serializable.setPartOfBreakdown(serNode.getPartOfBreakdown());
 		
 		for(WoWItemJPanel parent : parentWoWNodes)
 		{
