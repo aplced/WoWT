@@ -200,9 +200,7 @@ public class WoWSessionSerializable extends ObjectChangedEventDispatcher impleme
            in.close();
            fileIn.close();
            
-           ArrayList<WoWSerializableNode> serNodes = new ArrayList<WoWSerializableNode>();
-           WoWSessionSerializable.ParseAndCreateTree(sesSr.WoWTree, serNodes);
-           sesSr.setNodes(serNodes);
+           WoWSessionSerializable.ParseAndCreateTree(sesSr.WoWTree, sesSr.getNodes());
        }
        catch(IOException i)
        {
