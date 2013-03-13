@@ -116,18 +116,22 @@ public class EditWoWBreakdownFrame extends WoWEditorFrame implements ActionListe
 		Float totalDuration = 0F;
 		StringBuilder body = new StringBuilder();
 		
-		body.append(sessionInfo.getTaskName() + "--" + sessionInfo.getTaskId() + "\n");
-		
 		for(WoWValueInput item : breakdown)
         {
 			String itemVal = item.GetInputValue(); 
 			if(itemVal != null)
 			{
 				body.append("\t--" + itemVal + "\n");
+				
+				String[] durationSplit = itemVal.split(" - days: ");
+				if(durationSplit.length > 1)
+				{
+					totalDuration += Float.parseFloat(durationSplit[1]);
+				}
 			}
         }
 		
-		return body.toString();
+		return sessionInfo.getTaskName() + " -- " + sessionInfo.getTaskId() + " -- Total duration: " + totalDuration +"\n" + body.toString();
 	}
 	
 	UserPrompt emailAuth;

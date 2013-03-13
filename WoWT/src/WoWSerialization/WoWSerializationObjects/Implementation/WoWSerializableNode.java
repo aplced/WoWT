@@ -179,5 +179,7 @@ public class WoWSerializableNode extends ObjectChangedEventDispatcher
     	{
     		invokeables.add(cloneInvokeables);
     	}
+    	
+    	FireObjectChangedEvent();
     }
 }

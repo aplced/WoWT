@@ -128,12 +128,16 @@ public class EditWoWSessionFrame extends WoWEditorFrame implements ActionListene
 		if (e.getSource() == apply)
 		{
 			CollectUserInput();
+			
+			NotifyWoWSessionEditDone();
 			ClearAndClose();
 		}
 		else if(e.getSource() == setDefault)
 		{
 			CollectUserInput();
 			serSession.SaveToFile(WoWFileHelper.WoWDefaultSessionInfo);
+			
+			NotifyWoWSessionEditDone();
 			ClearAndClose();
 		}
 		else if (e.getSource() == cancel) 

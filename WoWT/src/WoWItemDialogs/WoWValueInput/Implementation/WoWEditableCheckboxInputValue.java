@@ -28,7 +28,7 @@ public class WoWEditableCheckboxInputValue extends JPanel implements IWoWValueIn
 	
 	private void PopulateFromWoWSer(WoWSerializableNode wowSer)
 	{
-		wowItemName.setText(wowSer.getDisplayName() + " - " + wowSer.getTaskDaysEstimate() + " days");
+		wowItemName.setText(wowSer.getDisplayName() + " - days: " + wowSer.getTaskDaysEstimate());
 		partOfBreakdown.setSelected(wowSer.getPartOfBreakdown());
 		
 		wowItemName.setEnabled(partOfBreakdown.isSelected());

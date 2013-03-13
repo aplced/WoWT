@@ -242,6 +242,8 @@ public class WoWSessionSerializable extends ObjectChangedEventDispatcher impleme
 			Nodes.add(tmp);
 		}
 		sessionInfo.CopyFrom(cloneObj.sessionInfo);
+		
+		FireObjectChangedEvent();
 	}
 	
 	@Override

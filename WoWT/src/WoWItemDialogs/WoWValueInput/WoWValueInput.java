@@ -14,7 +14,7 @@ import WoWItemDialogs.WoWValueInput.Implementation.WoWTextAreaInputValue;
 import WoWItemDialogs.WoWValueInput.Implementation.WoWTextFieldInputValue;
 import WoWPanelUI.WoWItemJPanels.WoWItemJPanel;
 
-public class WoWValueInput
+public class WoWValueInput  implements IWoWValueInput
 {
 	JLabel inpName;
 	IWoWValueInput inpValue;
@@ -85,8 +85,15 @@ public class WoWValueInput
 		dispPnl.add((JComponent)inpValue, constraints);
 	}
 	
-	public String GetInputValue()
+	@Override
+	public String GetInputValue() 
 	{
 		return inpValue.GetInputValue();
+	}
+
+	@Override
+	public void SetInputValue(String value) 
+	{
+		inpValue.SetInputValue(value);
 	}
 }

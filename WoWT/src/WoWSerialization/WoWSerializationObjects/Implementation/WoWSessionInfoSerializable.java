@@ -28,6 +28,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setDeveloperName(String name)
 	{
 		devName = name;
+		FireObjectChangedEvent();
 	}
 	
 	public String getUserName()
@@ -37,6 +38,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setUserName(String usrName)
 	{
 		devUserName = usrName;
+		FireObjectChangedEvent();
 	}    	
 	
 	public String getStreamName()
@@ -46,6 +48,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setStreamName(String strName)
 	{
 		streamName = strName;
+		FireObjectChangedEvent();
 	}
 	
 	public Integer getTaskId()
@@ -55,6 +58,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setTaskId(Integer inTaskId)
 	{
 		taskId = inTaskId;
+		FireObjectChangedEvent();
 	}
 	
 	public String getTaskName()
@@ -64,6 +68,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setTaskName(String iTaskName)
 	{
 		taskName = iTaskName;
+		FireObjectChangedEvent();
 	}
 
 	public String getScrumMasters()
@@ -73,6 +78,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setScrumMasters(String iScrumMasters)
 	{
 		scrumMasters = iScrumMasters;
+		FireObjectChangedEvent();
 	}
 	
 	public String getComponents()
@@ -82,6 +88,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setComponents(String comp)
 	{
 		components = comp;
+		FireObjectChangedEvent();
 	} 
 	
 	public String getBuildingBlocks()
@@ -91,6 +98,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setBuildingBlocks(String bblocks)
 	{
 		buildingBlocks = bblocks;
+		FireObjectChangedEvent();
 	}
 	
 	public String getFuncClusters()
@@ -100,6 +108,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
 	public void setFuncClusters(String fclusters)
 	{
 		funcClusters = fclusters;
+		FireObjectChangedEvent();
 	} 
 	
     public void SaveToFile(String fileName)
@@ -155,5 +164,7 @@ public class WoWSessionInfoSerializable  extends ObjectChangedEventDispatcher
     	components = cloneObj.components;
     	buildingBlocks = cloneObj.buildingBlocks;
     	funcClusters = cloneObj.funcClusters;
+    	
+    	FireObjectChangedEvent();
     }
 }

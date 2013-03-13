@@ -1,6 +1,12 @@
 package MainUI;
 
+import WoWPanelUI.WoWTreeJPanel;
+import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSerializable;
+
 public interface IMainWoWFrame 
 {
-	public void SetTitle(String title);
+	public WoWSessionSerializable CreateNewSession();
+	public void SetSession(WoWSessionSerializable session, String title);
+	public void SaveSession(String filePath);
+	public WoWTreeJPanel GetWoWTreePanel();
 }

@@ -20,29 +20,22 @@ import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSeriali
 @SuppressWarnings("serial")
 public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDoneAction
 {
-	JPanel mainPanel;
-	WoWTreeJPanel treePanel;
 	IMainWoWFrame mainFrame;
 	JButton saveSession;
 	JButton loadSession;
-	JButton openFile;
+	JButton newSession;
 	JButton createWoWItem;
 	JButton prepareWoWBreakdown;
 	JFileChooser fcSession;
-	JFileChooser fcWoWTree;;
 	
-	public BtnPanel(WoWTreeJPanel refTreePanel, JPanel refMainPanel, IMainWoWFrame refMainFrame) 
+	public BtnPanel(IMainWoWFrame refMainFrame) 
 	{
 		setLayout(new FlowLayout());
 		
-		mainPanel = refMainPanel;
-		treePanel = refTreePanel;
 		mainFrame = refMainFrame;
 		
 		fcSession = new JFileChooser(System.getProperty("user.home"));
 		fcSession.addChoosableFileFilter(new XMLFileFilter());
-		
-		fcWoWTree = new JFileChooser(System.getProperty("user.home"));
 		
 		saveSession = new JButton("Save Session");
 		saveSession.addActionListener(this);
@@ -52,9 +45,9 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 		loadSession.addActionListener(this);
 		add(loadSession);
 		
-		openFile = new JButton("Open WoW tree");
-		openFile.addActionListener(this);
-		add(openFile);
+		newSession = new JButton("New Session");
+		newSession.addActionListener(this);
+		add(newSession);
 		
 		createWoWItem = new JButton("New WoW item");
 		createWoWItem.addActionListener(this);
@@ -68,18 +61,9 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == openFile)
+		if (e.getSource() == newSession)
 		{
-			int returnVal = fcWoWTree.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				File file = fcWoWTree.getSelectedFile();
-				WoWSessionSerializable session = new WoWSessionSerializable();
-				session.CreateFromWoWTree(file.getAbsolutePath());
-				treePanel.LoadSession(session);
-				mainFrame.SetTitle(file.getAbsolutePath());
-				mainPanel.revalidate();
-			}
+			mainFrame.SetSession(mainFrame.CreateNewSession(), "New session");
 		}
 		else if (e.getSource() == createWoWItem) 
 		{
@@ -94,8 +78,7 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				File file = fcSession.getSelectedFile();
-				treePanel.SaveSessionToFile(file.getAbsolutePath());
-				mainFrame.SetTitle(file.getAbsolutePath());
+				mainFrame.SaveSession(file.getAbsolutePath());
 			}
 		}
 		else if(e.getSource() == loadSession)
@@ -104,13 +87,13 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				File file = fcSession.getSelectedFile();
-				treePanel.LoadSessionFromFile(file.getAbsolutePath());
-				mainFrame.SetTitle(file.getAbsolutePath());
-				mainPanel.revalidate();
+				WoWSessionSerializable session = WoWSessionSerializable.LoadSessionFromFile(file.getAbsolutePath());
+				mainFrame.SetSession(session, file.getAbsolutePath());
 			}
 		}
 		else if(e.getSource() == prepareWoWBreakdown)
 		{
+			WoWTreeJPanel treePanel = mainFrame.GetWoWTreePanel();
 			EditWoWBreakdownFrame editBreakDown = new EditWoWBreakdownFrame(treePanel.GetRootPanel(), treePanel.GetLoadedSession().getSessionInfo());
 			editBreakDown.setVisible(true);
 		}

@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 
 import WoWItemDialogs.WoWEditors.EditWoWSession.EditWoWSessionFrame;
 import WoWItemDialogs.WoWEditors.EditWoWSession.IWoWSessionEditDoneAction;
-import WoWSerialization.WoWFileHelper;
 import WoWSerialization.WoWSerializationObjects.IWoWDataChangedAction;
 import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionInfoSerializable;
 import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSerializable;
@@ -27,6 +26,7 @@ public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSess
 	public WoWSessionJPanel(WoWSessionSerializable iSession)
 	{
 		sessionRef = iSession;
+		sessionRef.addObjectChangedEventListener(this);
 		
 		editSessionInfo = new JButton("Set session info");
 		editSessionInfo.addActionListener(this);
@@ -42,6 +42,16 @@ public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSess
 		
 		UpdateDisplayInfo(sessionRef.getSessionInfo());
 	}
+	
+	public void SetNewSession(WoWSessionSerializable iSession)
+	{
+		sessionRef.removeObjectChangedEventEditListener(this);
+		
+		sessionRef = iSession;
+		sessionRef.addObjectChangedEventListener(this);
+		
+		UpdateDisplayInfo(sessionRef.getSessionInfo());
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
@@ -49,7 +59,7 @@ public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSess
 		if (e.getSource() == editSessionInfo) 
 		{
 			EditWoWSessionFrame editWoWSession = new EditWoWSessionFrame(sessionRef.getSessionInfo());
-			editWoWSession.addWoWSessionEditListener(this);
+			//editWoWSession.addWoWSessionEditListener(this);
 			editWoWSession.setVisible(true);
 		}
 		
@@ -65,7 +75,7 @@ public class WoWSessionJPanel extends JPanel implements ActionListener, IWoWSess
 	@Override
 	public void EditDone(WoWSessionInfoSerializable serSession) 
 	{
-		serSession.SaveToFile(WoWFileHelper.WoWDefaultSessionInfo);
+		UpdateDisplayInfo(serSession);
 	}
 
 	@Override

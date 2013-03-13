@@ -17,6 +17,10 @@ import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSeriali
 @SuppressWarnings("serial")
 public class MainWoWWindow extends JFrame implements IMainWoWFrame
 {
+	JPanel mainPanel;
+	WoWTreeJPanel treePanel;
+	WoWSessionJPanel sessionInfoPanel;
+	
     public static void main(String[] args)
     {
     	MainWoWWindow win = new MainWoWWindow();
@@ -39,21 +43,15 @@ public class MainWoWWindow extends JFrame implements IMainWoWFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        JPanel mainPanel = new JPanel();
+        mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         
-        WoWSessionSerializable session = new WoWSessionSerializable();
-        WoWSessionInfoSerializable sessionInfo = WoWSessionInfoSerializable.LoadFromFile(WoWFileHelper.WoWDefaultSessionInfo);
-        if(sessionInfo != null)
-        {
-        	session.setSessionInfo(sessionInfo);
-        }
-        session.CreateFromWoWTree(WoWFileHelper.WoWDefaultTree);
+        WoWSessionSerializable session = CreateNewSession();
         
-        WoWTreeJPanel treePanel = new WoWTreeJPanel();
+        treePanel = new WoWTreeJPanel();
         treePanel.LoadSession(session);
         
-        BtnPanel btnsPanel = new BtnPanel(treePanel, mainPanel, this);
+        BtnPanel btnsPanel = new BtnPanel(this);
         
         mainPanel.add(btnsPanel, BorderLayout.PAGE_START);
         
@@ -63,15 +61,45 @@ public class MainWoWWindow extends JFrame implements IMainWoWFrame
         
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         
-        mainPanel.add(new WoWSessionJPanel(session), BorderLayout.PAGE_END);
+        sessionInfoPanel = new WoWSessionJPanel(session);
+        mainPanel.add(sessionInfoPanel, BorderLayout.PAGE_END);
                
         setContentPane(mainPanel);
         pack();
     }
-
-	@Override
-	public void SetTitle(String title) 
-	{
+    
+    @Override
+    public WoWSessionSerializable CreateNewSession()
+    {
+    	WoWSessionSerializable session = new WoWSessionSerializable();
+        WoWSessionInfoSerializable sessionInfo = WoWSessionInfoSerializable.LoadFromFile(WoWFileHelper.WoWDefaultSessionInfo);
+        if(sessionInfo != null)
+        {
+        	session.setSessionInfo(sessionInfo);
+        }
+        session.CreateFromWoWTree(WoWFileHelper.WoWDefaultTree);
+        
+        return session;
+    }
+    
+    @Override
+    public void SetSession(WoWSessionSerializable session, String title)
+    {
+    	treePanel.LoadSession(session);
 		setTitle("WoW Tool " + title);
-	}
+		mainPanel.revalidate();
+    }
+    
+    @Override
+    public void SaveSession(String filePath)
+    {
+    	treePanel.SaveSessionToFile(filePath);
+    	setTitle("WoW Tool " + filePath);
+    }
+    
+    @Override
+    public WoWTreeJPanel GetWoWTreePanel()
+    {
+    	return treePanel;
+    }
 }

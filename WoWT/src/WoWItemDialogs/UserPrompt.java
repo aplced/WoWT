@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 
 import WoWItemDialogs.WoWEditors.WoWEditorFrame;
 import WoWItemDialogs.WoWValueInput.WoWValueInput;
-import WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode;
 
 @SuppressWarnings("serial")
 public class UserPrompt extends WoWEditorFrame implements ActionListener
@@ -46,7 +45,7 @@ public class UserPrompt extends WoWEditorFrame implements ActionListener
         ok = new JButton("Ok");
         ok.addActionListener(this);
 		
-        cancel = new JButton("Edit template");
+        cancel = new JButton("Cancel");
         cancel.addActionListener(this);
 	    
 		controlPnl.add(ok);
