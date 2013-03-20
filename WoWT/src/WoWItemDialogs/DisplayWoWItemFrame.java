@@ -221,7 +221,7 @@ public class DisplayWoWItemFrame extends WoWEditorFrame implements ActionListene
 		if (e.getSource() == ok)
 		{
 			serNode.setUserNotes(userNotesInput.getText());
-			serNode.setTaskDaysEstimate((Float)taskEstimatedDurationInput.getValue());
+			serNode.setTaskDaysEstimate((Float)((Number)taskEstimatedDurationInput.getValue()).floatValue());
 			serNode.setPartOfBreakdown(partOfBreakdown.isSelected());
 						
 			setVisible(false);
