@@ -14,17 +14,28 @@ import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSeriali
 
 
 @SuppressWarnings("serial")
-public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction
+public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction, IRefreshInfo
 {
 	GridLayout gridL;
 	ArrayList<WoWItemJPanel> allItems;
 	WoWSessionSerializable curSesSr;
 	WoWItemJPanel startableWork;
+	WoWTreeTimerUpdate timerRefresh;
 	
 	public WoWTreeJPanel()
 	{
 	    gridL = new GridLayout();
 	    setLayout(gridL);
+	    
+	    timerRefresh = new WoWTreeTimerUpdate();
+	    timerRefresh.Start(5);//*60*1000); //Update once every five minutes
+	    timerRefresh.AddRefreshInfoObject(this);
+	}
+	
+	protected void finalize()
+	{
+		timerRefresh.RemoveRfreshInfoObject(this);
+		timerRefresh.Stop();
 	}
 	
 	private ArrayList<WoWItemJPanel> CreateJPanelTree(String wowTreeMap, ArrayList<WoWSerializableNode> allSerializedWoWItems)
@@ -186,6 +197,16 @@ public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction
 	public void DataChanged()
 	{
 		SaveSessionToFile(WoWFileHelper.WoWTempSessionFile);
+	}
+	
+	@Override
+	public void Refresh() 
+	{
+		if(allItems != null)
+		{
+			WoWItemJPanel wowItem = GetRootPanel(allItems);
+        	wowItem.UpdateEnableWoWItemState();
+		}
 	}
 	
 	public WoWItemJPanel GetRootPanel()

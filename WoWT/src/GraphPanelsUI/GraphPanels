@@ -1,0 +1,242 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import edu.umd.cs.piccolox.nodes.PLine;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.event.PDragEventHandler;
+import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.event.PInputEventFilter;
+import edu.umd.cs.piccolo.nodes.PPath;
+import edu.umd.cs.piccolox.pswing.PSwing;
+import edu.umd.cs.piccolox.pswing.PSwingCanvas;
+import edu.umd.cs.piccolox.util.LineShape;
+import edu.umd.cs.piccolox.util.MutablePoints;
+
+
+class Graph extends PSwingCanvas
+{
+  private static final long serialVersionUID = 1L;
+
+	private PLayer nodeLayer = getLayer();
+	private PLayer edgeLayer = new PLayer();
+
+	public Graph(Dimension dim)
+	{
+		super();
+		setPreferredSize(dim);
+        getRoot().addChild(edgeLayer);
+        getCamera().addLayer(0, edgeLayer);
+
+        nodeLayer.addInputEventListener(new PDragEventHandler()
+        {
+            {
+                PInputEventFilter filter = new PInputEventFilter();
+                filter.setOrMask(InputEvent.BUTTON1_MASK | InputEvent.BUTTON3_MASK);
+                setEventFilter(filter);
+            }
+
+            public void mouseEntered(PInputEvent e)
+            {
+                super.mouseEntered(e);
+                if (e.getButton() == MouseEvent.NOBUTTON) {
+                    e.getPickedNode().setPaint(Color.RED);
+                }
+            }
+
+            public void mouseExited(PInputEvent e)
+            {
+                super.mouseExited(e);
+                if (e.getButton() == MouseEvent.NOBUTTON) {
+                    e.getPickedNode().setPaint(Color.WHITE);
+                }
+            }
+
+            protected void startDrag(PInputEvent e)
+            {
+                super.startDrag(e);
+                e.setHandled(true);
+                e.getPickedNode().moveToFront();
+            }
+
+            @SuppressWarnings("unchecked")
+			protected void drag(PInputEvent e)
+            {
+            	try
+            	{
+            		super.drag(e);
+            		ArrayList<PPath> edges = (ArrayList<PPath>) e.getPickedNode().getAttribute("egdes");
+                    for (int i = 0; i < edges.size(); i++)
+                    {
+                    	update_connection(edges.get(i));
+                    }
+            	}
+        		catch (Exception error)
+        		{
+        			System.err.println("Failed to drag panel!");
+        			System.err.println("Caught Exception: " + error.getMessage());
+        		}
+            }
+        });
+    }
+
+	private PSwing position_node(JComponent panel)
+	{
+		PSwing node = null;
+		Point position = panel.getLocation();
+		node = new PSwing(panel);
+		node.addAttribute("egdes", new ArrayList<PPath>());
+		node.translate(position.getX(), position.getY());
+        nodeLayer.addChild(node);
+        return node;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void update_connection(PPath edge)
+	{
+		try
+		{
+			PNode node_to = (PNode) ((ArrayList<PSwing>)edge.getAttribute("nodes")).get(0);
+	        PNode node_from = (PNode) ((ArrayList<PSwing>)edge.getAttribute("nodes")).get(1);
+
+	        Point2D start = node_from.getFullBoundsReference().getCenter2D();
+	        Point2D end = node_to.getFullBoundsReference().getCenter2D();
+
+	        edge.reset();
+	        edge.moveTo((float)start.getX(), (float)start.getY());
+	        edge.lineTo((float)end.getX(), (float)end.getY());
+		}
+		catch (Exception e)
+		{
+			System.err.println("Failed to update connection!");
+			System.err.println("Caught Exception: " + e.getMessage());
+		}
+	}
+
+
+	public PSwing add_node(JComponent panel)
+	{
+		try
+		{
+			PSwing node = null;
+			boolean match = false;
+			// Check if the component is already added.
+			// If yes return this reference
+			for(int i=0; i<nodeLayer.getChildrenCount(); i++)
+			{
+				node = (PSwing)nodeLayer.getChild(i);
+				JComponent used_panel = node.getComponent();
+				if(used_panel.equals(panel))
+				{
+					match = true;
+					break;
+				}
+			}
+			if(match == false)
+			{
+				node = position_node(panel);
+			}
+	        return node;
+		}
+		catch (Exception e)
+		{
+			System.err.println("Failed to add panel!");
+			System.err.println("Caught Exception: " + e.getMessage());
+			return null;
+		}
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public void create_connections(JComponent to, JComponent from)
+	{
+		try
+		{
+			PSwing node_to = add_node(to);
+			PSwing node_from = add_node(from);
+
+			PPath edge = new PPath();
+			edge.addAttribute("nodes", new ArrayList<PSwing>());
+
+			((ArrayList<PSwing>)edge.getAttribute("nodes")).add(node_to);
+			((ArrayList<PSwing>)edge.getAttribute("nodes")).add(node_from);
+
+			((ArrayList<PPath>)node_to.getAttribute("egdes")).add(edge);
+			((ArrayList<PPath>)node_from.getAttribute("egdes")).add(edge);
+
+			edgeLayer.addChild(edge);
+	        update_connection(edge);
+		}
+		catch (Exception e)
+		{
+			System.err.println("Failed to create connection!");
+			System.err.println("Caught Exception: " + e.getMessage());
+		}
+	}
+
+	/*
+	public void addLine()
+	{
+		MutablePoints points = new MutablePoints();
+		LineShape linesh = new LineShape(points);
+		PLine line = new PLine(linesh);
+		nodeLayer.addChild(line);
+	}
+	*/
+}
+
+
+
+public class GraphPanels
+{
+	public static void main(String[] args)
+	{
+		Dimension dim = new Dimension(800, 600);
+		final JFrame myframe = new JFrame("KUR Demo KUR");
+		myframe.getContentPane().setPreferredSize(dim);
+		myframe.setLocation(200, 200);
+		myframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		Graph graph = new Graph(dim);
+		graph.setLayout(null);
+
+		try
+		{
+			MyJPanel p1 = new MyJPanel("KUR1");
+			p1.setLocation(new Point(10, 10));
+
+			MyJPanel p2 = new MyJPanel("KUR2");
+			p2.setLocation(new Point(680, 500));
+
+			MyJPanel p3 = new MyJPanel("KUR3");
+			p3.setLocation(new Point(500, 50));
+
+			MyJPanel p4 = new MyJPanel("KUR4");
+			p4.setLocation(new Point(50, 500));
+
+			graph.create_connections(p1, p3);
+			graph.create_connections(p2, p4);
+			graph.create_connections(p1, p2);
+			graph.create_connections(p1, p4);
+
+			//graph.addLine();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Failed to render images!\n");
+			System.err.println("Caught Exception: " + e.getMessage());
+		}
+
+		myframe.getContentPane().add(graph);
+		myframe.pack();
+		myframe.setVisible(true);
+	}
+}
