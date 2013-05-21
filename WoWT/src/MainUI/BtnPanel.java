@@ -13,7 +13,7 @@ import WoWItemDialogs.WoWEditors.EditWoWItem.EditWoWItemFrame;
 import WoWItemDialogs.WoWEditors.EditWoWItem.IWoWItemEditDoneAction;
 import WoWPanelUI.WoWTreeJPanel;
 import WoWSerialization.WoWFileHelper;
-import WoWSerialization.XMLFileFilter;
+import WoWSerialization.CustomFileFilter;
 import WoWSerialization.WoWSerializationObjects.Implementation.WoWSerializableNode;
 import WoWSerialization.WoWSerializationObjects.Implementation.WoWSessionSerializable;
 
@@ -26,7 +26,9 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 	JButton newSession;
 	JButton createWoWItem;
 	JButton prepareWoWBreakdown;
+	JButton saveNotes;
 	JFileChooser fcSession;
+	JFileChooser fcNotes;
 	
 	public BtnPanel(IMainWoWFrame refMainFrame) 
 	{
@@ -35,7 +37,10 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 		mainFrame = refMainFrame;
 		
 		fcSession = new JFileChooser(System.getProperty("user.home"));
-		fcSession.addChoosableFileFilter(new XMLFileFilter());
+		fcSession.addChoosableFileFilter(new CustomFileFilter("xml", "WoW tree"));
+		
+		fcNotes = new JFileChooser(System.getProperty("user.home"));
+		fcNotes.addChoosableFileFilter(new CustomFileFilter("txt", "Text File"));
 		
 		saveSession = new JButton("Save Session");
 		saveSession.addActionListener(this);
@@ -56,6 +61,10 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 		prepareWoWBreakdown = new JButton("Work breakdown");
 		prepareWoWBreakdown.addActionListener(this);
 		add(prepareWoWBreakdown);
+		
+		saveNotes = new JButton("Save Notes");
+		saveNotes.addActionListener(this);
+		add(saveNotes);
 	}
 
 	@Override
@@ -96,6 +105,15 @@ public class BtnPanel extends JPanel implements ActionListener, IWoWItemEditDone
 			WoWTreeJPanel treePanel = mainFrame.GetWoWTreePanel();
 			EditWoWBreakdownFrame editBreakDown = new EditWoWBreakdownFrame(treePanel.GetRootPanel(), treePanel.GetLoadedSession().getSessionInfo());
 			editBreakDown.setVisible(true);
+		}
+		else if(e.getSource() == saveNotes)
+		{
+			int returnVal = fcNotes.showSaveDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				File file = fcNotes.getSelectedFile();
+				mainFrame.SaveNotes(file.getAbsolutePath());
+			}
 		}
 	}
 

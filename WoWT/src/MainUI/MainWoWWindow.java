@@ -98,6 +98,12 @@ public class MainWoWWindow extends JFrame implements IMainWoWFrame
     }
     
     @Override
+    public void SaveNotes(String filePath)
+    {
+    	treePanel.SaveNotesToFile(filePath);
+    }
+    
+    @Override
     public WoWTreeJPanel GetWoWTreePanel()
     {
     	return treePanel;

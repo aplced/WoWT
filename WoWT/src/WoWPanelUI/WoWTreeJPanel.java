@@ -1,6 +1,11 @@
 package WoWPanelUI;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.beans.XMLEncoder;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -28,7 +33,7 @@ public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction, IRef
 	    setLayout(gridL);
 	    
 	    timerRefresh = new WoWTreeTimerUpdate();
-	    timerRefresh.Start(5);//*60*1000); //Update once every five minutes
+	    timerRefresh.Start(5*60*1000); //Update once every five minutes
 	    timerRefresh.AddRefreshInfoObject(this);
 	}
 	
@@ -192,7 +197,120 @@ public class WoWTreeJPanel extends JPanel implements IWoWDataChangedAction, IRef
 	    	curSesSr.SaveSessionToFile(fileName);
 		}
     }
+	
+	String CreateNodeInfo(WoWSerializableNode node)
+	{
+		if(!node.getUserNotes().isEmpty())
+		{
+			StringBuilder nodeInfo = new StringBuilder();
+			StringBuilder dashes = new StringBuilder();
+			for(int i = 0; i < node.getDisplayName().length(); i++)
+			{
+				dashes.append("-");
+			}
+			dashes.append("\n");
+		
+			nodeInfo.append(dashes.toString());
+			nodeInfo.append(node.getDisplayName() + ":\n");
+			nodeInfo.append(dashes.toString());
+		
+			//if(!node.getDescription().isEmpty())
+			//	nodeInfo.append(node.getDescription() + "\n");
+		
+		
+			nodeInfo.append(node.getUserNotes() + "\n");
+		
+			nodeInfo.append("\n");
+		
+			return nodeInfo.toString();
+		}
+		else
+		{
+			return "";
+		}
+	}
+	
+	void GetTieredNodeInfo(StringBuilder allInfos, WoWItemJPanel pnl, int desiredTier, ArrayList<WoWItemJPanel> visitedPanels)
+	{
+		if(pnl.TreeDepth == desiredTier) // If this is *our* tier, then collect the info
+		{
+			if(!visitedPanels.contains(pnl))
+			{
+				visitedPanels.add(pnl);
+				allInfos.append(CreateNodeInfo(pnl.CreateSerializable()));
+			}
+		}
+		else if(pnl.TreeDepth < desiredTier) // If this tier is lower than what is wanted, check it's children
+		{
+			for(WoWItemJPanel child : pnl.GetChildren())
+			{
+				GetTieredNodeInfo(allInfos, child, desiredTier, visitedPanels);
+			}  
+		}
+	}
+	
+    private int TraverseTreeDepth(WoWItemJPanel wowItem, int treeDepth)
+    {
+    	if(wowItem.TreeDepth > treeDepth)
+    		treeDepth = wowItem.TreeDepth;
+    	
+    	for(WoWItemJPanel child : wowItem.GetChildren())
+    	{
+    		int res = TraverseTreeDepth(child, treeDepth);
+    		if(res > treeDepth)
+    			treeDepth = res;
+    	}
+    	
+    	return treeDepth;
+    }
+    
+    private int GetTreeDepth(WoWItemJPanel root)
+    {
+    	int depth = -1;
+    	
+    	depth = TraverseTreeDepth(root, depth);
+    	
+    	return depth;
+    }
+	
+	String GetAllNodesInfo(WoWItemJPanel root)
+	{
+		ArrayList<WoWItemJPanel> visitedPanels = new ArrayList<WoWItemJPanel>();
+		StringBuilder allNodesInfo = new StringBuilder();
+		
+		int depth = GetTreeDepth(root);
+		
+		for(int i = 0; i < depth; i++)
+		{
+			GetTieredNodeInfo(allNodesInfo, root, i, visitedPanels);
+		}
+		
+		return allNodesInfo.toString();
+	}
 
+	public void SaveNotesToFile(String fileName)
+	{
+		if(allItems != null)
+		{
+	    	 String notes = GetAllNodesInfo(GetRootPanel(allItems));
+	    	
+	    	 try
+	         {
+	         	String completeName = fileName;
+	         	if(WoWFileHelper.getExtension(completeName) == null)
+	         		completeName += ".txt";
+	         	
+	             BufferedWriter fileOut = new BufferedWriter(new FileWriter(completeName));
+	             fileOut.write(notes);
+	             fileOut.close();
+	          }
+	          catch(IOException i)
+	          {
+	              i.printStackTrace();
+	          }	    	
+		}
+	}
+	
 	@Override
 	public void DataChanged()
 	{

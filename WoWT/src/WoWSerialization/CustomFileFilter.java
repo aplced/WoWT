@@ -4,9 +4,17 @@ import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
 
-public class XMLFileFilter extends FileFilter 
+public class CustomFileFilter extends FileFilter 
 {
-
+	String extFilter = "";
+	String filtName = "";
+	
+	public CustomFileFilter(String extension, String filterName)
+	{
+		extFilter = extension;
+		filtName = filterName;
+	}
+	
 	private static String getExtension(File f) 
 	{
         String ext = null;
@@ -29,7 +37,7 @@ public class XMLFileFilter extends FileFilter
 		}
 		
 		String extension = getExtension(f);
-		if(extension != null && extension.equals("xml"))
+		if(extension != null && extension.equals(extFilter))
 		{
 			return true;
 		}
@@ -39,7 +47,7 @@ public class XMLFileFilter extends FileFilter
 	@Override
 	public String getDescription() 
 	{
-		return "WoW tree";
+		return filtName;
 	}
 
 }
